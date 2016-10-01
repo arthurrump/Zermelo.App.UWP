@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Zermelo.App.UWP.ViewModels
 {
-    class AnnouncementsViewModel : ViewModelBase
+    class AnnouncementsViewModel : MVVM.ViewModelBase
     {
     }
 }

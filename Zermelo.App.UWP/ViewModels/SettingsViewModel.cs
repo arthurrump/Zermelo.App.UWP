@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Zermelo.App.UWP.ViewModels
 {
-    class SettingsViewModel : ViewModelBase
+    class SettingsViewModel : MVVM.ViewModelBase
     {
     }
 }

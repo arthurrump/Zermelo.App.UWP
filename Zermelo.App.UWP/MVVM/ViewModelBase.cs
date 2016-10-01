@@ -9,7 +9,7 @@ using Template10.Common;
 using Windows.UI.Xaml.Navigation;
 using Newtonsoft.Json;
 
-namespace Zermelo.App.UWP.ViewModels
+namespace Zermelo.App.UWP.MVVM
 {
     class ViewModelBase : ReactiveObject, INavigable
     {
