@@ -4,6 +4,7 @@
     "Autofac": "4.1.1",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
     "reactiveui": "6.5.2",
+    "Splat": "1.6.2",
     "Template10": "1.1.11",
     "Zermelo.API": "2.0.0-rc"
   },
