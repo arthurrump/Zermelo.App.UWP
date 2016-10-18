@@ -2,13 +2,29 @@
     x:Class="Zermelo.App.UWP.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:t10="using:Template10.Common" >
+    xmlns:t10="using:Template10.Common"
+    xmlns:t10c="using:Template10.Controls">
 
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles\Style.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="t10c:CustomTitleBar">
+                <Setter Property="BackgroundColor" Value="{StaticResource CustomColor}" />
+                <Setter Property="ButtonBackgroundColor" Value="{StaticResource CustomColor}" />
+                <Setter Property="ButtonForegroundColor" Value="{StaticResource ContrastColor}" />
+                <Setter Property="ButtonHoverBackgroundColor" Value="{StaticResource CustomLighterColor}" />
+                <Setter Property="ButtonHoverForegroundColor" Value="{StaticResource ContrastColor}" />
+                <Setter Property="ButtonInactiveBackgroundColor" Value="{StaticResource CustomDarkerColor}" />
+                <Setter Property="ButtonInactiveForegroundColor" Value="DimGray" />
+                <Setter Property="ButtonPressedBackgroundColor" Value="{StaticResource CustomDarkerColor}" />
+                <Setter Property="ButtonPressedForegroundColor" Value="{StaticResource ContrastColor}" />
+                <Setter Property="ForegroundColor" Value="{StaticResource ContrastColor}" />
+                <Setter Property="InactiveBackgroundColor" Value="{StaticResource CustomDarkerColor}" />
+                <Setter Property="InactiveForegroundColor" Value="DimGray" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
     

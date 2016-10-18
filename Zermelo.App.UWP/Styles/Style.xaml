@@ -8,6 +8,8 @@
     <x:Double x:Key="WideMinWidth">1200</x:Double>
 
     <Color x:Key="CustomColor">#dc1528</Color>
+    <Color x:Key="CustomDarkerColor">#ad0919</Color>
+    <Color x:Key="CustomLighterColor">#e84353</Color>
     <Color x:Key="SystemAccentColor">#dc1528</Color>
     <Color x:Key="ContrastColor">#fff</Color>
 
