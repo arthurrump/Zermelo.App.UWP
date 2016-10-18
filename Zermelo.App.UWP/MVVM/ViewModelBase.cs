@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace Zermelo.App.UWP.MVVM
 {
-    class ViewModelBase : ReactiveObject, INavigable
+    public class ViewModelBase : ReactiveObject, INavigable
     {
         public virtual Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
