@@ -9,6 +9,16 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <t10c:PageHeader Text="Mededelingen" />
+        <t10c:PageHeader
+            Text="Mededelingen"
+            EllipsisVisibility="Collapsed">
+
+            <t10c:PageHeader.PrimaryCommands>
+                <AppBarButton
+                    Icon="Refresh"
+                    Label="Vernieuwen" />
+            </t10c:PageHeader.PrimaryCommands>
+
+        </t10c:PageHeader>
     </Grid>
 </Page>
