@@ -10,6 +10,8 @@ using Template10.Common;
 using Template10.Services.NavigationService;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Foundation.Metadata;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
@@ -29,6 +31,18 @@ namespace Zermelo.App.UWP
 
         public override Task OnInitializeAsync(IActivatedEventArgs args)
         {
+            if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
+            {
+                Window.Current.SizeChanged += async (sender, e) =>
+                {
+                    var statusBar = StatusBar.GetForCurrentView();
+                    if (ApplicationView.GetForCurrentView().Orientation == ApplicationViewOrientation.Landscape)
+                        await statusBar.HideAsync();
+                    else
+                        await statusBar.ShowAsync();
+                };
+            }
+
             var builder = new ContainerBuilder();
 
             builder.RegisterType<AnnouncementsViewModel>();
