@@ -25,7 +25,7 @@ namespace Zermelo.App.UWP.Controls
         public Symbol Symbol
         {
             get { return (Symbol)GetValue(SymbolProperty); }
-            set { SetValue(SymbolProperty, value); SymbolIcon.Symbol = value; }
+            set { SetValue(SymbolProperty, value); }
         }
 
         public static readonly DependencyProperty SymbolProperty =
@@ -35,7 +35,7 @@ namespace Zermelo.App.UWP.Controls
         public string Text
         {
             get { return (string)GetValue(TextProperty); }
-            set { SetValue(TextProperty, value); TextBlock.Text = value; }
+            set { SetValue(TextProperty, value); }
         }
 
         public static readonly DependencyProperty TextProperty =
