@@ -11,7 +11,8 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <t10c:PageHeader
             Text="Rooster"
-            EllipsisVisibility="Collapsed">
+            EllipsisVisibility="Collapsed"
+            EntranceNavigationTransitionInfo.IsTargetElement="False">
             
             <t10c:PageHeader.PrimaryCommands>
                 <AppBarButton
@@ -20,5 +21,10 @@
             </t10c:PageHeader.PrimaryCommands>
             
         </t10c:PageHeader>
+
+        <Grid
+            EntranceNavigationTransitionInfo.IsTargetElement="True">
+            <!-- Page content -->
+        </Grid>
     </Grid>
 </Page>

@@ -10,5 +10,10 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <t10c:PageHeader Text="Instellingen" />
+        
+        <Grid
+            EntranceNavigationTransitionInfo.IsTargetElement="True">
+            <!-- Page content -->
+        </Grid>
     </Grid>
 </Page>
