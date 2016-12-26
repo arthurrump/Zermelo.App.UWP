@@ -13,17 +13,18 @@
 
             <Style TargetType="t10c:CustomTitleBar">
                 <Setter Property="BackgroundColor" Value="{StaticResource CustomColor}" />
+                <Setter Property="ForegroundColor" Value="{StaticResource ContrastColor}" />
                 <Setter Property="ButtonBackgroundColor" Value="{StaticResource CustomColor}" />
                 <Setter Property="ButtonForegroundColor" Value="{StaticResource ContrastColor}" />
                 <Setter Property="ButtonHoverBackgroundColor" Value="{StaticResource CustomLighterColor}" />
                 <Setter Property="ButtonHoverForegroundColor" Value="{StaticResource ContrastColor}" />
-                <Setter Property="ButtonInactiveBackgroundColor" Value="{StaticResource CustomDarkerColor}" />
-                <Setter Property="ButtonInactiveForegroundColor" Value="DimGray" />
                 <Setter Property="ButtonPressedBackgroundColor" Value="{StaticResource CustomDarkerColor}" />
                 <Setter Property="ButtonPressedForegroundColor" Value="{StaticResource ContrastColor}" />
-                <Setter Property="ForegroundColor" Value="{StaticResource ContrastColor}" />
-                <Setter Property="InactiveBackgroundColor" Value="{StaticResource CustomDarkerColor}" />
+                
+                <Setter Property="InactiveBackgroundColor" Value="{StaticResource CustomColor}" />
                 <Setter Property="InactiveForegroundColor" Value="DimGray" />
+                <Setter Property="ButtonInactiveBackgroundColor" Value="{StaticResource CustomColor}" />
+                <Setter Property="ButtonInactiveForegroundColor" Value="DimGray" />
             </Style>
         </ResourceDictionary>
     </Application.Resources>
