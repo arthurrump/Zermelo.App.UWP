@@ -3,8 +3,10 @@ using ReactiveUI.Fody.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 
 namespace Zermelo.App.UWP.ViewModels
 {
@@ -22,5 +24,8 @@ namespace Zermelo.App.UWP.ViewModels
         // Personalization
         [Reactive]
         public bool ShowGroups { get; set; }
+
+        // About
+        public string Version => $"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Revision}";
     }
 }

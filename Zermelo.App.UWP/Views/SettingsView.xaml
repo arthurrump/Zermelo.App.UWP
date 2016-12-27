@@ -44,7 +44,33 @@
             </PivotItem>
 
             <PivotItem Header="Over">
-                
+                <ScrollViewer>
+                    <StackPanel>
+                        <Image
+                            Source="/Assets/Large/Large310x310Logo.png"
+                            HorizontalAlignment="Center"
+                            Height="150" Width="150"
+                            Stretch="Uniform"/>
+
+                        <TextBlock
+                            Text="Schoolrooster voor Zermelo"
+                            HorizontalAlignment="Center"
+                            FontSize="{StaticResource TextStyleLargeFontSize}"/>
+
+                        <TextBlock
+                            Text="Speciaal ontworpen voor Windows 10 is Schoolrooster voor Zermelo de beste manier om jouw schoolrooster te bekijken. Schoolrooster voor Zermelo is géén officiële app van Zermelo Software B.V. en is hier op geen enkele wijze mee verbonden."
+                            Margin="12"
+                            HorizontalAlignment="Center"
+                            TextAlignment="Center"
+                            TextWrapping="WrapWholeWords"/>
+
+                        <TextBlock
+                            HorizontalAlignment="Center">
+                            <Run>Versie </Run>
+                            <Run Text="{x:Bind ViewModel.Version}"/>
+                        </TextBlock>
+                    </StackPanel>
+                </ScrollViewer>
             </PivotItem>
 
         </Pivot>
