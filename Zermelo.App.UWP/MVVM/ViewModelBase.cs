@@ -1,5 +1,4 @@
-﻿using ReactiveUI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace Zermelo.App.UWP.MVVM
 {
-    public class ViewModelBase : ReactiveObject, INavigable
+    public class ViewModelBase : INavigable
     {
         public virtual Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {

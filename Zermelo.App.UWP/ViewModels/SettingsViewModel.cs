@@ -1,6 +1,4 @@
-﻿using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -22,7 +20,6 @@ namespace Zermelo.App.UWP.ViewModels
         public string School { get; set; } // Not changing, no need to be reactive
 
         // Personalization
-        [Reactive]
         public bool ShowGroups { get; set; }
 
         // About

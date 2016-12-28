@@ -1,12 +1,8 @@
 ﻿{
   "dependencies": {
-    "akavache": "4.1.2",
-    "Autofac": "4.1.1",
-    "Fody": "1.29.4",
+    "System.Reactive": "3.1.1",
+    "Autofac": "4.2.1",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
-    "reactiveui": "6.5.2",
-    "ReactiveUI.Fody": "1.1.53",
-    "Splat": "1.6.2",
     "Template10": "1.1.12",
     "Zermelo.API": "2.0.0-rc"
   },
