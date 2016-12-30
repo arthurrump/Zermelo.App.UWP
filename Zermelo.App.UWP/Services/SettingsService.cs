@@ -23,10 +23,33 @@ namespace Zermelo.App.UWP.Services
 
         private void Write<T>(string key, T value) => _helper.Write(key, value, SettingsStrategies.Roam);
 
+        //Account
+        public string School
+        {
+            get => Read<string>(nameof(School));
+            set
+            {
+                Write(nameof(School), value);
+                RaisePropertyChanged();
+            }
+        }
+
+        public string Token
+        {
+            get => Read<string>(nameof(Token));
+            set
+            {
+                Write(nameof(Token), value);
+                RaisePropertyChanged();
+            }
+        }
+
+        // Personalization
         public bool ShowGroups
         {
             get => Read<bool>(nameof(ShowGroups));
-            set {
+            set
+            {
                 Write(nameof(ShowGroups), value);
                 RaisePropertyChanged();
             }

@@ -14,15 +14,25 @@ namespace Zermelo.App.UWP.ViewModels
     public class SettingsViewModel : ViewModelBase
     {
         ISettingsService _settings;
+        IZermeloService _zermelo;
 
-        public SettingsViewModel(ISettingsService settings)
+        public SettingsViewModel(ISettingsService settings, IZermeloService zermelo)
         {
             _settings = settings;
+            _zermelo = zermelo;
+
+            _zermelo.GetCurrentUserAsync()
+                .Subscribe(u =>
+                {
+                    user = $"{u.FullName} ({u.Code})";
+                    RaisePropertyChanged(nameof(User));
+                });
         }
 
         // Account
-        public string AuthCode { get; } // Not changing, no need to be reactive
-        public string School { get; } // Not changing, no need to be reactive
+        string user = "";
+        public string User => user;
+        public string School => _settings.School;
 
         // Personalization
         public bool ShowGroups
