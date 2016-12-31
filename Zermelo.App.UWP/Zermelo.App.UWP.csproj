@@ -99,6 +99,7 @@
       <DependentUpon>HamburgerButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Secrets.cs" />
     <Compile Include="Services\CachedZermeloService.cs" />
     <Compile Include="Services\ISettingsService.cs" />
     <Compile Include="Services\IZermeloService.cs" />

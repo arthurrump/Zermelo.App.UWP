@@ -14,5 +14,26 @@ The backend for connecting to the Zermelo REST API that's used in this app is al
 
 All contributions are welcome! You can make a pull-request and write some code yourself, but please first open an issue detailing the things you want to change. It would be sad if you spend a lot of time building something that's completely beyond the scope of this project, or in a way that's completely different than the rest of the app. If you don't know how to write code, you can open issues too, if you think there's something that should be improved!
 
+## Compiling
+
+The project won't just compile after cloning the project, because there are some API keys needed that, for security reasons, I won't check in into git. To compile the project you'll need to add a `Secrets.cs` file in the `Zermelo.App.UWP` folder, which contains a static class `Secrets` with static properties for every secret:
+
+```csharp
+namespace Zermelo.App.UWP
+{
+    static class Secrets
+    {
+        public static string Secret => "api-key";
+    }
+}
+```
+
+The secrets that are currently needed are:
+
+* `School` (`string`): the school you'll want to connect to. Found in the portal URL for your school: `<school>.zportal.nl`
+* `Token` (`string`): a token for connecting to the Zermelo REST API.
+
+These secrets will of course be removed once a system for logging in is in place.
+
 ---
 Licensed under the MIT License (see LICENSE file)

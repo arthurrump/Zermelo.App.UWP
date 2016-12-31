@@ -18,6 +18,7 @@ using Windows.UI.Xaml.Data;
 using Zermelo.App.UWP.ViewModels;
 using Template10.Services.SettingsService;
 using Zermelo.App.UWP.Services;
+using Zermelo.API;
 
 namespace Zermelo.App.UWP
 {
@@ -49,6 +50,8 @@ namespace Zermelo.App.UWP
 
             builder.RegisterType<SettingsHelper>().As<ISettingsHelper>();
             builder.RegisterType<Services.SettingsService>().As<Services.ISettingsService>().SingleInstance();
+
+            builder.Register(x => new Authentication(Secrets.School, Secrets.Token));
 
             builder.RegisterType<ZermeloService>().AsSelf();
             builder.RegisterType<CachedZermeloService>().As<IZermeloService>();
