@@ -6,12 +6,17 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:t10c="using:Template10.Controls"
+    xmlns:z="using:Zermelo.API.Models"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <t10c:PageHeader
+            x:Name="Header"
             Text="Mededelingen"
-            EllipsisVisibility="Collapsed">
+            EllipsisVisibility="Collapsed"
+            RelativePanel.AlignTopWithPanel="True"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.AlignRightWithPanel="True">
 
             <t10c:PageHeader.PrimaryCommands>
                 <AppBarButton
@@ -22,8 +27,25 @@
         </t10c:PageHeader>
 
         <Grid
+            RelativePanel.Below="Header"
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.AlignRightWithPanel="True"
             EntranceNavigationTransitionInfo.IsTargetElement="True">
-            <!-- Page content -->
+            
+            <ListView
+                ItemsSource="{x:Bind ViewModel.Announcements, Mode=OneWay}">
+
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="z:Announcement">
+                        <StackPanel>
+                            <TextBlock Text="{x:Bind Title, Mode=OneWay}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                
+            </ListView>
+            
         </Grid>
-    </Grid>
+    </RelativePanel>
 </Page>

@@ -4,7 +4,7 @@
     "Autofac": "4.2.1",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
     "Template10": "1.1.12",
-    "Zermelo.API": "2.0.0-rc"
+    "Zermelo.API": "2.0.6212.39354"
   },
   "frameworks": {
     "uap10.0": {}
