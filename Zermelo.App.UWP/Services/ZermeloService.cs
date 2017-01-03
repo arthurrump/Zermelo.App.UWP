@@ -18,13 +18,13 @@ namespace Zermelo.App.UWP.Services
             connection = new ZermeloConnection(auth);
         }
 
-        public IObservable<IEnumerable<Appointment>> GetScheduleAsync(DateTimeOffset start, DateTimeOffset end, string user = "~me")
+        public IObservable<IEnumerable<Appointment>> GetSchedule(DateTimeOffset start, DateTimeOffset end, string user = "~me")
             => Observable.FromAsync(() => connection.Appointments.GetByDateAsync(start, end, user));
 
-        public IObservable<IEnumerable<Announcement>> GetAnnouncementsAsync() 
+        public IObservable<IEnumerable<Announcement>> GetAnnouncements() 
             => Observable.FromAsync(() => connection.Announcements.GetAllAsync());
 
-        public IObservable<User> GetCurrentUserAsync() 
+        public IObservable<User> GetCurrentUser() 
             => Observable.FromAsync(() => connection.Users.GetCurrentUserAsync());
     }
 }

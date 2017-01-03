@@ -21,7 +21,7 @@ namespace Zermelo.App.UWP.ViewModels
             _settings = settings;
             _zermelo = zermelo;
 
-            _zermelo.GetCurrentUserAsync()
+            _zermelo.GetCurrentUser()
                 .Subscribe(u =>
                 {
                     user = $"{u.FullName} ({u.Code})";

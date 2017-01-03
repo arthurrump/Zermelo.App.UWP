@@ -17,22 +17,22 @@ namespace Zermelo.App.UWP.Services
             _zermelo = zermelo;
         }
 
-        public IObservable<IEnumerable<Appointment>> GetScheduleAsync(DateTimeOffset start, DateTimeOffset end, string user = "~me")
+        public IObservable<IEnumerable<Appointment>> GetSchedule(DateTimeOffset start, DateTimeOffset end, string user = "~me")
             => BlobCache.LocalMachine.GetAndFetchLatest(
-                $"{nameof(GetScheduleAsync)}({start.UtcTicks},{end.UtcTicks},{user})",
-                () => _zermelo.GetScheduleAsync(start, end, user)
+                $"{nameof(GetSchedule)}({start.UtcTicks},{end.UtcTicks},{user})",
+                () => _zermelo.GetSchedule(start, end, user)
                );
 
-        public IObservable<IEnumerable<Announcement>> GetAnnouncementsAsync()
+        public IObservable<IEnumerable<Announcement>> GetAnnouncements()
             => BlobCache.LocalMachine.GetAndFetchLatest(
-                nameof(GetAnnouncementsAsync), 
-                () => _zermelo.GetAnnouncementsAsync()
+                nameof(GetAnnouncements), 
+                () => _zermelo.GetAnnouncements()
                );
 
-        public IObservable<User> GetCurrentUserAsync()
+        public IObservable<User> GetCurrentUser()
             => BlobCache.LocalMachine.GetAndFetchLatest(
-                nameof(GetCurrentUserAsync), 
-                () => _zermelo.GetCurrentUserAsync()
+                nameof(GetCurrentUser), 
+                () => _zermelo.GetCurrentUser()
                );
     }
 }
