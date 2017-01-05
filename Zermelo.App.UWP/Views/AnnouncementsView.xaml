@@ -32,18 +32,20 @@
             RelativePanel.AlignLeftWithPanel="True"
             RelativePanel.AlignRightWithPanel="True"
             EntranceNavigationTransitionInfo.IsTargetElement="True">
-            
+
             <ListView
-                ItemsSource="{x:Bind ViewModel.Announcements, Mode=OneWay}">
+                SelectionMode="None"
+                IsItemClickEnabled="True"
+                ItemsSource="{x:Bind ViewModel.Announcements, Mode=OneWay}"
+                ItemContainerStyle="{StaticResource ListViewItemStyle}"
+                Padding="0,0,0,12">
 
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="z:Announcement">
-                        <StackPanel>
-                            <TextBlock Text="{x:Bind Title, Mode=OneWay}"/>
-                        </StackPanel>
+                        <TextBlock Text="{x:Bind Title, Mode=OneWay}"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-                
+
             </ListView>
             
         </Grid>
