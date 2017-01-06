@@ -39,6 +39,14 @@
                 <Setter Property="Background" Value="#e6e6e6"/>
                 <Setter Property="Margin" Value="12,12,12,0"/>
             </Style>
+
+            <Style TargetType="t10c:ModalDialog">
+                <Setter Property="ModalBackground">
+                    <Setter.Value>
+                        <SolidColorBrush Color="#fff" Opacity="0.8"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
             
         </ResourceDictionary>
 
@@ -67,6 +75,14 @@
                 <Setter Property="Margin" Value="12,12,12,0"/>
             </Style>
 
+            <Style TargetType="t10c:ModalDialog">
+                <Setter Property="ModalBackground">
+                    <Setter.Value>
+                        <SolidColorBrush Color="#000" Opacity="0.8"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            
         </ResourceDictionary>
 
         <ResourceDictionary x:Key="HighContrast">
@@ -99,6 +115,10 @@
                 <Setter Property="Margin" Value="12,12,12,0"/>
             </Style>
 
+            <Style TargetType="t10c:ModalDialog">
+                <Setter Property="ModalBackground" Value="{ThemeResource SystemColorWindowColor}"/>
+            </Style>
+            
         </ResourceDictionary>
         
     </ResourceDictionary.ThemeDictionaries>

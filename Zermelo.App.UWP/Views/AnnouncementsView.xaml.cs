@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Zermelo.App.UWP.ViewModels;
+using Zermelo.API.Models;
 
 namespace Zermelo.App.UWP.Views
 {
@@ -27,5 +28,11 @@ namespace Zermelo.App.UWP.Views
         }
 
         public AnnouncementsViewModel ViewModel { get; }
+
+        private void AnnouncementsListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            ViewModel.SelectedAnnouncement = e.ClickedItem as Announcement;
+            Modal.IsModal = true;
+        }
     }
 }

@@ -6,8 +6,104 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:t10c="using:Template10.Controls"
+    xmlns:t10conv="using:Template10.Converters"
+    xmlns:c="using:Zermelo.App.UWP.Controls"
     xmlns:z="using:Zermelo.API.Models"
     mc:Ignorable="d">
+
+    <Page.Resources>
+
+        <t10conv:ChangeTypeConverter x:Key="TypeConverter"/>
+
+        <ControlTemplate TargetType="ToggleButton" x:Key="ModalCloseButton">
+            <Grid x:Name="RootGrid">
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <Storyboard>
+                                <PointerUpThemeAnimation Storyboard.TargetName="RootGrid" />
+                            </Storyboard>
+                        </VisualState>
+                        <VisualState x:Name="PointerOver">
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames 
+                                    Storyboard.TargetName="RootGrid" 
+                                    Storyboard.TargetProperty="Background">
+                                    <DiscreteObjectKeyFrame 
+                                        KeyTime="0" 
+                                        Value="{ThemeResource CustomLighterColor}" />
+                                </ObjectAnimationUsingKeyFrames>
+                                <PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/>
+                            </Storyboard>
+                        </VisualState>
+                        <VisualState x:Name="Pressed">
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames 
+                                    Storyboard.TargetName="RootGrid" 
+                                    Storyboard.TargetProperty="Background">
+                                    <DiscreteObjectKeyFrame 
+                                        KeyTime="0" 
+                                        Value="{ThemeResource CustomColor}" />
+                                </ObjectAnimationUsingKeyFrames>
+                                <PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/>
+                            </Storyboard>
+                        </VisualState>
+
+                        <VisualState x:Name="Checked">
+                            <Storyboard>
+                                <PointerUpThemeAnimation Storyboard.TargetName="RootGrid" />
+                            </Storyboard>
+                        </VisualState>
+                        <VisualState x:Name="CheckedPointerOver">
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames 
+                                    Storyboard.TargetName="RootGrid" 
+                                    Storyboard.TargetProperty="Background">
+                                    <DiscreteObjectKeyFrame 
+                                        KeyTime="0" 
+                                        Value="{ThemeResource CustomLighterColor}" />
+                                </ObjectAnimationUsingKeyFrames>
+                                <PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/>
+                            </Storyboard>
+                        </VisualState>
+                        <VisualState x:Name="CheckedPressed">
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames 
+                                    Storyboard.TargetName="RootGrid" 
+                                    Storyboard.TargetProperty="Background">
+                                    <DiscreteObjectKeyFrame 
+                                        KeyTime="0" 
+                                        Value="{ThemeResource CustomColor}" />
+                                </ObjectAnimationUsingKeyFrames>
+                                <PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/>
+                            </Storyboard>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+
+                <Border BorderThickness="12" BorderBrush="Transparent">
+                    <SymbolIcon Symbol="Clear"/>
+                </Border>
+            </Grid>
+        </ControlTemplate>
+
+        <DataTemplate x:Key="AnnouncementModalTemplate" x:DataType="z:Announcement">
+            <StackPanel
+                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                Padding="12">
+
+                <TextBlock 
+                    Text="{x:Bind Title, Mode=OneWay}"
+                    FontSize="{ThemeResource TextStyleExtraLargeFontSize}"
+                    TextWrapping="WrapWholeWords"/>
+                
+                <TextBlock 
+                    Text="{x:Bind Text, Mode=OneWay}"
+                    TextWrapping="WrapWholeWords"/>
+            </StackPanel>
+        </DataTemplate>
+        
+    </Page.Resources>
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <t10c:PageHeader
@@ -33,21 +129,45 @@
             RelativePanel.AlignRightWithPanel="True"
             EntranceNavigationTransitionInfo.IsTargetElement="True">
 
-            <ListView
-                SelectionMode="None"
-                IsItemClickEnabled="True"
-                ItemsSource="{x:Bind ViewModel.Announcements, Mode=OneWay}"
-                ItemContainerStyle="{StaticResource ListViewItemStyle}"
-                Padding="0,0,0,12">
+            <t10c:ModalDialog x:Name="Modal" CanBackButtonDismiss="True">
+                <t10c:ModalDialog.Content>
+                    <ListView
+                        x:Name="AnnouncementsListView"
+                        SelectionMode="None"
+                        IsItemClickEnabled="True"
+                        ItemsSource="{x:Bind ViewModel.Announcements, Mode=OneWay}"
+                        ItemContainerStyle="{StaticResource ListViewItemStyle}"
+                        Padding="0,0,0,12"
+                        ItemClick="AnnouncementsListView_ItemClick">
 
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="z:Announcement">
-                        <TextBlock Text="{x:Bind Title, Mode=OneWay}"/>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="z:Announcement">
+                                <TextBlock Text="{x:Bind Title, Mode=OneWay}"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
 
-            </ListView>
-            
+                    </ListView>
+                </t10c:ModalDialog.Content>
+
+                <t10c:ModalDialog.ModalContent>
+                    <Grid>
+                        <ScrollViewer>
+                            <ContentControl
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Margin="12"
+                            Content="{x:Bind ViewModel.SelectedAnnouncement, Mode=OneWay}"
+                            ContentTemplate="{StaticResource AnnouncementModalTemplate}"/>
+                        </ScrollViewer>
+
+                        <ToggleButton
+                            Template="{StaticResource ModalCloseButton}"
+                            IsChecked="{x:Bind Modal.IsModal, Mode=TwoWay, Converter={StaticResource TypeConverter}}"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"/>
+                    </Grid>
+                </t10c:ModalDialog.ModalContent>
+            </t10c:ModalDialog>
         </Grid>
     </RelativePanel>
 </Page>

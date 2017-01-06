@@ -32,5 +32,16 @@ namespace Zermelo.App.UWP.ViewModels
                 RaisePropertyChanged();
             }
         }
+
+        Announcement selectedAnnouncement;
+        public Announcement SelectedAnnouncement
+        {
+            get => selectedAnnouncement;
+            set
+            {
+                selectedAnnouncement = value;
+                RaisePropertyChanged();
+            }
+        }
     }
 }
