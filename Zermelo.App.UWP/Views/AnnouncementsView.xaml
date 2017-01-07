@@ -117,7 +117,8 @@
             <t10c:PageHeader.PrimaryCommands>
                 <AppBarButton
                     Icon="Refresh"
-                    Label="Vernieuwen" />
+                    Label="Vernieuwen"
+                    Command="{x:Bind ViewModel.Refresh}"/>
             </t10c:PageHeader.PrimaryCommands>
 
         </t10c:PageHeader>

@@ -18,9 +18,14 @@ namespace Zermelo.App.UWP.ViewModels
         {
             _zermelo = zermelo;
 
-            _zermelo.GetAnnouncements()
-                .Subscribe(a => Announcements = a);
+            GetAnnouncements();
+
+            Refresh = new DelegateCommand(GetAnnouncements);
         }
+
+        private void GetAnnouncements()
+            => _zermelo.GetAnnouncements()
+                .Subscribe(a => Announcements = a);
 
         IEnumerable<Announcement> announcements;
         public IEnumerable<Announcement> Announcements
@@ -43,5 +48,7 @@ namespace Zermelo.App.UWP.ViewModels
                 RaisePropertyChanged();
             }
         }
+
+        public DelegateCommand Refresh { get; }
     }
 }
