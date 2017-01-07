@@ -22,7 +22,7 @@ namespace Zermelo.App.UWP.Services
             => Observable.FromAsync(() => connection.Appointments.GetByDateAsync(start, end, user));
 
         public IObservable<IEnumerable<Announcement>> GetAnnouncements() 
-            => Observable.FromAsync(() => connection.Announcements.GetAllAsync());
+            => Observable.FromAsync(() => connection.Announcements.GetCurrentAsync());
 
         public IObservable<User> GetCurrentUser() 
             => Observable.FromAsync(() => connection.Users.GetCurrentUserAsync());
