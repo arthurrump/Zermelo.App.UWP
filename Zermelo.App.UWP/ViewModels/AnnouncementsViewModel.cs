@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Template10.Common;
 using Template10.Mvvm;
+using Template10.Utils;
 using Zermelo.API.Models;
 using Zermelo.App.UWP.Services;
 
@@ -24,11 +27,17 @@ namespace Zermelo.App.UWP.ViewModels
         }
 
         private void GetAnnouncements()
-            => _zermelo.GetAnnouncements()
-                .Subscribe(a => Announcements = a);
+        {
+            IsLoading = true;
 
-        IEnumerable<Announcement> announcements;
-        public IEnumerable<Announcement> Announcements
+            _zermelo.GetAnnouncements().Subscribe(
+                a => Announcements = a.ToObservableCollection(),
+                () => IsLoading = false
+            );
+        }
+
+        ObservableCollection<Announcement> announcements;
+        public ObservableCollection<Announcement> Announcements
         {
             get => announcements;
             set
@@ -50,5 +59,16 @@ namespace Zermelo.App.UWP.ViewModels
         }
 
         public DelegateCommand Refresh { get; }
+
+        bool isLoading;
+        public bool IsLoading
+        {
+            get => isLoading;
+            set
+            {
+                isLoading = value;
+                RaisePropertyChanged();
+            }
+        }
     }
 }
