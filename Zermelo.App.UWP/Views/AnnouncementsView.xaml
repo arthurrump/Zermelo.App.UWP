@@ -7,13 +7,25 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:t10c="using:Template10.Controls"
     xmlns:t10conv="using:Template10.Converters"
-    xmlns:c="using:Zermelo.App.UWP.Controls"
+    xmlns:col="using:System.Collections.Generic"
     xmlns:z="using:Zermelo.API.Models"
     mc:Ignorable="d">
 
     <Page.Resources>
 
         <t10conv:ChangeTypeConverter x:Key="TypeConverter"/>
+
+        <t10conv:ValueWhenConverter x:Key="VisibleWhenZeroConverter">
+            <t10conv:ValueWhenConverter.When>
+                <x:Int32>0</x:Int32>
+            </t10conv:ValueWhenConverter.When>
+            <t10conv:ValueWhenConverter.Value>
+                <Visibility>Visible</Visibility>
+            </t10conv:ValueWhenConverter.Value>
+            <t10conv:ValueWhenConverter.Otherwise>
+                <Visibility>Collapsed</Visibility>
+            </t10conv:ValueWhenConverter.Otherwise>
+        </t10conv:ValueWhenConverter>
 
         <ControlTemplate TargetType="ToggleButton" x:Key="ModalCloseButton">
             <Grid x:Name="RootGrid">
@@ -146,6 +158,18 @@
                                 <TextBlock Text="{x:Bind Title, Mode=OneWay}"/>
                             </DataTemplate>
                         </ListView.ItemTemplate>
+
+                        <ListView.HeaderTemplate>
+                            <DataTemplate x:DataType="local:AnnouncementsView">
+                                <TextBlock
+                                    Visibility="{Binding ItemsSource.Count, 
+                                        ElementName=AnnouncementsListView,
+                                        Converter={StaticResource VisibleWhenZeroConverter}}"
+                                    Margin="12"
+                                    FontSize="{ThemeResource TextStyleLargeFontSize}"
+                                    Text="Er zijn geen mededelingen"/>
+                            </DataTemplate>
+                        </ListView.HeaderTemplate>
 
                     </ListView>
                 </t10c:ModalDialog.Content>
