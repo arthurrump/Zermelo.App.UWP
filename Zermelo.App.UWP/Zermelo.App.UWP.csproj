@@ -105,6 +105,8 @@
     <Compile Include="Services\AkavacheService.cs" />
     <Compile Include="Services\CachedZermeloService.cs" />
     <Compile Include="Services\ICacheService.cs" />
+    <Compile Include="Services\IInternetConnectionService.cs" />
+    <Compile Include="Services\InternetConnectionService.cs" />
     <Compile Include="Services\ISettingsService.cs" />
     <Compile Include="Services\IZermeloService.cs" />
     <Compile Include="Services\SettingsService.cs" />

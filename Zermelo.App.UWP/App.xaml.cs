@@ -51,6 +51,8 @@ namespace Zermelo.App.UWP
             builder.RegisterType<SettingsHelper>().As<ISettingsHelper>();
             builder.RegisterType<Services.SettingsService>().As<Services.ISettingsService>().SingleInstance();
 
+            builder.RegisterType<InternetConnectionService>().As<IInternetConnectionService>();
+
             builder.Register(x => new Authentication(Secrets.School, Secrets.Token));
 
             builder.RegisterType<AkavacheService>().As<ICacheService>();
