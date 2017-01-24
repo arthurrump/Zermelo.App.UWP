@@ -12,31 +12,35 @@ namespace Zermelo.App.UWP.Services
     {
         ZermeloService _zermelo;
         ICacheService _cache;
+        IInternetConnectionService _internet;
 
-        public CachedZermeloService(ZermeloService zermelo, ICacheService cache)
+        public CachedZermeloService(ZermeloService zermelo, ICacheService cache, IInternetConnectionService internet)
         {
             _zermelo = zermelo;
             _cache = cache;
+            _internet = internet;
         }
 
         public IObservable<IEnumerable<API.Models.Appointment>> GetSchedule(DateTimeOffset start, DateTimeOffset end, string user = "~me")
             => _cache.GetAndFetchLatest(
                 $"{nameof(GetSchedule)}({start.UtcTicks},{end.UtcTicks},{user})",
                 () => _zermelo.GetSchedule(start, end, user),
-                absoluteExpiration: end.AddDays(2)
+                date => _internet.IsConnected(),
+                end.AddDays(7)
                );
 
         public IObservable<IEnumerable<Announcement>> GetAnnouncements()
             => _cache.GetAndFetchLatest(
                 nameof(GetAnnouncements), 
-                () => _zermelo.GetAnnouncements()
+                () => _zermelo.GetAnnouncements(),
+                date => _internet.IsConnected()
                );
 
         public IObservable<API.Models.User> GetCurrentUser()
             => _cache.GetAndFetchLatest(
                 nameof(GetCurrentUser), 
                 () => _zermelo.GetCurrentUser(),
-                date => DateTimeOffset.UtcNow.Subtract(date) > TimeSpan.FromDays(7)
+                date => _internet.IsConnected() && DateTimeOffset.UtcNow.Subtract(date) > TimeSpan.FromDays(7)
                );
     }
 }

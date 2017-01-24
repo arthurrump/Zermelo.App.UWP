@@ -21,10 +21,12 @@ namespace Zermelo.App.UWP.ViewModels
     public class AnnouncementsViewModel : ViewModelBase
     {
         IZermeloService _zermelo;
+        IInternetConnectionService _internet;
 
-        public AnnouncementsViewModel(IZermeloService zermelo)
+        public AnnouncementsViewModel(IZermeloService zermelo, IInternetConnectionService internet)
         {
             _zermelo = zermelo;
+            _internet = internet;
 
             GetAnnouncements();
 
@@ -34,6 +36,11 @@ namespace Zermelo.App.UWP.ViewModels
         private void GetAnnouncements()
         {
             IsLoading = true;
+            
+            if (!_internet.IsConnected())
+            {
+                new MessageDialog("Je hebt op dit moment geen internetverbinding. De weergegeven informatie kan verouderd zijn.", "Geen internetverbinding").ShowAsync();
+            }
 
             _zermelo.GetAnnouncements()
                 .ObserveOnDispatcher()
