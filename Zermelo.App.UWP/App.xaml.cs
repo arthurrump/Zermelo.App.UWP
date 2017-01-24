@@ -53,6 +53,7 @@ namespace Zermelo.App.UWP
 
             builder.Register(x => new Authentication(Secrets.School, Secrets.Token));
 
+            builder.RegisterType<AkavacheService>().As<ICacheService>();
             builder.RegisterType<ZermeloService>().AsSelf();
             builder.RegisterType<CachedZermeloService>().As<IZermeloService>();
 
@@ -73,6 +74,13 @@ namespace Zermelo.App.UWP
         {
             NavigationService.Navigate(typeof(Views.ScheduleView));
             return Task.FromResult<object>(null);
+        }
+
+        public override async Task OnSuspendingAsync(object s, SuspendingEventArgs e, bool prelaunchActivated)
+        {
+            SuspendingDeferral deferral = e.SuspendingOperation.GetDeferral();
+            await Container.Resolve<ICacheService>().Shutdown();
+            deferral.Complete();
         }
     }
 }
