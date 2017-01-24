@@ -8,7 +8,7 @@
     xmlns:t10c="using:Template10.Controls"
     xmlns:t10conv="using:Template10.Converters"
     xmlns:col="using:System.Collections.Generic"
-    xmlns:z="using:Zermelo.API.Models"
+    xmlns:m="using:Zermelo.App.UWP.Models"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -99,7 +99,7 @@
             </Grid>
         </ControlTemplate>
 
-        <DataTemplate x:Key="AnnouncementModalTemplate" x:DataType="z:Announcement">
+        <DataTemplate x:Key="AnnouncementModalTemplate" x:DataType="m:Announcement">
             <StackPanel
                 Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
                 Padding="12">
@@ -154,7 +154,7 @@
                         ItemClick="AnnouncementsListView_ItemClick">
 
                         <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="z:Announcement">
+                            <DataTemplate x:DataType="m:Announcement">
                                 <TextBlock Text="{x:Bind Title, Mode=OneWay}"/>
                             </DataTemplate>
                         </ListView.ItemTemplate>

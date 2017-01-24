@@ -14,7 +14,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Zermelo.App.UWP.ViewModels;
-using Zermelo.API.Models;
+using Zermelo.App.UWP.Models;
 
 namespace Zermelo.App.UWP.Views
 {

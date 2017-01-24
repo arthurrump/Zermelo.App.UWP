@@ -5,7 +5,7 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Zermelo.API;
-using Zermelo.API.Models;
+using Zermelo.App.UWP.Models;
 
 namespace Zermelo.App.UWP.Services
 {
@@ -18,13 +18,21 @@ namespace Zermelo.App.UWP.Services
             connection = new ZermeloConnection(auth);
         }
 
-        public IObservable<IEnumerable<Appointment>> GetSchedule(DateTimeOffset start, DateTimeOffset end, string user = "~me")
-            => Observable.FromAsync(() => connection.Appointments.GetByDateAsync(start, end, user));
+        public IObservable<IEnumerable<API.Models.Appointment>> GetSchedule(DateTimeOffset start, DateTimeOffset end, string user = "~me")
+            => Observable.FromAsync(
+                () => connection.Appointments.GetByDateAsync(start, end, user)
+               );
 
-        public IObservable<IEnumerable<Announcement>> GetAnnouncements() 
-            => Observable.FromAsync(() => connection.Announcements.GetCurrentAsync());
+        public IObservable<IEnumerable<Announcement>> GetAnnouncements()
+            => Observable.FromAsync(
+                async () =>
+                    (await connection.Announcements.GetCurrentAsync(Announcement.Fields))
+                        .Select(a => new Announcement(a))
+                );
 
-        public IObservable<User> GetCurrentUser() 
-            => Observable.FromAsync(() => connection.Users.GetCurrentUserAsync());
+        public IObservable<API.Models.User> GetCurrentUser() 
+            => Observable.FromAsync(
+                () => connection.Users.GetCurrentUserAsync()
+               );
     }
 }

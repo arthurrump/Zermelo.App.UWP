@@ -98,6 +98,8 @@
     <Compile Include="Controls\HamburgerButton.xaml.cs">
       <DependentUpon>HamburgerButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ObservableCollectionExtensions.cs" />
+    <Compile Include="Models\Announcement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Secrets.cs" />
     <Compile Include="Services\AkavacheService.cs" />
