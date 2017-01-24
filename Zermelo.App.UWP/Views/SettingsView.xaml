@@ -30,6 +30,11 @@
                     <TextBlock Margin="0, 12, 0, 0">School:</TextBlock>
                     <TextBlock Text="{x:Bind ViewModel.School}" />
                     <Button Margin="0, 12, 0, 0" Content="Log uit"/>
+                    <Button 
+                        Margin="0, 24, 0, 0" 
+                        Content="Verwijder cache" 
+                        Command="{x:Bind ViewModel.ClearCache}"
+                        IsEnabled="{x:Bind ViewModel.ClearCacheButtonEnabled, Mode=OneWay}"/>
                 </StackPanel>
             </PivotItem>
 
