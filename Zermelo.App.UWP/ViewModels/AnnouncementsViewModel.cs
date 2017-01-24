@@ -15,6 +15,7 @@ using Zermelo.App.UWP.Models;
 using Zermelo.App.UWP.Helpers;
 using Zermelo.App.UWP.Services;
 using Windows.UI.Popups;
+using Zermelo.API.Exceptions;
 
 namespace Zermelo.App.UWP.ViewModels
 {
@@ -42,10 +43,28 @@ namespace Zermelo.App.UWP.ViewModels
                 new MessageDialog("Je hebt op dit moment geen internetverbinding. De weergegeven informatie kan verouderd zijn.", "Geen internetverbinding").ShowAsync();
             }
 
-            _zermelo.GetAnnouncements()
+            IDisposable subscription = _zermelo.GetAnnouncements()
                 .ObserveOnDispatcher()
                 .Subscribe(
                     a => Announcements.MorphInto(a.OrderBy(x => x.Title)),
+                    ex =>
+                    {
+                        switch (ex)
+                        {
+                            case ZermeloHttpException e:
+                                if (e.StatusCode == 404)
+                                    new MessageDialog("De opgevraagde gegevens zijn niet gevonden in Zermelo.").ShowAsync();
+                                else if (e.StatusCode == 403)
+                                    new MessageDialog("Je hebt niet voldoende rechten om deze informatie te bekijken.").ShowAsync();
+                                else
+                                    new MessageDialog($"Er is iets fout gegaan. Zermelo geeft de volgende foutmelding: {e.StatusCode} {e.Status}").ShowAsync();
+                                break;
+                            default:
+                                new MessageDialog("Er is iets fout gegaan. De ontwikkelaar wordt op de hoogte gesteld.").ShowAsync();
+                                // TODO: implement error logging
+                                break;
+                        }
+                    },
                     () => IsLoading = false
             );
         }
