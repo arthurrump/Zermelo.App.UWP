@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Microsoft.HockeyApp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,6 +28,8 @@ namespace Zermelo.App.UWP
     {
         public App()
         {
+            HockeyClient.Current.Configure(Secrets.HockeyAppAppId);
+
             InitializeComponent();
         }
 
