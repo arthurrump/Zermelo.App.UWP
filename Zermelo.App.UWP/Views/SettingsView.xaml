@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:t10c="using:Template10.Controls"
+    xmlns:m="using:Zermelo.App.UWP.Models"
     mc:Ignorable="d">
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -92,6 +93,32 @@
                             <Run>Versie </Run>
                             <Run Text="{x:Bind ViewModel.Version}"/>
                         </TextBlock>
+
+                        <ListView
+                            x:Name="AboutActionsListView"
+                            SelectionMode="None"
+                            IsItemClickEnabled="True"
+                            ScrollViewer.VerticalScrollMode="Disabled"
+                            ItemsSource="{x:Bind ViewModel.AboutActions, Mode=OneWay}"
+                            ItemClick="AboutActionsListView_ItemClick"
+                            Margin="0,12,0,0"
+                            Padding="0,0,0,12">
+
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="m:AboutAction">
+                                    <StackPanel Orientation="Horizontal">
+                                        <SymbolIcon
+                                            Symbol="{x:Bind Symbol}"/>
+
+                                        <TextBlock
+                                            Margin="12,0,0,0"
+                                            VerticalAlignment="Center"
+                                            Text="{x:Bind Text}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                            
+                        </ListView>
                     </StackPanel>
                 </ScrollViewer>
             </PivotItem>
