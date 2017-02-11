@@ -49,10 +49,28 @@
             </PivotItem>
 
             <PivotItem Header="Over">
+
+                <PivotItem.Resources>
+                    <ResourceDictionary>
+                        <ResourceDictionary.ThemeDictionaries>
+                            <ResourceDictionary x:Key="Light">
+                                <Style TargetType="Image" x:Key="Logo">
+                                    <Setter Property="Source" Value="/Assets/LargeInverted/Large310x310Logo.png"/>
+                                </Style>
+                            </ResourceDictionary>
+                            <ResourceDictionary x:Key="Default">
+                                <Style TargetType="Image" x:Key="Logo">
+                                    <Setter Property="Source" Value="/Assets/Large/Large310x310Logo.png"/>
+                                </Style>
+                            </ResourceDictionary>
+                        </ResourceDictionary.ThemeDictionaries>
+                    </ResourceDictionary>
+                </PivotItem.Resources>
+                
                 <ScrollViewer>
                     <StackPanel>
                         <Image
-                            Source="/Assets/Large/Large310x310Logo.png"
+                            Style="{StaticResource Logo}"
                             HorizontalAlignment="Center"
                             Height="150" Width="150"
                             Stretch="Uniform"/>
