@@ -1,0 +1,32 @@
+body {
+    background-color: #dc1528;
+}
+
+body > * {
+    max-width: 80vw;
+    display: block;
+    margin-left: auto; 
+    margin-right: auto;
+}
+
+#ribbon {
+    position: absolute; 
+    top: 0; 
+    right: 0; 
+    border: 0;
+}
+
+#logo {
+    max-height: 180px;
+}
+
+#promo {
+    max-height: 500px;
+}
+
+#badge {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    height: 64px;
+}
