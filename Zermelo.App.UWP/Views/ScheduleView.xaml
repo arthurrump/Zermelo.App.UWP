@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:t10c="using:Template10.Controls"
+    xmlns:m="using:Zermelo.App.UWP.Models"
     mc:Ignorable="d">
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -20,7 +21,8 @@
             <t10c:PageHeader.PrimaryCommands>
                 <AppBarButton
                     Icon="Refresh"
-                    Label="Vernieuwen" />
+                    Label="Vernieuwen"
+                    Command="{x:Bind ViewModel.Refresh}"/>
             </t10c:PageHeader.PrimaryCommands>
             
         </t10c:PageHeader>
@@ -31,7 +33,44 @@
             RelativePanel.AlignLeftWithPanel="True"
             RelativePanel.AlignRightWithPanel="True"
             EntranceNavigationTransitionInfo.IsTargetElement="True">
-            <!-- Page content -->
+
+            <ListView
+                Header="{x:Bind ViewModel.CurrentDate}"
+                SelectionMode="None"
+                IsItemClickEnabled="True"
+                ItemContainerStyle="{StaticResource ListViewItemStyle}"
+                Padding="0,0,0,12"
+                ItemsSource="{x:Bind ViewModel.Appointments, Mode=OneWay}">
+
+                <ListView.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}"
+                            Margin="12"
+                            HorizontalAlignment="Center"/>
+                    </DataTemplate>
+                </ListView.HeaderTemplate>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="m:Appointment">
+                        <StackPanel>
+                            <TextBlock Text="{x:Bind StartTimeSlot}"/>
+                            <TextBlock Text="{x:Bind Subjects}"/>
+                            <TextBlock Text="{x:Bind Teachers}"/>
+                            <TextBlock Text="{x:Bind Locations}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                
+            </ListView>
+
+            <ProgressBar
+                RelativePanel.Below="Header"
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.AlignRightWithPanel="True"
+                Margin="0,4,0,0"
+                Background="Transparent"
+                IsIndeterminate="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+
         </Grid>
     </RelativePanel>
 </Page>
