@@ -9,7 +9,7 @@ namespace Zermelo.App.UWP.Services
 {
     public interface IZermeloService
     {
-        IObservable<IEnumerable<API.Models.Appointment>> GetSchedule(DateTimeOffset start, DateTimeOffset end, string user = "~me");
+        IObservable<IEnumerable<Appointment>> GetSchedule(DateTimeOffset start, DateTimeOffset end, string user = "~me");
         IObservable<IEnumerable<Announcement>> GetAnnouncements();
         IObservable<API.Models.User> GetCurrentUser();
     }

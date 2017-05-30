@@ -21,7 +21,7 @@ namespace Zermelo.App.UWP.Services
             _internet = internet;
         }
 
-        public IObservable<IEnumerable<API.Models.Appointment>> GetSchedule(DateTimeOffset start, DateTimeOffset end, string user = "~me")
+        public IObservable<IEnumerable<Appointment>> GetSchedule(DateTimeOffset start, DateTimeOffset end, string user = "~me")
             => _cache.GetAndFetchLatest(
                 $"{nameof(GetSchedule)}({start.UtcTicks},{end.UtcTicks},{user})",
                 () => _zermelo.GetSchedule(start, end, user),
