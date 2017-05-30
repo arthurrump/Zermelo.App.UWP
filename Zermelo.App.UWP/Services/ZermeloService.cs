@@ -21,14 +21,14 @@ namespace Zermelo.App.UWP.Services
         public IObservable<IEnumerable<Appointment>> GetSchedule(DateTimeOffset start, DateTimeOffset end, string user = "~me")
             => Observable.FromAsync(
                 async () => 
-                    (await connection.Appointments.GetByDateAsync(start, end, user))
+                    (await connection.Appointments.GetByDateForUserAsync(start, end, user, fields: Appointment.Fields))
                         .Select(a => new Appointment(a))
                );
 
         public IObservable<IEnumerable<Announcement>> GetAnnouncements()
             => Observable.FromAsync(
                 async () =>
-                    (await connection.Announcements.GetCurrentAsync(Announcement.Fields))
+                    (await connection.Announcements.GetCurrentAsync(fields: Announcement.Fields))
                         .Select(a => new Announcement(a))
                 );
 
