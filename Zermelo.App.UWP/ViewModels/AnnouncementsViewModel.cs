@@ -46,7 +46,7 @@ namespace Zermelo.App.UWP.ViewModels
             IDisposable subscription = _zermelo.GetAnnouncements()
                 .ObserveOnDispatcher()
                 .Subscribe(
-                    a => Announcements.MorphInto(a.OrderBy(x => x.Title)),
+                    a => Announcements.MorphInto(a.OrderBy(x => x.Title).ToList()),
                     ex =>
                     {
                         switch (ex)

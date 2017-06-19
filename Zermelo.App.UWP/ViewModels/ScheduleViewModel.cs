@@ -50,7 +50,7 @@ namespace Zermelo.App.UWP.ViewModels
             IDisposable subscription = _zermelo.GetSchedule(DateTimeOffset.Now.Date, DateTimeOffset.Now.Date.AddDays(1))
                 .ObserveOnDispatcher()
                 .Subscribe(
-                    a => Appointments.MorphInto(a.OrderBy(x => x.Start)),
+                    a => Appointments.MorphInto(a.OrderBy(x => x.Start).ToList()),
                     ex =>
                     {
                         switch (ex)
