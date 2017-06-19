@@ -79,7 +79,13 @@
                         <TextBlock
                             Text="Schoolrooster voor Zermelo"
                             HorizontalAlignment="Center"
-                            FontSize="{StaticResource TextStyleLargeFontSize}"/>
+                            Style="{StaticResource TitleTextBlockStyle}"/>
+
+                        <TextBlock
+                            Text="Ontwikkeld door Arthur Rump"
+                            
+                            HorizontalAlignment="Center"
+                            Style="{StaticResource CaptionTextBlockStyle}"/>
 
                         <TextBlock
                             Text="Speciaal ontworpen voor Windows 10 is Schoolrooster voor Zermelo de beste manier om jouw schoolrooster te bekijken. Schoolrooster voor Zermelo is géén officiële app van Zermelo Software B.V. en is hier op geen enkele wijze mee verbonden."

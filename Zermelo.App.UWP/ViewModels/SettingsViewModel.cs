@@ -80,10 +80,10 @@ namespace Zermelo.App.UWP.ViewModels
                             await StoreServicesFeedbackLauncher.GetDefault().LaunchAsync();
                         else
                             // Using this email will make it appear in the HockeyApp feedback section
-                            await Launcher.LaunchUriAsync(new Uri("mailto:support+3cbbb9d5373343ccba023d3df52640d9@feedback.hockeyapp.net"));
+                            await Launcher.LaunchUriAsync(new Uri("mailto:feedback@schoolrooster.arthurrump.com"));
                     }),
                 new AboutAction("Beoordeel in de Store", Symbol.SolidStar, 
-                    async () => await Launcher.LaunchUriAsync(new Uri($"ms-windows-store://review/?ProductId={CurrentAppSimulator.AppId}"))),
+                    async () => await Launcher.LaunchUriAsync(new Uri($"ms-windows-store://review/?ProductId={CurrentApp.AppId}"))),
                 new AboutAction("Bekijk op GitHub", Symbol.Link, 
                     async () => await Launcher.LaunchUriAsync(new Uri("https://github.com/arthurrump/Zermelo.App.UWP"))),
                 new AboutAction("Open source licenties", Symbol.List,
