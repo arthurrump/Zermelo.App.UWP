@@ -24,7 +24,7 @@ namespace Zermelo.App.UWP.Views
         {
             this.InitializeComponent();
 
-            ViewModel = (App.Current as App).Container.Resolve<AnnouncementsViewModel>(); ;
+            ViewModel = (App.Current as App).Container.Resolve<AnnouncementsViewModel>();
         }
 
         public AnnouncementsViewModel ViewModel { get; }

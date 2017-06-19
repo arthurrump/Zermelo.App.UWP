@@ -30,25 +30,6 @@ namespace Zermelo.App.UWP
         {
             HockeyClient.Current.Configure(Secrets.HockeyAppAppId);
 
-            InitializeComponent();
-        }
-
-        public IContainer Container { get; set; }
-
-        public override Task OnInitializeAsync(IActivatedEventArgs args)
-        {
-            if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
-            {
-                Window.Current.SizeChanged += async (sender, e) =>
-                {
-                    var statusBar = StatusBar.GetForCurrentView();
-                    if (ApplicationView.GetForCurrentView().Orientation == ApplicationViewOrientation.Landscape)
-                        await statusBar.HideAsync();
-                    else
-                        await statusBar.ShowAsync();
-                };
-            }
-
             var builder = new ContainerBuilder();
 
             builder.RegisterType<SettingsHelper>().As<ISettingsHelper>();
@@ -68,6 +49,25 @@ namespace Zermelo.App.UWP
 
             Container = builder.Build();
 
+            InitializeComponent();
+        }
+
+        public IContainer Container { get; set; }
+
+        public override Task OnInitializeAsync(IActivatedEventArgs args)
+        {
+            if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
+            {
+                Window.Current.SizeChanged += async (sender, e) =>
+                {
+                    var statusBar = StatusBar.GetForCurrentView();
+                    if (ApplicationView.GetForCurrentView().Orientation == ApplicationViewOrientation.Landscape)
+                        await statusBar.HideAsync();
+                    else
+                        await statusBar.ShowAsync();
+                };
+            }
+
             // Set up the hamburger menu shell
             var nav = (NavigationService)NavigationServiceFactory(BackButton.Attach, ExistingContent.Include);
             Window.Current.Content = new Views.Shell(nav);
@@ -79,13 +79,6 @@ namespace Zermelo.App.UWP
         {
             NavigationService.Navigate(typeof(Views.ScheduleView));
             return Task.FromResult<object>(null);
-        }
-
-        public override async Task OnSuspendingAsync(object s, SuspendingEventArgs e, bool prelaunchActivated)
-        {
-            SuspendingDeferral deferral = e.SuspendingOperation.GetDeferral();
-            await Container.Resolve<ICacheService>().Shutdown();
-            deferral.Complete();
         }
     }
 }
