@@ -38,12 +38,22 @@ namespace Zermelo.App.UWP.ViewModels
                 await cache.ClearCache();
                 ClearCacheButtonEnabled = true;
             });
+
+            LogOut = new DelegateCommand(async () =>
+            {
+                settings.School = null;
+                settings.Token = null;
+                await cache.ClearCache();
+                (App.Current as App).StartLogin();
+            });
         }
 
         // Account
         string user = "";
         public string User => user;
         public string School => _settings.School;
+
+        public DelegateCommand LogOut { get; }
 
         public DelegateCommand ClearCache { get; }
 

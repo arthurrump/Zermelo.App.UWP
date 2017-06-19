@@ -45,6 +45,7 @@ namespace Zermelo.App.UWP
             builder.RegisterType<ZermeloAuthenticationService>().As<IZermeloAuthenticationService>();
 
             builder.RegisterType<AnnouncementsViewModel>().AsSelf();
+            builder.RegisterType<LoginViewModel>().AsSelf();
             builder.RegisterType<ScheduleViewModel>().AsSelf();
             builder.RegisterType<SettingsViewModel>().AsSelf();
 
@@ -71,14 +72,9 @@ namespace Zermelo.App.UWP
 
             var settings = Container.Resolve<Services.ISettingsService>();
             if (string.IsNullOrEmpty(settings.School) || string.IsNullOrEmpty(settings.Token))
-            {
                 _authenticated = false;
-            }
             else
-            {
-                _authenticated = true;
-                SetUpShell();
-            }
+                _authenticated = true;            
 
             return Task.CompletedTask;
         }
@@ -93,10 +89,41 @@ namespace Zermelo.App.UWP
             return Task.CompletedTask;
         }
 
-        public void SetUpShell()
+        public override UIElement CreateRootElement(IActivatedEventArgs e)
         {
-            var nav = (NavigationService)NavigationServiceFactory(BackButton.Attach, ExistingContent.Include);
-            Window.Current.Content = new Views.Shell(nav);
+            if (_authenticated)
+                return GetAuthenticatedRootElement();
+            else
+                return GetLoginRootElement();
+        }
+
+        public UIElement GetAuthenticatedRootElement()
+        {
+            var nav = NavigationServiceFactory(BackButton.Attach, ExistingContent.Exclude);
+            return new Views.Shell(nav);
+        }
+
+        public void StartAuthenticated()
+        {
+            Window.Current.Content = GetAuthenticatedRootElement();
+
+            // TODO: Fix the navigation thing, the back button doesn't work
+            // It does work when launching the app already logged in
+        }
+
+        public UIElement GetLoginRootElement()
+        {
+            var frame = new Frame();
+            var nav = NavigationServiceFactory(BackButton.Attach, ExistingContent.Exclude, frame);
+            return frame;
+        }
+
+        public void StartLogin()
+        {
+            Window.Current.Content = GetLoginRootElement();
+            NavigationService.Navigate(typeof(Views.LoginView));
+
+            // TODO: Actually navigate back to LoginView
         }
     }
 }

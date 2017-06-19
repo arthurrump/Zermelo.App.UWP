@@ -18,10 +18,11 @@ namespace Zermelo.App.UWP.Views
 {
     public sealed partial class Shell : Page
     {
-        public Shell(NavigationService navigationService)
+        public Shell(INavigationService navigationService)
         {
             InitializeComponent();
             HamburgerMenu.NavigationService = navigationService;
+            navigationService.Navigate(typeof(ScheduleView));
         }
     }
 }
