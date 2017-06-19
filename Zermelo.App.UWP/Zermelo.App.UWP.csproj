@@ -111,14 +111,20 @@
     <Compile Include="Services\IInternetConnectionService.cs" />
     <Compile Include="Services\InternetConnectionService.cs" />
     <Compile Include="Services\ISettingsService.cs" />
+    <Compile Include="Services\IZermeloAuthenticationService.cs" />
     <Compile Include="Services\IZermeloService.cs" />
     <Compile Include="Services\SettingsService.cs" />
+    <Compile Include="Services\ZermeloAuthenticationService.cs" />
     <Compile Include="Services\ZermeloService.cs" />
     <Compile Include="ViewModels\AnnouncementsViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\ScheduleViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\AnnouncementsView.xaml.cs">
       <DependentUpon>AnnouncementsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ScheduleView.xaml.cs">
       <DependentUpon>ScheduleView.xaml</DependentUpon>
@@ -215,6 +221,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="Views\AnnouncementsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

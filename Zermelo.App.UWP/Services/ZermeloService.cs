@@ -13,8 +13,9 @@ namespace Zermelo.App.UWP.Services
     {
         ZermeloConnection connection;
 
-        public ZermeloService(Authentication auth)
+        public ZermeloService(ISettingsService settings)
         {
+            Authentication auth = new Authentication(settings.School, settings.Token);
             connection = new ZermeloConnection(auth);
         }
 

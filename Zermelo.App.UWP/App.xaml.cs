@@ -26,6 +26,8 @@ namespace Zermelo.App.UWP
     [Bindable]
     sealed partial class App : BootStrapper
     {
+        bool _authenticated;
+
         public App()
         {
             HockeyClient.Current.Configure(Secrets.HockeyAppAppId);
@@ -37,11 +39,10 @@ namespace Zermelo.App.UWP
 
             builder.RegisterType<InternetConnectionService>().As<IInternetConnectionService>();
 
-            builder.Register(x => new Authentication(Secrets.School, Secrets.Token));
-
             builder.RegisterType<AkavacheService>().As<ICacheService>();
             builder.RegisterType<ZermeloService>().AsSelf();
             builder.RegisterType<CachedZermeloService>().As<IZermeloService>();
+            builder.RegisterType<ZermeloAuthenticationService>().As<IZermeloAuthenticationService>();
 
             builder.RegisterType<AnnouncementsViewModel>().AsSelf();
             builder.RegisterType<ScheduleViewModel>().AsSelf();
@@ -68,17 +69,34 @@ namespace Zermelo.App.UWP
                 };
             }
 
-            // Set up the hamburger menu shell
-            var nav = (NavigationService)NavigationServiceFactory(BackButton.Attach, ExistingContent.Include);
-            Window.Current.Content = new Views.Shell(nav);
+            var settings = Container.Resolve<Services.ISettingsService>();
+            if (string.IsNullOrEmpty(settings.School) || string.IsNullOrEmpty(settings.Token))
+            {
+                _authenticated = false;
+            }
+            else
+            {
+                _authenticated = true;
+                SetUpShell();
+            }
 
-            return Task.FromResult<object>(null);
+            return Task.CompletedTask;
         }
 
         public override Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
-            NavigationService.Navigate(typeof(Views.ScheduleView));
-            return Task.FromResult<object>(null);
+            if (_authenticated)
+                NavigationService.Navigate(typeof(Views.ScheduleView));
+            else
+                NavigationService.Navigate(typeof(Views.LoginView));
+
+            return Task.CompletedTask;
+        }
+
+        public void SetUpShell()
+        {
+            var nav = (NavigationService)NavigationServiceFactory(BackButton.Attach, ExistingContent.Include);
+            Window.Current.Content = new Views.Shell(nav);
         }
     }
 }
