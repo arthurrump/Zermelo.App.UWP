@@ -12,13 +12,17 @@ namespace Zermelo.App.UWP.ViewModels
     public class LoginViewModel : ViewModelBase
     {
         ISettingsService _settings;
+        IZermeloAuthenticationService _authService;
 
-        public LoginViewModel(ISettingsService settings)
+        public LoginViewModel(ISettingsService settings, IZermeloAuthenticationService authService)
         {
             _settings = settings;
+            _authService = authService;
 
-            LogIn = new DelegateCommand(() =>
+            LogIn = new DelegateCommand(async () =>
             {
+                var auth = await _authService.GetAuthentication(School, Code);
+                _settings.Token = auth.Token;
                 (App.Current as App).StartAuthenticated();
             });
         }
@@ -35,12 +39,13 @@ namespace Zermelo.App.UWP.ViewModels
             }
         }
 
-        public string Token
+        string code;
+        public string Code
         {
-            get => _settings.Token;
+            get => code;
             set
             {
-                _settings.Token = value;
+                code = value;
                 RaisePropertyChanged();
             }
         }
