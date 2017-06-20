@@ -22,7 +22,6 @@ namespace Zermelo.App.UWP.Views
         {
             InitializeComponent();
             HamburgerMenu.NavigationService = navigationService;
-            navigationService.Navigate(typeof(ScheduleView));
         }
     }
 }

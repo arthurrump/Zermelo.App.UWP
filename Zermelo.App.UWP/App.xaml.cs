@@ -105,10 +105,9 @@ namespace Zermelo.App.UWP
 
         public void StartAuthenticated()
         {
+            WindowWrapper.Current().NavigationServices.Clear();
             Window.Current.Content = GetAuthenticatedRootElement();
-
-            // TODO: Fix the navigation thing, the back button doesn't work
-            // It does work when launching the app already logged in
+            NavigationService.Navigate(typeof(Views.ScheduleView));
         }
 
         public UIElement GetLoginRootElement()
@@ -120,10 +119,9 @@ namespace Zermelo.App.UWP
 
         public void StartLogin()
         {
+            WindowWrapper.Current().NavigationServices.Clear();
             Window.Current.Content = GetLoginRootElement();
             NavigationService.Navigate(typeof(Views.LoginView));
-
-            // TODO: Actually navigate back to LoginView
         }
     }
 }
