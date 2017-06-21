@@ -98,6 +98,7 @@
     <Compile Include="Controls\HamburgerButton.xaml.cs">
       <DependentUpon>HamburgerButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\IEnumerableExtensions.cs" />
     <Compile Include="Helpers\ObservableCollectionExtensions.cs" />
     <Compile Include="Models\AboutAction.cs" />
