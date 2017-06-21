@@ -10,6 +10,8 @@ namespace Zermelo.App.UWP.Helpers
     {
         public static string ToCommaSpaceSeperatedString<T>(this IEnumerable<T> list)
         {
+            if (list.Count() < 1) return "";
+
             StringBuilder s = new StringBuilder();
             
             foreach (T t in list)
