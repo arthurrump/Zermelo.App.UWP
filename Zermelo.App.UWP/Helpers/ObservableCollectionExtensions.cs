@@ -17,7 +17,7 @@ namespace Zermelo.App.UWP.Helpers
             // TODO: Remove the diagnostic try-catch blocks, when #12 is fixed
             try
             {
-                foreach (var i in remove)
+                foreach (var i in remove.ToList())
                     first.Remove(i);
             }
             catch (InvalidOperationException ex)
@@ -27,7 +27,7 @@ namespace Zermelo.App.UWP.Helpers
 
             try
             {
-                foreach (var i in add)
+                foreach (var i in add.ToList())
                     first.Add(i);
             }
             catch (InvalidOperationException ex)
