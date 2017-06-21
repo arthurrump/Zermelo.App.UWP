@@ -31,10 +31,6 @@ namespace Zermelo.App.UWP
 The secrets that are currently needed are:
 
 * `HockeyAppAppId` (`string`): the App ID for HockeyApp analytics.
-* `School` (`string`): the school you'll want to connect to. Found in the portal URL for your school: `<school>.zportal.nl`
-* `Token` (`string`): a token for connecting to the Zermelo REST API.
-
-The last two will of course be removed once a system for logging in is in place.
 
 ---
 Licensed under the MIT License (see LICENSE file)
