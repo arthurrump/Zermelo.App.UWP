@@ -51,7 +51,7 @@ namespace Zermelo.App.UWP.ViewModels
                 .ObserveOnDispatcher()
                 .Subscribe(
                     a => Appointments.MorphInto(a.OrderBy(x => x.Start).ToList()),
-                    ex => ExceptionHelper.HandleException(ex, nameof(AnnouncementsViewModel),
+                    ex => ExceptionHelper.HandleException(ex, nameof(ScheduleViewModel),
                             m => new MessageDialog(m, "Error").ShowAsync()),
                     () => IsLoading = false
             );
