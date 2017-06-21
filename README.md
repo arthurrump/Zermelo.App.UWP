@@ -31,6 +31,7 @@ namespace Zermelo.App.UWP
 The secrets that are currently needed are:
 
 * `HockeyAppAppId` (`string`): the App ID for HockeyApp analytics.
+* `MobileCenterAppSecret` (`string`): the App Secret for Visual Studio Mobile Center analytics.
 
 ---
 Licensed under the MIT License (see LICENSE file)

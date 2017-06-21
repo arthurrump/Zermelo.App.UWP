@@ -1,14 +1,13 @@
-﻿using Autofac;
-using Microsoft.HockeyApp;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text.RegularExpressions;
+﻿using System;
 using System.Threading.Tasks;
+using Autofac;
+using Microsoft.Azure.Mobile;
+using Microsoft.Azure.Mobile.Analytics;
+using Microsoft.Azure.Mobile.Crashes;
+using Microsoft.HockeyApp;
 using Template10.Common;
 using Template10.Services.NavigationService;
+using Template10.Services.SettingsService;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation.Metadata;
@@ -16,10 +15,9 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
-using Zermelo.App.UWP.ViewModels;
-using Template10.Services.SettingsService;
-using Zermelo.App.UWP.Services;
 using Zermelo.API;
+using Zermelo.App.UWP.Services;
+using Zermelo.App.UWP.ViewModels;
 
 namespace Zermelo.App.UWP
 {
@@ -30,8 +28,6 @@ namespace Zermelo.App.UWP
 
         public App()
         {
-            HockeyClient.Current.Configure(Secrets.HockeyAppAppId);
-
             var builder = new ContainerBuilder();
 
             builder.RegisterType<SettingsHelper>().As<ISettingsHelper>();
@@ -58,6 +54,9 @@ namespace Zermelo.App.UWP
 
         public override Task OnInitializeAsync(IActivatedEventArgs args)
         {
+            HockeyClient.Current.Configure(Secrets.HockeyAppAppId);
+            MobileCenter.Start(Secrets.MobileCenterAppSecret, typeof(Analytics), typeof(Crashes));
+
             if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
             {
                 Window.Current.SizeChanged += async (sender, e) =>
