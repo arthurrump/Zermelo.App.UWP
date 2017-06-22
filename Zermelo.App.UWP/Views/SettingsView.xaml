@@ -42,16 +42,6 @@
                 </StackPanel>
             </PivotItem>
 
-            <PivotItem Header="Personalisatie">
-                <StackPanel>
-                    <ToggleSwitch
-                        Header="Klassen weergeven" 
-                        OnContent="Aan" 
-                        OffContent="Uit"
-                        IsOn="{x:Bind ViewModel.ShowGroups, Mode=TwoWay}"/>
-                </StackPanel>
-            </PivotItem>
-
             <PivotItem Header="Over">
 
                 <PivotItem.Resources>

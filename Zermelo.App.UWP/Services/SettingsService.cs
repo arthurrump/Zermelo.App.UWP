@@ -43,16 +43,5 @@ namespace Zermelo.App.UWP.Services
                 RaisePropertyChanged();
             }
         }
-
-        // Personalization
-        public bool ShowGroups
-        {
-            get => Read<bool>(nameof(ShowGroups));
-            set
-            {
-                Write(nameof(ShowGroups), value);
-                RaisePropertyChanged();
-            }
-        }
     }
 }

@@ -18,25 +18,17 @@ namespace Zermelo.App.UWP.ViewModels
 {
     public class ScheduleViewModel : ViewModelBase
     {
-        ISettingsService _settings;
         IZermeloService _zermelo;
         IInternetConnectionService _internet;
 
-        public ScheduleViewModel(ISettingsService settings, IZermeloService zermelo, IInternetConnectionService internet)
+        public ScheduleViewModel(IZermeloService zermelo, IInternetConnectionService internet)
         {
-            _settings = settings;
             _zermelo = zermelo;
             _internet = internet;
 
             GetAppointments();
 
             Refresh = new DelegateCommand(GetAppointments);
-
-            _settings.PropertyChanged += (sender, e) =>
-            {
-                if (e.PropertyName == nameof(_settings.ShowGroups))
-                    RaisePropertyChanged(nameof(GroupsVisibility));
-            };
 
             User = _zermelo.GetCurrentUser().GetAwaiter().GetResult();
         }
@@ -60,9 +52,6 @@ namespace Zermelo.App.UWP.ViewModels
                     () => IsLoading = false
             );
         }
-
-        public Visibility GroupsVisibility =>
-            _settings.ShowGroups ? Visibility.Visible : Visibility.Collapsed;
 
         ObservableCollection<Appointment> appointments = new ObservableCollection<Appointment>();
         public ObservableCollection<Appointment> Appointments

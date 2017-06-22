@@ -68,17 +68,6 @@ namespace Zermelo.App.UWP.ViewModels
             }
         }
 
-        // Personalization
-        public bool ShowGroups
-        {
-            get => _settings.ShowGroups;
-            set
-            {
-                _settings.ShowGroups = value;
-                RaisePropertyChanged();
-            }
-        }
-
         // About
         public string Version => $"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Revision}";
 

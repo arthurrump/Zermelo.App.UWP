@@ -12,8 +12,5 @@ namespace Zermelo.App.UWP.Services
         //Account
         string School { get; set; }
         string Token { get; set; }
-
-        // Personalization
-        bool ShowGroups { get; set; }
     }
 }
