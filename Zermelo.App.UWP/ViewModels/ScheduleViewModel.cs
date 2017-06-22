@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Template10.Mvvm;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Zermelo.API.Exceptions;
 using Zermelo.App.UWP.Helpers;
 using Zermelo.App.UWP.Models;
@@ -36,6 +37,8 @@ namespace Zermelo.App.UWP.ViewModels
                 if (e.PropertyName == nameof(_settings.ShowGroups))
                     RaisePropertyChanged(nameof(GroupsVisibility));
             };
+
+            User = _zermelo.GetCurrentUser().GetAwaiter().GetResult();
         }
 
         private void GetAppointments()
@@ -58,7 +61,7 @@ namespace Zermelo.App.UWP.ViewModels
             );
         }
 
-        public Visibility GroupsVisibility => 
+        public Visibility GroupsVisibility =>
             _settings.ShowGroups ? Visibility.Visible : Visibility.Collapsed;
 
         ObservableCollection<Appointment> appointments = new ObservableCollection<Appointment>();
@@ -97,5 +100,22 @@ namespace Zermelo.App.UWP.ViewModels
         }
 
         public string CurrentDate => DateTimeOffset.Now.ToString("D");
+
+        public API.Models.User User { get; }
+    }
+
+    public class ScheduleItemTemplateSelector : DataTemplateSelector
+    {
+        public DataTemplate GroupsTemplate { get; set; }
+        public DataTemplate TeachersTemplate { get; set; }
+        public API.Models.User User { get; set; }
+
+        protected override DataTemplate SelectTemplateCore(object item)
+        {
+            if (User.IsEmployee ?? false)
+                return GroupsTemplate;
+            else
+                return TeachersTemplate;
+        }
     }
 }

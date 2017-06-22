@@ -8,17 +8,57 @@
     xmlns:t10c="using:Template10.Controls"
     xmlns:m="using:Zermelo.App.UWP.Models"
     xmlns:v="using:Zermelo.App.UWP.Views"
-    xmlns:c="using:Zermelo.App.UWP.Controls"
+    xmlns:vm="using:Zermelo.App.UWP.ViewModels"
     mc:Ignorable="d">
 
     <Page.Resources>
-        <ResourceDictionary>
-            <v:ScheduleItemStyleSelector x:Key="ScheduleItemStyleSelector"
-                NormalStyle="{StaticResource ScheduleItemStyle}"
-                NewStyle="{StaticResource ScheduleItemNewStyle}"
-                CancelledStyle="{StaticResource ScheduleItemCancelledStyle}"
-                ModifiedStyle="{StaticResource ScheduleItemModifiedStyle}" />
-        </ResourceDictionary>
+
+        <v:ScheduleItemStyleSelector x:Key="ScheduleItemStyleSelector"
+            NormalStyle="{StaticResource ScheduleItemStyle}"
+            NewStyle="{StaticResource ScheduleItemNewStyle}"
+            CancelledStyle="{StaticResource ScheduleItemCancelledStyle}"
+            ModifiedStyle="{StaticResource ScheduleItemModifiedStyle}" />
+
+        <DataTemplate x:Key="TeachersScheduleItemTemplate" x:DataType="m:Appointment">
+            <StackPanel 
+                Orientation="Horizontal"
+                Padding="4">
+
+                <TextBlock 
+                    Text="{x:Bind StartTimeSlot}"
+                    VerticalAlignment="Center"
+                    Margin="0, 0, 12, 0"
+                    Style="{StaticResource TitleTextBlockStyle}"/>
+
+                <StackPanel>
+                    <TextBlock Text="{x:Bind Subjects}"/>
+                    <TextBlock Text="{x:Bind Teachers}"/>
+                    <TextBlock Text="{x:Bind Locations}"/>
+                </StackPanel>
+
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="GroupsScheduleItemTemplate" x:DataType="m:Appointment">
+            <StackPanel 
+                Orientation="Horizontal"
+                Padding="4">
+
+                <TextBlock 
+                    Text="{x:Bind StartTimeSlot}"
+                    VerticalAlignment="Center"
+                    Margin="0, 0, 12, 0"
+                    Style="{StaticResource TitleTextBlockStyle}"/>
+
+                <StackPanel>
+                    <TextBlock Text="{x:Bind Subjects}"/>
+                    <TextBlock Text="{x:Bind Groups}"/>
+                    <TextBlock Text="{x:Bind Locations}"/>
+                </StackPanel>
+
+            </StackPanel>
+        </DataTemplate>
+
     </Page.Resources>
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -29,14 +69,14 @@
             RelativePanel.AlignTopWithPanel="True"
             RelativePanel.AlignLeftWithPanel="True"
             RelativePanel.AlignRightWithPanel="True">
-            
+
             <t10c:PageHeader.PrimaryCommands>
                 <AppBarButton
                     Icon="Refresh"
                     Label="Vernieuwen"
                     Command="{x:Bind ViewModel.Refresh}"/>
             </t10c:PageHeader.PrimaryCommands>
-            
+
         </t10c:PageHeader>
 
         <Grid
@@ -46,11 +86,19 @@
             RelativePanel.AlignRightWithPanel="True"
             EntranceNavigationTransitionInfo.IsTargetElement="True">
 
+            <Grid.Resources>
+                <vm:ScheduleItemTemplateSelector x:Key="ScheduleItemTemplateSelector"
+                    User="{x:Bind ViewModel.User}"
+                    TeachersTemplate="{StaticResource TeachersScheduleItemTemplate}"
+                    GroupsTemplate="{StaticResource GroupsScheduleItemTemplate}" />
+            </Grid.Resources>
+
             <ListView
                 Header="{x:Bind ViewModel.CurrentDate}"
                 SelectionMode="None"
                 IsItemClickEnabled="True"
                 ItemContainerStyleSelector="{StaticResource ScheduleItemStyleSelector}"
+                ItemTemplateSelector="{StaticResource ScheduleItemTemplateSelector}"
                 Padding="0,0,0,12"
                 ItemsSource="{x:Bind ViewModel.Appointments, Mode=OneWay}">
 
@@ -62,28 +110,6 @@
                     </DataTemplate>
                 </ListView.HeaderTemplate>
 
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="m:Appointment">
-                        <StackPanel 
-                            Orientation="Horizontal"
-                            Padding="4">
-                            
-                            <TextBlock 
-                                Text="{x:Bind StartTimeSlot}"
-                                VerticalAlignment="Center"
-                                Margin="0, 0, 12, 0"
-                                Style="{StaticResource TitleTextBlockStyle}"/>
-
-                            <StackPanel>
-                                <TextBlock Text="{x:Bind Subjects}"/>
-                                <TextBlock Text="{x:Bind Teachers}"/>
-                                <TextBlock Text="{x:Bind Locations}"/>
-                            </StackPanel>
-                            
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                
             </ListView>
 
             <ProgressBar
