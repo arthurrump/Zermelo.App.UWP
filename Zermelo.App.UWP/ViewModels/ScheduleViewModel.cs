@@ -47,7 +47,8 @@ namespace Zermelo.App.UWP.ViewModels
                 new MessageDialog("Je hebt op dit moment geen internetverbinding. De weergegeven informatie kan verouderd zijn.", "Geen internetverbinding").ShowAsync();
             }
 
-            IDisposable subscription = _zermelo.GetSchedule(DateTimeOffset.Now.Date, DateTimeOffset.Now.Date.AddDays(1))
+            var date = new DateTimeOffset(2017, 6, 16, 0, 0, 0, new TimeSpan(1, 0, 0));
+            IDisposable subscription = _zermelo.GetSchedule(date, date.AddDays(1))
                 .ObserveOnDispatcher()
                 .Subscribe(
                     a => Appointments.MorphInto(a.OrderBy(x => x.Start).ToList()),

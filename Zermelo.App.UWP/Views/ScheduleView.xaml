@@ -7,7 +7,19 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:t10c="using:Template10.Controls"
     xmlns:m="using:Zermelo.App.UWP.Models"
+    xmlns:v="using:Zermelo.App.UWP.Views"
+    xmlns:c="using:Zermelo.App.UWP.Controls"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <v:ScheduleItemStyleSelector x:Key="ScheduleItemStyleSelector"
+                NormalStyle="{StaticResource ScheduleItemStyle}"
+                NewStyle="{StaticResource ScheduleItemNewStyle}"
+                CancelledStyle="{StaticResource ScheduleItemCancelledStyle}"
+                ModifiedStyle="{StaticResource ScheduleItemModifiedStyle}" />
+        </ResourceDictionary>
+    </Page.Resources>
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <t10c:PageHeader
@@ -38,7 +50,7 @@
                 Header="{x:Bind ViewModel.CurrentDate}"
                 SelectionMode="None"
                 IsItemClickEnabled="True"
-                ItemContainerStyle="{StaticResource ListViewItemStyle}"
+                ItemContainerStyleSelector="{StaticResource ScheduleItemStyleSelector}"
                 Padding="0,0,0,12"
                 ItemsSource="{x:Bind ViewModel.Appointments, Mode=OneWay}">
 
@@ -52,11 +64,22 @@
 
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="m:Appointment">
-                        <StackPanel>
-                            <TextBlock Text="{x:Bind StartTimeSlot}"/>
-                            <TextBlock Text="{x:Bind Subjects}"/>
-                            <TextBlock Text="{x:Bind Teachers}"/>
-                            <TextBlock Text="{x:Bind Locations}"/>
+                        <StackPanel 
+                            Orientation="Horizontal"
+                            Padding="4">
+                            
+                            <TextBlock 
+                                Text="{x:Bind StartTimeSlot}"
+                                VerticalAlignment="Center"
+                                Margin="0, 0, 12, 0"
+                                Style="{StaticResource TitleTextBlockStyle}"/>
+
+                            <StackPanel>
+                                <TextBlock Text="{x:Bind Subjects}"/>
+                                <TextBlock Text="{x:Bind Teachers}"/>
+                                <TextBlock Text="{x:Bind Locations}"/>
+                            </StackPanel>
+                            
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
