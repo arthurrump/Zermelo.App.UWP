@@ -35,6 +35,8 @@ namespace Zermelo.App.UWP.Login
 
                 (App.Current as App).StartAuthenticated();
             });
+
+            _stopwatch.Start();
         }
 
         public DelegateCommand LogIn { get; }
@@ -58,12 +60,6 @@ namespace Zermelo.App.UWP.Login
                 code = value;
                 RaisePropertyChanged();
             }
-        }
-
-        public override Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
-        {
-            _stopwatch.Start();
-            return Task.CompletedTask;
         }
     }
 }
