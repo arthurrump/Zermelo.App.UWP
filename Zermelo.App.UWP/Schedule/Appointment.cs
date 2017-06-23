@@ -30,9 +30,9 @@ namespace Zermelo.App.UWP.Schedule
             Teachers = a.Teachers.ToCommaSpaceSeperatedString();
             Locations = a.Locations.ToCommaSpaceSeperatedString();
             Groups = a.Groups.ToCommaSpaceSeperatedString();
-            Start = a.Start.Value;
+            Start = a.Start.Value.ToLocalTime();
             StartTimeSlot = a.StartTimeSlot;
-            End = a.End.Value;
+            End = a.End.Value.ToLocalTime();
             Remark = a.Remark;
             ChangeDescription = a.ChangeDescription;
 
