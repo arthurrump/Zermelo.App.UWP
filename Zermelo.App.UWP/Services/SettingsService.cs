@@ -43,5 +43,16 @@ namespace Zermelo.App.UWP.Services
                 RaisePropertyChanged();
             }
         }
+
+        // Reorganize the settings from the old WP8.1 app to the new UWP versions
+        public void MigrateFromOriginal()
+        {
+            if (_helper.Exists("Host", SettingsStrategies.Roam))
+            {
+                School = Read<string>("Host");
+                _helper.Remove("Host", SettingsStrategies.Roam);
+                _helper.Remove("ShowGroups", SettingsStrategies.Roam);
+            }
+        }
     }
 }
