@@ -8,7 +8,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles\Style.xaml" />
+                <ResourceDictionary Source="Style.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <Style TargetType="t10c:CustomTitleBar">

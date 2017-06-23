@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Template10.Mvvm;
+﻿using Template10.Mvvm;
 using Template10.Services.SettingsService;
 
 namespace Zermelo.App.UWP.Services

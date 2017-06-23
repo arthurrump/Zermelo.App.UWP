@@ -1,21 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Reactive.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Services.Store.Engagement;
 using Template10.Mvvm;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Store;
 using Windows.System;
 using Windows.UI.Xaml.Controls;
-using Zermelo.App.UWP.Models;
 using Zermelo.App.UWP.Services;
 
-namespace Zermelo.App.UWP.ViewModels
+namespace Zermelo.App.UWP.Settings
 {
     public class SettingsViewModel : ViewModelBase
     {

@@ -1,13 +1,14 @@
 ﻿<Page
-    x:Class="Zermelo.App.UWP.Views.Shell"
+    x:Class="Zermelo.App.UWP.Shell.ShellView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Zermelo.App.UWP.Views"
+    xmlns:local="using:Zermelo.App.UWP.Shell"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:t10c="using:Template10.Controls"
-    xmlns:c="using:Zermelo.App.UWP.Controls"
-    xmlns:views="using:Zermelo.App.UWP.Views"
+    xmlns:schedule="using:Zermelo.App.UWP.Schedule"
+    xmlns:announcements="using:Zermelo.App.UWP.Announcements"
+    xmlns:settings="using:Zermelo.App.UWP.Settings"
     mc:Ignorable="d">
 
     <t10c:HamburgerMenu
@@ -15,20 +16,20 @@
 
         <t10c:HamburgerMenu.PrimaryButtons>
 
-            <t10c:HamburgerButtonInfo PageType="views:ScheduleView" ClearHistory="True">
-                <c:HamburgerButton Symbol="Calendar" Text="Rooster" />
+            <t10c:HamburgerButtonInfo PageType="schedule:ScheduleView" ClearHistory="True">
+                <local:HamburgerButton Symbol="Calendar" Text="Rooster" />
             </t10c:HamburgerButtonInfo>
 
-            <t10c:HamburgerButtonInfo PageType="views:AnnouncementsView">
-                <c:HamburgerButton Symbol="Message" Text="Mededelingen" />
+            <t10c:HamburgerButtonInfo PageType="announcements:AnnouncementsView">
+                <local:HamburgerButton Symbol="Message" Text="Mededelingen" />
             </t10c:HamburgerButtonInfo>
 
         </t10c:HamburgerMenu.PrimaryButtons>
 
         <t10c:HamburgerMenu.SecondaryButtons>
 
-            <t10c:HamburgerButtonInfo PageType="views:SettingsView">
-                <c:HamburgerButton Symbol="Setting" Text="Instellingen" />
+            <t10c:HamburgerButtonInfo PageType="settings:SettingsView">
+                <local:HamburgerButton Symbol="Setting" Text="Instellingen" />
             </t10c:HamburgerButtonInfo>
 
         </t10c:HamburgerMenu.SecondaryButtons>

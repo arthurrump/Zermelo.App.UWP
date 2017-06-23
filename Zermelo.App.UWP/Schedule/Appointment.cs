@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Zermelo.App.UWP.Helpers;
 
-namespace Zermelo.App.UWP.Models
+namespace Zermelo.App.UWP.Schedule
 {
     public enum AppointmentStatus
     {

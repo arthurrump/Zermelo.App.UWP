@@ -6,18 +6,19 @@ using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Crashes;
 using Microsoft.HockeyApp;
 using Template10.Common;
-using Template10.Services.NavigationService;
 using Template10.Services.SettingsService;
-using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation.Metadata;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
-using Zermelo.API;
+using Zermelo.App.UWP.Announcements;
+using Zermelo.App.UWP.Login;
+using Zermelo.App.UWP.Schedule;
 using Zermelo.App.UWP.Services;
-using Zermelo.App.UWP.ViewModels;
+using Zermelo.App.UWP.Settings;
+using Zermelo.App.UWP.Shell;
 
 namespace Zermelo.App.UWP
 {
@@ -83,9 +84,9 @@ namespace Zermelo.App.UWP
         public override Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
             if (_authenticated)
-                NavigationService.Navigate(typeof(Views.ScheduleView));
+                NavigationService.Navigate(typeof(ScheduleView));
             else
-                NavigationService.Navigate(typeof(Views.LoginView));
+                NavigationService.Navigate(typeof(LoginView));
 
             return Task.CompletedTask;
         }
@@ -101,14 +102,14 @@ namespace Zermelo.App.UWP
         public UIElement GetAuthenticatedRootElement()
         {
             var nav = NavigationServiceFactory(BackButton.Attach, ExistingContent.Exclude);
-            return new Views.Shell(nav);
+            return new ShellView(nav);
         }
 
         public void StartAuthenticated()
         {
             WindowWrapper.Current().NavigationServices.Clear();
             Window.Current.Content = GetAuthenticatedRootElement();
-            NavigationService.Navigate(typeof(Views.ScheduleView));
+            NavigationService.Navigate(typeof(ScheduleView));
         }
 
         public UIElement GetLoginRootElement()
@@ -122,7 +123,7 @@ namespace Zermelo.App.UWP
         {
             WindowWrapper.Current().NavigationServices.Clear();
             Window.Current.Content = GetLoginRootElement();
-            NavigationService.Navigate(typeof(Views.LoginView));
+            NavigationService.Navigate(typeof(LoginView));
         }
     }
 }

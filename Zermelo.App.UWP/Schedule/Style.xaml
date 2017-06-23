@@ -1,0 +1,74 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Zermelo.App.UWP.Schedule">
+
+    <Color x:Key="ScheduleRedColor">#f83346</Color>
+    <Color x:Key="ScheduleYellowColor">#ffe535</Color>
+    <Color x:Key="ScheduleGreenColor">#b1f032</Color>
+
+    <ResourceDictionary.ThemeDictionaries>
+
+        <ResourceDictionary x:Key="Light">
+
+            <Style x:Key="ScheduleItemStyle" BasedOn="{StaticResource ListViewItemStyle}" TargetType="ListViewItem">
+
+            </Style>
+
+            <Style x:Key="ScheduleItemNewStyle" BasedOn="{StaticResource ScheduleItemStyle}" TargetType="ListViewItem">
+                <Setter Property="Background" Value="{StaticResource ScheduleGreenColor}"/>
+            </Style>
+
+            <Style x:Key="ScheduleItemModifiedStyle" BasedOn="{StaticResource ScheduleItemStyle}" TargetType="ListViewItem">
+                <Setter Property="Background" Value="{StaticResource ScheduleYellowColor}"/>
+            </Style>
+
+            <Style x:Key="ScheduleItemCancelledStyle" BasedOn="{StaticResource ScheduleItemStyle}" TargetType="ListViewItem">
+                <Setter Property="Background" Value="{StaticResource ScheduleRedColor}"/>
+            </Style>
+
+        </ResourceDictionary>
+
+        <ResourceDictionary x:Key="Default">
+
+            <Style x:Key="ScheduleItemStyle" BasedOn="{StaticResource ListViewItemStyle}" TargetType="ListViewItem">
+
+            </Style>
+
+            <Style x:Key="ScheduleItemNewStyle" BasedOn="{StaticResource ScheduleItemStyle}" TargetType="ListViewItem">
+                <Setter Property="Background" Value="{StaticResource ScheduleGreenColor}"/>
+            </Style>
+
+            <Style x:Key="ScheduleItemModifiedStyle" BasedOn="{StaticResource ScheduleItemStyle}" TargetType="ListViewItem">
+                <Setter Property="Background" Value="{StaticResource ScheduleYellowColor}"/>
+            </Style>
+
+            <Style x:Key="ScheduleItemCancelledStyle" BasedOn="{StaticResource ScheduleItemStyle}" TargetType="ListViewItem">
+                <Setter Property="Background" Value="{StaticResource ScheduleRedColor}"/>
+            </Style>
+
+        </ResourceDictionary>
+
+        <ResourceDictionary x:Key="HighContrast">
+
+            <Style x:Key="ScheduleItemStyle" BasedOn="{StaticResource ListViewItemStyle}" TargetType="ListViewItem">
+
+            </Style>
+
+            <Style x:Key="ScheduleItemNewStyle" BasedOn="{StaticResource ScheduleItemStyle}" TargetType="ListViewItem">
+
+            </Style>
+
+            <Style x:Key="ScheduleItemModifiedStyle" BasedOn="{StaticResource ScheduleItemStyle}" TargetType="ListViewItem">
+
+            </Style>
+
+            <Style x:Key="ScheduleItemCancelledStyle" BasedOn="{StaticResource ScheduleItemStyle}" TargetType="ListViewItem">
+
+            </Style>
+
+        </ResourceDictionary>
+        
+    </ResourceDictionary.ThemeDictionaries>
+
+</ResourceDictionary>

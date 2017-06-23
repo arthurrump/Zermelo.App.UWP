@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Zermelo.API;
-using Zermelo.App.UWP.Models;
+using Zermelo.App.UWP.Announcements;
+using Zermelo.App.UWP.Schedule;
 
 namespace Zermelo.App.UWP.Services
 {

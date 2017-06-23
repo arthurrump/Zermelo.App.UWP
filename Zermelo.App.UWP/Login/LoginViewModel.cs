@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Analytics;
 using Template10.Mvvm;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
 using Zermelo.App.UWP.Services;
 
-namespace Zermelo.App.UWP.ViewModels
+namespace Zermelo.App.UWP.Login
 {
     public class LoginViewModel : ViewModelBase
     {

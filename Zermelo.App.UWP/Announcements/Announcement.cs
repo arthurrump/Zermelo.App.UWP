@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Zermelo.App.UWP.Models
+namespace Zermelo.App.UWP.Announcements
 {
     public class Announcement : IEquatable<Announcement>
     {

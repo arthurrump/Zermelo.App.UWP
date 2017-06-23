@@ -1,24 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Template10.Common;
 using Template10.Mvvm;
-using Template10.Utils;
-using Windows.UI.Xaml;
-using Zermelo.App.UWP.Models;
 using Zermelo.App.UWP.Helpers;
 using Zermelo.App.UWP.Services;
 using Windows.UI.Popups;
-using Zermelo.API.Exceptions;
-using Microsoft.Azure.Mobile.Analytics;
 
-namespace Zermelo.App.UWP.ViewModels
+namespace Zermelo.App.UWP.Announcements
 {
     public class AnnouncementsViewModel : ViewModelBase
     {

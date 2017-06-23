@@ -1,20 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Template10.Mvvm;
 using Windows.UI.Popups;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Zermelo.API.Exceptions;
 using Zermelo.App.UWP.Helpers;
-using Zermelo.App.UWP.Models;
 using Zermelo.App.UWP.Services;
 
-namespace Zermelo.App.UWP.ViewModels
+namespace Zermelo.App.UWP.Schedule
 {
     public class ScheduleViewModel : ViewModelBase
     {
@@ -64,8 +57,8 @@ namespace Zermelo.App.UWP.ViewModels
             }
         }
 
-        Announcement selectedAppointment;
-        public Announcement SelectedAppointment
+        Appointment selectedAppointment;
+        public Appointment SelectedAppointment
         {
             get => selectedAppointment;
             set
@@ -91,20 +84,5 @@ namespace Zermelo.App.UWP.ViewModels
         public string CurrentDate => DateTimeOffset.Now.ToString("D");
 
         public API.Models.User User { get; }
-    }
-
-    public class ScheduleItemTemplateSelector : DataTemplateSelector
-    {
-        public DataTemplate GroupsTemplate { get; set; }
-        public DataTemplate TeachersTemplate { get; set; }
-        public API.Models.User User { get; set; }
-
-        protected override DataTemplate SelectTemplateCore(object item)
-        {
-            if (User.IsEmployee ?? false)
-                return GroupsTemplate;
-            else
-                return TeachersTemplate;
-        }
     }
 }
