@@ -18,6 +18,7 @@
     <Style x:Key="ListViewItemStyle" TargetType="ListViewItem">
         <Setter Property="Background" Value="{ThemeResource ListViewItemBackground}"/>
         <Setter Property="Margin" Value="12,12,12,0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
     </Style>
 
     <Style TargetType="t10c:ModalDialog">

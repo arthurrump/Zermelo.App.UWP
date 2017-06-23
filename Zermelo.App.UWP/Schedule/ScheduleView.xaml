@@ -32,43 +32,49 @@
                 GroupsTemplate="{StaticResource GroupsScheduleItemTemplate}" />
 
             <DataTemplate x:Key="TeachersScheduleItemTemplate" x:DataType="local:Appointment">
-                <StackPanel 
-                    Orientation="Horizontal"
-                    Padding="4">
+                <Grid Padding="4">
+                    <SymbolIcon 
+                        Symbol="{x:Bind Status, Converter={StaticResource StatusToSymbolConverter}}"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"/>
 
-                    <TextBlock 
-                        Text="{x:Bind StartTimeSlot}"
-                        VerticalAlignment="Center"
-                        Margin="0, 0, 12, 0"
-                        Style="{StaticResource TitleTextBlockStyle}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock 
+                            Text="{x:Bind StartTimeSlot}"
+                            VerticalAlignment="Center"
+                            Margin="0, 0, 12, 0"
+                            Style="{StaticResource TitleTextBlockStyle}"/>
 
-                    <StackPanel>
-                        <TextBlock Text="{x:Bind Subjects}"/>
-                        <TextBlock Text="{x:Bind Teachers}"/>
-                        <TextBlock Text="{x:Bind Locations}"/>
+                        <StackPanel>
+                            <TextBlock Text="{x:Bind Subjects}"/>
+                            <TextBlock Text="{x:Bind Teachers}"/>
+                            <TextBlock Text="{x:Bind Locations}"/>
+                        </StackPanel>
                     </StackPanel>
-
-                </StackPanel>
+                </Grid>
             </DataTemplate>
 
             <DataTemplate x:Key="GroupsScheduleItemTemplate" x:DataType="local:Appointment">
-                <StackPanel 
-                    Orientation="Horizontal"
-                    Padding="4">
+                <Grid Padding="4">
+                    <SymbolIcon 
+                        Symbol="{x:Bind Status, Converter={StaticResource StatusToSymbolConverter}}"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"/>
 
-                    <TextBlock 
-                        Text="{x:Bind StartTimeSlot}"
-                        VerticalAlignment="Center"
-                        Margin="0, 0, 12, 0"
-                        Style="{StaticResource TitleTextBlockStyle}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock 
+                            Text="{x:Bind StartTimeSlot}"
+                            VerticalAlignment="Center"
+                            Margin="0, 0, 12, 0"
+                            Style="{StaticResource TitleTextBlockStyle}"/>
 
-                    <StackPanel>
-                        <TextBlock Text="{x:Bind Subjects}"/>
-                        <TextBlock Text="{x:Bind Groups}"/>
-                        <TextBlock Text="{x:Bind Locations}"/>
+                        <StackPanel>
+                            <TextBlock Text="{x:Bind Subjects}"/>
+                            <TextBlock Text="{x:Bind Groups}"/>
+                            <TextBlock Text="{x:Bind Locations}"/>
+                        </StackPanel>
                     </StackPanel>
-
-                </StackPanel>
+                </Grid>
             </DataTemplate>
 
             <DataTemplate x:Key="ScheduleItemModalTemplate" x:DataType="local:Appointment">
@@ -94,19 +100,24 @@
                             <Run Text="{x:Bind End, Converter={StaticResource TimeConverter}}"/>
                         </TextBlock>
 
-                        <TextBlock Visibility="{x:Bind Teachers, Converter={StaticResource VisibilityConverter}}">
+                        <TextBlock Visibility="{x:Bind Teachers, Converter={StaticResource VisibilityConverter}}"
+                            TextWrapping="WrapWholeWords">
                             <Run Text="Docent: "/><Run Text="{x:Bind Teachers}"/>
                         </TextBlock>
-                        <TextBlock Visibility="{x:Bind Groups, Converter={StaticResource VisibilityConverter}}">
+                        <TextBlock Visibility="{x:Bind Groups, Converter={StaticResource VisibilityConverter}}"
+                            TextWrapping="WrapWholeWords">
                             <Run Text="Klas: "/><Run Text="{x:Bind Groups}"/>
                         </TextBlock>
-                        <TextBlock Visibility="{x:Bind Locations, Converter={StaticResource VisibilityConverter}}">
+                        <TextBlock Visibility="{x:Bind Locations, Converter={StaticResource VisibilityConverter}}"
+                            TextWrapping="WrapWholeWords">
                             <Run Text="Locatie: "/><Run Text="{x:Bind Locations}"/>
                         </TextBlock>
-                        <TextBlock Visibility="{x:Bind Remark, Converter={StaticResource VisibilityConverter}}">
+                        <TextBlock Visibility="{x:Bind Remark, Converter={StaticResource VisibilityConverter}}"
+                            TextWrapping="WrapWholeWords">
                             <Run Text="Opmerking: "/><Run Text="{x:Bind Remark}"/>
                         </TextBlock>
-                        <TextBlock Visibility="{x:Bind ChangeDescription, Converter={StaticResource VisibilityConverter}}">
+                        <TextBlock Visibility="{x:Bind ChangeDescription, Converter={StaticResource VisibilityConverter}}"
+                            TextWrapping="WrapWholeWords">
                             <Run Text="Wijziging: "/><Run Text="{x:Bind ChangeDescription}"/>
                         </TextBlock>
                     </StackPanel>
