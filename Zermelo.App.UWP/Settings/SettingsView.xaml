@@ -98,6 +98,7 @@
                             IsItemClickEnabled="True"
                             ScrollViewer.VerticalScrollMode="Disabled"
                             ItemsSource="{x:Bind ViewModel.AboutActions, Mode=OneWay}"
+                            ItemContainerStyle="{StaticResource ListViewItemStyle}"
                             ItemClick="AboutActionsListView_ItemClick"
                             Margin="0,12,0,0"
                             Padding="0,0,0,12">
