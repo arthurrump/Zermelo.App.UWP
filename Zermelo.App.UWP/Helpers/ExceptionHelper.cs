@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,9 @@ namespace Zermelo.App.UWP.Helpers
     {
         public static void HandleException(Exception ex, string location, Action<string> ShowError)
         {
+            if (Debugger.IsAttached)
+                Debugger.Break();
+
             switch (ex)
             {
                 case ZermeloHttpException zex:
