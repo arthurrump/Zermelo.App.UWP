@@ -13,5 +13,11 @@ namespace Zermelo.App.UWP.Schedule
         }
 
         public ScheduleViewModel ViewModel { get; }
+
+        private void ScheduleListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            ViewModel.SelectedAppointment = e.ClickedItem as Appointment;
+            Modal.IsModal = true;
+        }
     }
 }

@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:t10c="using:Template10.Controls"
+    xmlns:t10conv="using:Template10.Converters"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -15,11 +16,20 @@
                 <ResourceDictionary Source="Style.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
+            <t10conv:StringFormatConverter x:Key="TimeConverter" Format="{}{0:t}" />
+
+            <local:StatusToSymbolConverter x:Key="StatusToSymbolConverter" />
+
             <local:ScheduleItemStyleSelector x:Key="ScheduleItemStyleSelector"
                 NormalStyle="{StaticResource ScheduleItemStyle}"
                 NewStyle="{StaticResource ScheduleItemNewStyle}"
                 CancelledStyle="{StaticResource ScheduleItemCancelledStyle}"
                 ModifiedStyle="{StaticResource ScheduleItemModifiedStyle}" />
+
+            <local:ScheduleItemTemplateSelector x:Key="ScheduleItemTemplateSelector"
+                User="{x:Bind ViewModel.User}"
+                TeachersTemplate="{StaticResource TeachersScheduleItemTemplate}"
+                GroupsTemplate="{StaticResource GroupsScheduleItemTemplate}" />
 
             <DataTemplate x:Key="TeachersScheduleItemTemplate" x:DataType="local:Appointment">
                 <StackPanel 
@@ -61,6 +71,48 @@
                 </StackPanel>
             </DataTemplate>
 
+            <DataTemplate x:Key="ScheduleItemModalTemplate" x:DataType="local:Appointment">
+                <Grid
+                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                    Padding="12" MinWidth="300">
+
+                    <SymbolIcon 
+                        Symbol="{x:Bind Status, Converter={StaticResource StatusToSymbolConverter}}"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"/>
+
+                    <StackPanel>
+                        <TextBlock
+                            Style="{StaticResource HeaderTextBlockStyle}" 
+                            TextLineBounds="TrimToCapHeight"
+                            Text="{x:Bind Subjects}"/>
+
+                        <TextBlock
+                            Style="{StaticResource CaptionTextBlockStyle}">
+                            <Run Text="{x:Bind Start, Converter={StaticResource TimeConverter}}"/>
+                            <Run Text=" - "/>
+                            <Run Text="{x:Bind End, Converter={StaticResource TimeConverter}}"/>
+                        </TextBlock>
+
+                        <TextBlock Visibility="{x:Bind Teachers, Converter={StaticResource VisibilityConverter}}">
+                            <Run Text="Docent: "/><Run Text="{x:Bind Teachers}"/>
+                        </TextBlock>
+                        <TextBlock Visibility="{x:Bind Groups, Converter={StaticResource VisibilityConverter}}">
+                            <Run Text="Klas: "/><Run Text="{x:Bind Groups}"/>
+                        </TextBlock>
+                        <TextBlock Visibility="{x:Bind Locations, Converter={StaticResource VisibilityConverter}}">
+                            <Run Text="Locatie: "/><Run Text="{x:Bind Locations}"/>
+                        </TextBlock>
+                        <TextBlock Visibility="{x:Bind Remark, Converter={StaticResource VisibilityConverter}}">
+                            <Run Text="Opmerking: "/><Run Text="{x:Bind Remark}"/>
+                        </TextBlock>
+                        <TextBlock Visibility="{x:Bind ChangeDescription, Converter={StaticResource VisibilityConverter}}">
+                            <Run Text="Wijziging: "/><Run Text="{x:Bind ChangeDescription}"/>
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
+
         </ResourceDictionary>
     </Page.Resources>
 
@@ -89,31 +141,51 @@
             RelativePanel.AlignRightWithPanel="True"
             EntranceNavigationTransitionInfo.IsTargetElement="True">
 
-            <Grid.Resources>
-                <local:ScheduleItemTemplateSelector x:Key="ScheduleItemTemplateSelector"
-                    User="{x:Bind ViewModel.User}"
-                    TeachersTemplate="{StaticResource TeachersScheduleItemTemplate}"
-                    GroupsTemplate="{StaticResource GroupsScheduleItemTemplate}" />
-            </Grid.Resources>
+            <t10c:ModalDialog x:Name="Modal" CanBackButtonDismiss="True">
 
-            <ListView
-                Header="{x:Bind ViewModel.CurrentDate}"
-                SelectionMode="None"
-                IsItemClickEnabled="True"
-                ItemContainerStyleSelector="{StaticResource ScheduleItemStyleSelector}"
-                ItemTemplateSelector="{StaticResource ScheduleItemTemplateSelector}"
-                Padding="0,0,0,12"
-                ItemsSource="{x:Bind ViewModel.Appointments, Mode=OneWay}">
+                <t10c:ModalDialog.Content>
+                    <ListView
+                        x:Name="ScheduleListView"
+                        Header="{x:Bind ViewModel.CurrentDate}"
+                        SelectionMode="None"
+                        IsItemClickEnabled="True"
+                        ItemContainerStyleSelector="{StaticResource ScheduleItemStyleSelector}"
+                        ItemTemplateSelector="{StaticResource ScheduleItemTemplateSelector}"
+                        Padding="0,0,0,12"
+                        ItemsSource="{x:Bind ViewModel.Appointments, Mode=OneWay}"
+                        ItemClick="ScheduleListView_ItemClick">
 
-                <ListView.HeaderTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}"
-                            Margin="12"
-                            HorizontalAlignment="Center"/>
-                    </DataTemplate>
-                </ListView.HeaderTemplate>
+                        <ListView.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}"
+                                    Margin="12"
+                                    HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </ListView.HeaderTemplate>
 
-            </ListView>
+                    </ListView>
+                </t10c:ModalDialog.Content>
+
+                <t10c:ModalDialog.ModalContent>
+                    <Grid>
+                        <ScrollViewer>
+                            <ContentControl
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Margin="12"
+                                Content="{x:Bind ViewModel.SelectedAppointment, Mode=OneWay}"
+                                ContentTemplate="{StaticResource ScheduleItemModalTemplate}"/>
+                        </ScrollViewer>
+
+                        <ToggleButton
+                            Template="{StaticResource ModalCloseButton}"
+                            IsChecked="{x:Bind Modal.IsModal, Mode=TwoWay, Converter={StaticResource TypeConverter}}"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"/>
+                    </Grid>
+                </t10c:ModalDialog.ModalContent>
+
+            </t10c:ModalDialog>
 
             <ProgressBar
                 RelativePanel.Below="Header"

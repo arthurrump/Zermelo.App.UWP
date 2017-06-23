@@ -28,6 +28,8 @@
         </Setter>
     </Style>
 
+    <h:InvisibleWhenNullOrWhiteSpaceConverter x:Key="VisibilityConverter"/>
+
     <t10conv:ChangeTypeConverter x:Key="TypeConverter"/>
 
     <t10conv:ValueWhenConverter x:Key="VisibleWhenZeroConverter">
