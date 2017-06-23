@@ -14,11 +14,11 @@
         <DataTemplate x:Key="AnnouncementModalTemplate" x:DataType="local:Announcement">
             <StackPanel
                 Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-                Padding="12">
+                Padding="12" MinWidth="300">
 
                 <TextBlock 
                     Text="{x:Bind Title, Mode=OneWay}"
-                    FontSize="{ThemeResource TextStyleExtraLargeFontSize}"
+                    Style="{StaticResource TitleTextBlockStyle}"
                     TextWrapping="WrapWholeWords"/>
                 
                 <TextBlock 
