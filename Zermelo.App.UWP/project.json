@@ -3,13 +3,13 @@
     "akavache": "5.0.0",
     "Autofac": "4.6.0",
     "HockeySDK.UWP": "4.1.6",
-    "Microsoft.Azure.Mobile.Analytics": "0.12.0",
-    "Microsoft.Azure.Mobile.Crashes": "0.12.0",
+    "Microsoft.Azure.Mobile.Analytics": "0.13.0",
+    "Microsoft.Azure.Mobile.Crashes": "0.13.0",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.3.3",
     "Microsoft.Services.Store.SDK": "10.1705.16001",
     "Microsoft.Xaml.Behaviors.Uwp.Managed": "2.0.0",
     "SQLitePCLRaw.bundle_green": {
-      "version": "1.1.2",
+      "version": "1.1.6",
       "exclude": "all"
     },
     "Template10": "1.1.12",
