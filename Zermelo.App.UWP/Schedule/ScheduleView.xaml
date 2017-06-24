@@ -35,6 +35,10 @@
                 TeachersTemplate="{StaticResource TeachersScheduleItemTemplate}"
                 GroupsTemplate="{StaticResource GroupsScheduleItemTemplate}" />
 
+            <Style TargetType="FlyoutPresenter" x:Key="CalendarFlyoutStyle">
+                <Setter Property="RequestedTheme" Value="Default"/>
+            </Style>
+
             <DataTemplate x:Key="TeachersScheduleItemTemplate" x:DataType="local:Appointment">
                 <Grid Padding="4">
                     <SymbolIcon 
@@ -142,11 +146,12 @@
 
             <t10c:PageHeader.PrimaryCommands>
                 <AppBarButton
-                    Icon="Calendar"
-                    Label="Kies dag">
+                    Icon="GoToToday"
+                    Label="Kies dag"
+                    Style="{StaticResource HeaderButton}">
 
                     <FlyoutBase.AttachedFlyout>
-                        <Flyout>
+                        <Flyout FlyoutPresenterStyle="{StaticResource CalendarFlyoutStyle}">
                             <CalendarView 
                                 Name="CalendarView"
                                 FirstDayOfWeek="Monday"
@@ -172,7 +177,8 @@
                 <AppBarButton
                     Icon="Refresh"
                     Label="Vernieuwen"
-                    Command="{x:Bind ViewModel.Refresh}"/>
+                    Command="{x:Bind ViewModel.Refresh}"
+                    Style="{StaticResource HeaderButton}"/>
             </t10c:PageHeader.PrimaryCommands>
 
         </t10c:PageHeader>

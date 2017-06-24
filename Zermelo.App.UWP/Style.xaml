@@ -141,6 +141,10 @@
                 <Setter Property="Foreground" Value="{ThemeResource ContrastColorBrush}" />
             </Style>
 
+            <Style TargetType="AppBarButton" x:Key="HeaderButton">
+                <Setter Property="RequestedTheme" Value="Dark" />
+            </Style>
+
         </ResourceDictionary>
 
         <ResourceDictionary x:Key="Default">
@@ -164,6 +168,8 @@
                 <Setter Property="Background" Value="{ThemeResource CustomColorBrush}" />
                 <Setter Property="Foreground" Value="{ThemeResource ContrastColorBrush}" />
             </Style>
+
+            <Style TargetType="AppBarButton" x:Key="HeaderButton"/>
 
         </ResourceDictionary>
 
@@ -193,6 +199,8 @@
                 <Setter Property="VisualStateNarrowMinWidth" Value="{ThemeResource NarrowMinWidth}" />
                 <Setter Property="VisualStateNormalMinWidth" Value="{ThemeResource NormalMinWidth}" />
             </Style>
+
+            <Style TargetType="AppBarButton" x:Key="HeaderButton"/>
 
             <Style TargetType="t10c:ModalDialog">
                 <Setter Property="ModalBackground" Value="{ThemeResource SystemColorWindowColor}"/>

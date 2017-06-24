@@ -42,7 +42,8 @@
                 <AppBarButton
                     Icon="Refresh"
                     Label="Vernieuwen"
-                    Command="{x:Bind ViewModel.Refresh}"/>
+                    Command="{x:Bind ViewModel.Refresh}"
+                    Style="{StaticResource HeaderButton}"/>
             </t10c:PageHeader.PrimaryCommands>
 
         </t10c:PageHeader>
