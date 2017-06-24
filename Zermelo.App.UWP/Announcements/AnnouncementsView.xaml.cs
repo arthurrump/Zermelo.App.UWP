@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 namespace Zermelo.App.UWP.Announcements
 {
@@ -10,6 +11,8 @@ namespace Zermelo.App.UWP.Announcements
             this.InitializeComponent();
 
             ViewModel = (App.Current as App).Container.Resolve<AnnouncementsViewModel>();
+
+            NavigationCacheMode = NavigationCacheMode.Enabled;
         }
 
         public AnnouncementsViewModel ViewModel { get; }
