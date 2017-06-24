@@ -19,6 +19,19 @@ namespace Zermelo.App.UWP.Schedule
             _zermelo = zermelo;
             _internet = internet;
 
+            var date = DateTimeOffset.Now;
+            if (date.DayOfWeek == DayOfWeek.Saturday)
+                date = date.AddDays(2);
+            else if (date.DayOfWeek == DayOfWeek.Sunday)
+                date = date.AddDays(1);
+            Date = date;
+
+            PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == nameof(Date))
+                    GetAppointments();
+            };
+
             GetAppointments();
 
             Refresh = new DelegateCommand(GetAppointments);
@@ -35,7 +48,7 @@ namespace Zermelo.App.UWP.Schedule
                 new MessageDialog("Je hebt op dit moment geen internetverbinding. De weergegeven informatie kan verouderd zijn.", "Geen internetverbinding").ShowAsync();
             }
 
-            IDisposable subscription = _zermelo.GetSchedule(DateTimeOffset.Now.Date, DateTimeOffset.Now.Date.AddDays(1))
+            IDisposable subscription = _zermelo.GetSchedule(Date.Date, Date.Date.AddDays(1))
                 .ObserveOnDispatcher()
                 .Subscribe(
                     a => Appointments.MorphInto(a.OrderBy(x => x.Start).ToList()),
@@ -43,6 +56,17 @@ namespace Zermelo.App.UWP.Schedule
                             m => new MessageDialog(m, "Error").ShowAsync()),
                     () => IsLoading = false
             );
+        }
+
+        DateTimeOffset date;
+        public DateTimeOffset Date
+        {
+            get => date;
+            set
+            {
+                date = value;
+                RaisePropertyChanged();
+            }
         }
 
         ObservableCollection<Appointment> appointments = new ObservableCollection<Appointment>();
@@ -79,8 +103,6 @@ namespace Zermelo.App.UWP.Schedule
                 RaisePropertyChanged();
             }
         }
-
-        public string CurrentDate => DateTimeOffset.Now.ToString("D");
 
         public API.Models.User User { get; }
     }

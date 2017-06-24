@@ -7,6 +7,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:t10c="using:Template10.Controls"
     xmlns:t10conv="using:Template10.Converters"
+    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:Behaviors="using:Template10.Behaviors"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -17,6 +20,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <t10conv:StringFormatConverter x:Key="TimeConverter" Format="{}{0:t}" />
+            <t10conv:StringFormatConverter x:Key="DateConverter" Format="{}{0:D}" />
 
             <local:StatusToSymbolConverter x:Key="StatusToSymbolConverter" />
 
@@ -138,6 +142,34 @@
 
             <t10c:PageHeader.PrimaryCommands>
                 <AppBarButton
+                    Icon="Calendar"
+                    Label="Kies dag">
+
+                    <FlyoutBase.AttachedFlyout>
+                        <Flyout>
+                            <CalendarView 
+                                Name="CalendarView"
+                                FirstDayOfWeek="Monday"
+                                SelectedDatesChanged="CalendarView_SelectedDatesChanged"
+                                CalendarViewDayItemChanging="CalendarView_CalendarViewDayItemChanging">
+
+                                <Interactivity:Interaction.Behaviors>
+                                    <Core:EventTriggerBehavior EventName="SelectedDatesChanged">
+                                        <Behaviors:CloseFlyoutAction />
+                                    </Core:EventTriggerBehavior>
+                                </Interactivity:Interaction.Behaviors>
+                            </CalendarView>
+                        </Flyout>
+                    </FlyoutBase.AttachedFlyout>
+
+                    <Interactivity:Interaction.Behaviors>
+                        <Core:EventTriggerBehavior EventName="Tapped">
+                            <Behaviors:OpenFlyoutAction />
+                        </Core:EventTriggerBehavior>
+                    </Interactivity:Interaction.Behaviors>
+                </AppBarButton>
+
+                <AppBarButton
                     Icon="Refresh"
                     Label="Vernieuwen"
                     Command="{x:Bind ViewModel.Refresh}"/>
@@ -157,7 +189,7 @@
                 <t10c:ModalDialog.Content>
                     <ListView
                         x:Name="ScheduleListView"
-                        Header="{x:Bind ViewModel.CurrentDate}"
+                        Header="{x:Bind ViewModel.Date, Mode=OneWay, Converter={StaticResource DateConverter}}"
                         SelectionMode="None"
                         IsItemClickEnabled="True"
                         ItemContainerStyleSelector="{StaticResource ScheduleItemStyleSelector}"
@@ -197,15 +229,15 @@
                 </t10c:ModalDialog.ModalContent>
 
             </t10c:ModalDialog>
-
-            <ProgressBar
-                RelativePanel.Below="Header"
-                RelativePanel.AlignLeftWithPanel="True"
-                RelativePanel.AlignRightWithPanel="True"
-                Margin="0,4,0,0"
-                Background="Transparent"
-                IsIndeterminate="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
-
         </Grid>
+
+        <ProgressBar
+            RelativePanel.Below="Header"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.AlignRightWithPanel="True"
+            Margin="0,4,0,0"
+            Background="Transparent"
+            IsIndeterminate="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+
     </RelativePanel>
 </Page>
