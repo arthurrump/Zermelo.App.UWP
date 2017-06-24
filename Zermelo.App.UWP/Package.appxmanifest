@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="2df10f2b-8398-4a3c-aee1-7e90dd677af9" Publisher="CN=Arthur" Version="2.0.0.0" />
-  <mp:PhoneIdentity PhoneProductId="2df10f2b-8398-4a3c-aee1-7e90dd677af9" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Identity Name="22507ArthurRump.SchoolroostervoorZermelo" Publisher="CN=CCDC0825-E25E-44D9-9E93-09E5C8AE84F0" Version="1.1.0.0" />
+  <mp:PhoneIdentity PhoneProductId="21039df8-ebe2-4bef-9032-544293f19376" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>Zermelo.App.UWP</DisplayName>
+    <DisplayName>Schoolrooster voor Zermelo</DisplayName>
     <PublisherDisplayName>Arthur Rump</PublisherDisplayName>
     <Logo>Assets\Store\StoreLogo.png</Logo>
   </Properties>
