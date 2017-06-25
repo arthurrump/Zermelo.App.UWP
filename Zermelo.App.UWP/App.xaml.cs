@@ -71,8 +71,6 @@ namespace Zermelo.App.UWP
             }
 
             var settings = Container.Resolve<Services.ISettingsService>();
-            settings.MigrateFromOriginal();
-
             if (string.IsNullOrEmpty(settings.School) || string.IsNullOrEmpty(settings.Token))
                 _authenticated = false;
             else

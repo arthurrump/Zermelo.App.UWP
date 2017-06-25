@@ -20,32 +20,21 @@ namespace Zermelo.App.UWP.Services
         //Account
         public string School
         {
-            get => Read<string>(nameof(School));
+            get => Read<string>("Host");
             set
             {
-                Write(nameof(School), value);
+                Write("Host", value);
                 RaisePropertyChanged();
             }
         }
 
         public string Token
         {
-            get => Read<string>(nameof(Token));
+            get => Read<string>("Token");
             set
             {
-                Write(nameof(Token), value);
+                Write("Token", value);
                 RaisePropertyChanged();
-            }
-        }
-
-        // Reorganize the settings from the old WP8.1 app to the new UWP versions
-        public void MigrateFromOriginal()
-        {
-            if (_helper.Exists("Host", SettingsStrategies.Roam))
-            {
-                School = Read<string>("Host");
-                _helper.Remove("Host", SettingsStrategies.Roam);
-                _helper.Remove("ShowGroups", SettingsStrategies.Roam);
             }
         }
     }
