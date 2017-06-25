@@ -5,13 +5,112 @@
     xmlns:local="using:Zermelo.App.UWP.Login"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:conv="using:Template10.Converters"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="12" MaxWidth="400">
-            <TextBox Header="School" Text="{x:Bind ViewModel.School, Mode=TwoWay}" />
-            <TextBox Header="Code" Text="{x:Bind ViewModel.Code, Mode=TwoWay}" />
-            <Button Margin="12" HorizontalAlignment="Center" Content="Log in" Command="{x:Bind ViewModel.LogIn}" />
+    <Page.Resources>
+        <ResourceDictionary>
+            <conv:ValueWhenConverter x:Key="VisibleWhenFalseConverter">
+                <conv:ValueWhenConverter.When>
+                    <x:Boolean>False</x:Boolean>
+                </conv:ValueWhenConverter.When>
+                <conv:ValueWhenConverter.Value>
+                    <Visibility>Visible</Visibility>
+                </conv:ValueWhenConverter.Value>
+                <conv:ValueWhenConverter.Otherwise>
+                    <Visibility>Collapsed</Visibility>
+                </conv:ValueWhenConverter.Otherwise>
+            </conv:ValueWhenConverter>
+
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <Style TargetType="Image" x:Key="Logo">
+                        <Setter Property="Source" Value="/Assets/LargeInverted/Large310x310Logo.png"/>
+                    </Style>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Default">
+                    <Style TargetType="Image" x:Key="Logo">
+                        <Setter Property="Source" Value="/Assets/Large/Large310x310Logo.png"/>
+                    </Style>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid 
+        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+        MaxWidth="400">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <Image
+            Style="{StaticResource Logo}"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Stretch="Uniform"
+            MaxHeight="200"
+            Margin="-16" />
+
+        <StackPanel Margin="12" Grid.Row="1">
+            <TextBlock 
+                TextAlignment="Center"
+                Style="{StaticResource TitleTextBlockStyle}"
+                Text="Welkom!" />
+            <TextBlock
+                TextAlignment="Center"
+                TextWrapping="WrapWholeWords"
+                Text="Vul hier het webadres van het Zermelo Portal van jouw school in. Bij Code vul je de code in die je kunt vinden in het Zermelo Portal, onder Koppelingen > Koppel App." />
         </StackPanel>
+
+        <StackPanel Margin="12" Grid.Row="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox 
+                    Header="School" 
+                    PlaceholderText="schoolnaam"
+                    IsSpellCheckEnabled="False" 
+                    IsEnabled="{x:Bind ViewModel.InputEnabled, Mode=OneWay}"
+                    Text="{x:Bind ViewModel.School, Mode=TwoWay}"
+                    Grid.Column="0" />
+                <TextBlock
+                    Text=".zportal.nl"
+                    VerticalAlignment="Bottom"
+                    Margin="4, 0, 0, 6"
+                    HorizontalAlignment="Right"
+                    Grid.Column="1" />
+            </Grid>
+
+            <TextBox 
+                Header="Code" 
+                PlaceholderText="156 743 821 564"
+                Margin="0, 12, 0, 0" 
+                InputScope="Digits" 
+                KeyUp="Code_KeyUp" 
+                IsEnabled="{x:Bind ViewModel.InputEnabled, Mode=OneWay}"
+                Text="{x:Bind ViewModel.Code, Mode=TwoWay}" />
+
+            <Button 
+                Name="LoginButton"
+                Margin="12" 
+                HorizontalAlignment="Center" 
+                Content="Log in" 
+                IsEnabled="{x:Bind ViewModel.InputEnabled, Mode=OneWay}"
+                Command="{x:Bind ViewModel.LogIn}" />
+        </StackPanel>
+
+        <ProgressRing 
+            IsActive="True"
+            Width="100" Height="100"
+            Visibility="{x:Bind ViewModel.InputEnabled, Mode=OneWay, Converter={StaticResource VisibleWhenFalseConverter}}"
+            Grid.RowSpan="4" />
     </Grid>
 </Page>
