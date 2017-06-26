@@ -17,13 +17,15 @@ namespace Zermelo.App.UWP.Login
 
         ISettingsService _settings;
         IZermeloAuthenticationService _authService;
+        IInternetConnectionService _internet;
 
-        public LoginViewModel(ISettingsService settings, IZermeloAuthenticationService authService)
+        public LoginViewModel(ISettingsService settings, IZermeloAuthenticationService authService, IInternetConnectionService internet)
         {
             _stopwatch = new Stopwatch();
 
             _settings = settings;
             _authService = authService;
+            _internet = internet;
 
             LogIn = new DelegateCommand(async () => await logIn());
 
@@ -35,6 +37,12 @@ namespace Zermelo.App.UWP.Login
             if (string.IsNullOrWhiteSpace(School) || string.IsNullOrWhiteSpace(Code))
             {
                 new MessageDialog("Vul een school en een code in.").ShowAsync();
+                return;
+            }
+
+            if (!_internet.IsConnected())
+            {
+                new MessageDialog("Je hebt op dit moment geen internetverbinding. Je kunt dus niet ingelogd worden.", "Geen internetverbinding").ShowAsync();
                 return;
             }
 
