@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reactive.Linq;
 using Zermelo.App.UWP.Announcements;
 using Zermelo.App.UWP.Schedule;
 
@@ -21,22 +22,37 @@ namespace Zermelo.App.UWP.Services
         public IObservable<IEnumerable<Appointment>> GetSchedule(DateTimeOffset start, DateTimeOffset end, string user = "~me")
             => _cache.GetAndFetchLatest(
                 $"{nameof(GetSchedule)}({start.UtcTicks},{end.UtcTicks},{user})",
-                () => _zermelo.GetSchedule(start, end, user),
+                () => {
+                    if (_internet.IsConnected())
+                        return _zermelo.GetSchedule(start, end, user);
+                    else
+                        return Observable.Return(new List<Appointment>());
+                },
                 date => _internet.IsConnected(),
                 end.AddDays(7)
                );
 
         public IObservable<IEnumerable<Announcement>> GetAnnouncements()
             => _cache.GetAndFetchLatest(
-                nameof(GetAnnouncements), 
-                () => _zermelo.GetAnnouncements(),
+                nameof(GetAnnouncements),
+                () => {
+                    if (_internet.IsConnected())
+                        return _zermelo.GetAnnouncements();
+                    else
+                        return Observable.Return(new List<Announcement>());
+                },
                 date => _internet.IsConnected()
                );
 
         public IObservable<API.Models.User> GetCurrentUser()
             => _cache.GetAndFetchLatest(
                 nameof(GetCurrentUser), 
-                () => _zermelo.GetCurrentUser(),
+                () => {
+                    if (_internet.IsConnected())
+                        return _zermelo.GetCurrentUser();
+                    else
+                        return Observable.Return(default(API.Models.User));
+                },
                 date => _internet.IsConnected() && DateTimeOffset.UtcNow.Subtract(date) > TimeSpan.FromDays(7)
                );
     }
