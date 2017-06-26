@@ -32,8 +32,6 @@ namespace Zermelo.App.UWP.Schedule
                     GetAppointments();
             };
 
-            GetAppointments();
-
             Refresh = new DelegateCommand(GetAppointments);
 
             User = _zermelo.GetCurrentUser().GetAwaiter().GetResult();
