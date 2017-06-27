@@ -102,6 +102,7 @@
     <Compile Include="Helpers\InvisibleWhenNullOrWhiteSpaceConverter.cs" />
     <Compile Include="Schedule\ScheduleItemStyleSelector.cs" />
     <Compile Include="Schedule\ScheduleItemTemplateSelector.cs" />
+    <Compile Include="Schedule\ScheduleRow.cs" />
     <Compile Include="Schedule\StatusToSymbolConverter.cs" />
     <Compile Include="Shell\HamburgerButton.xaml.cs">
       <DependentUpon>HamburgerButton.xaml</DependentUpon>

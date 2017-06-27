@@ -7,19 +7,21 @@
     <SolidColorBrush x:Key="ScheduleYellowColor" Color="#ff0" Opacity="0.4"/>
     <SolidColorBrush x:Key="ScheduleGreenColor" Color="#0f0" Opacity="0.4"/>
 
-    <Style x:Key="ScheduleItemStyle" BasedOn="{StaticResource ListViewItemStyle}" TargetType="ListViewItem">
-
+    <Style x:Key="ScheduleItemStyle" TargetType="GridViewItem">
+        <Setter Property="Background" Value="{ThemeResource ListViewItemBackground}"/>
+        <Setter Property="Padding" Value="12, 0" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
     </Style>
 
-    <Style x:Key="ScheduleItemNewStyle" BasedOn="{StaticResource ScheduleItemStyle}" TargetType="ListViewItem">
+    <Style x:Key="ScheduleItemNewStyle" BasedOn="{StaticResource ScheduleItemStyle}" TargetType="GridViewItem">
         <Setter Property="Background" Value="{ThemeResource ScheduleGreenColor}"/>
     </Style>
 
-    <Style x:Key="ScheduleItemModifiedStyle" BasedOn="{StaticResource ScheduleItemStyle}" TargetType="ListViewItem">
+    <Style x:Key="ScheduleItemModifiedStyle" BasedOn="{StaticResource ScheduleItemStyle}" TargetType="GridViewItem">
         <Setter Property="Background" Value="{ThemeResource ScheduleYellowColor}"/>
     </Style>
 
-    <Style x:Key="ScheduleItemCancelledStyle" BasedOn="{StaticResource ScheduleItemStyle}" TargetType="ListViewItem">
+    <Style x:Key="ScheduleItemCancelledStyle" BasedOn="{StaticResource ScheduleItemStyle}" TargetType="GridViewItem">
         <Setter Property="Background" Value="{ThemeResource ScheduleRedColor}"/>
     </Style>
 

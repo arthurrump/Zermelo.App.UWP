@@ -49,7 +49,10 @@ namespace Zermelo.App.UWP.Schedule
             IDisposable subscription = _zermelo.GetSchedule(Date.Date, Date.Date.AddDays(1))
                 .ObserveOnDispatcher()
                 .Subscribe(
-                    a => Appointments.MorphInto(a.OrderBy(x => x.Start).ToList()),
+                    a => Appointments.MorphInto(
+                        a.GroupBy(x => x.Start).OrderBy(x => x.Key)
+                         .Select(x => new ScheduleRow(x.Key, x.OrderBy(y => y.Status)))
+                    ),
                     ex => ExceptionHelper.HandleException(ex, nameof(ScheduleViewModel),
                             m => new MessageDialog(m, "Error").ShowAsync()),
                     () => IsLoading = false
@@ -67,8 +70,8 @@ namespace Zermelo.App.UWP.Schedule
             }
         }
 
-        ObservableCollection<Appointment> appointments = new ObservableCollection<Appointment>();
-        public ObservableCollection<Appointment> Appointments
+        ObservableCollection<ScheduleRow> appointments = new ObservableCollection<ScheduleRow>();
+        public ObservableCollection<ScheduleRow> Appointments
         {
             get => appointments;
             set

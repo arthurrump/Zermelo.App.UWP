@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:t10c="using:Template10.Controls"
     xmlns:t10conv="using:Template10.Converters"
+    xmlns:toolkit="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:Behaviors="using:Template10.Behaviors"
@@ -197,12 +198,9 @@
                         x:Name="ScheduleListView"
                         Header="{x:Bind ViewModel.Date, Mode=OneWay, Converter={StaticResource DateConverter}}"
                         SelectionMode="None"
-                        IsItemClickEnabled="True"
-                        ItemContainerStyleSelector="{StaticResource ScheduleItemStyleSelector}"
-                        ItemTemplateSelector="{StaticResource ScheduleItemTemplateSelector}"
+                        IsItemClickEnabled="False"
                         Padding="0,0,0,12"
-                        ItemsSource="{x:Bind ViewModel.Appointments, Mode=OneWay}"
-                        ItemClick="ScheduleListView_ItemClick">
+                        ItemsSource="{x:Bind ViewModel.Appointments, Mode=OneWay}">
 
                         <ListView.HeaderTemplate>
                             <DataTemplate>
@@ -212,6 +210,28 @@
                             </DataTemplate>
                         </ListView.HeaderTemplate>
 
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="Margin" Value="0"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="local:ScheduleRow">
+                                <toolkit:AdaptiveGridView
+                                    SelectionMode="None"
+                                    IsItemClickEnabled="True"
+                                    DesiredWidth="140"
+                                    Margin="12, 0"
+                                    ItemsSource="{x:Bind Items}"
+                                    ItemContainerStyleSelector="{StaticResource ScheduleItemStyleSelector}"
+                                    ItemTemplateSelector="{StaticResource ScheduleItemTemplateSelector}"
+                                    ItemClick="ScheduleListView_ItemClick" />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
                     </ListView>
                 </t10c:ModalDialog.Content>
 
