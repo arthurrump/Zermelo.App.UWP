@@ -1,21 +1,23 @@
 ﻿using Template10.Mvvm;
 using Template10.Services.SettingsService;
+using Windows.Storage;
 
 namespace Zermelo.App.UWP.Services
 {
     public class SettingsService : BindableBase, ISettingsService
     {
-        ISettingsHelper _helper;
+        ApplicationDataContainer _settings;
 
-        public SettingsService(ISettingsHelper settingsHelper)
+        public SettingsService()
         {
-            _helper = settingsHelper;
+            _settings = ApplicationData.Current.RoamingSettings;
         }
 
-        private T Read<T>(string key, T otherwise = default(T))
-            => _helper.Read<T>(key, otherwise, SettingsStrategies.Roam);
+        private T Read<T>(string key)
+            => (T)_settings.Values[key];
 
-        private void Write<T>(string key, T value) => _helper.Write(key, value, SettingsStrategies.Roam);
+        private void Write<T>(string key, T value) 
+            => _settings.Values[key] = value;
 
         //Account
         public string School
