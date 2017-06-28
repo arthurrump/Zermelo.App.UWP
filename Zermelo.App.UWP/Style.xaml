@@ -175,6 +175,9 @@
 
         <ResourceDictionary x:Key="HighContrast">
 
+            <SolidColorBrush x:Key="WindowBrush" Color="{ThemeResource SystemColorWindowColor}" />
+            <SolidColorBrush x:Key="WindowTextBrush" Color="{ThemeResource SystemColorWindowTextColor}" />
+
             <SolidColorBrush x:Key="ExtendedSplashBackground" Color="Black" />
             <SolidColorBrush x:Key="ExtendedSplashForeground" Color="White" />
 
@@ -182,12 +185,12 @@
 
             <Style TargetType="t10c:HamburgerMenu">
                 <Setter Property="PaneBorderThickness" Value="0" />
-                <Setter Property="SecondarySeparator" Value="{ThemeResource SystemColorWindowTextColor}" />
-                <Setter Property="NavButtonBackground" Value="{ThemeResource SystemColorWindowColor}" />
-                <Setter Property="NavButtonForeground" Value="{ThemeResource SystemColorWindowTextColor}" />
-                <Setter Property="NavAreaBackground" Value="{ThemeResource SystemColorWindowColor}" />
-                <Setter Property="HamburgerForeground" Value="{ThemeResource SystemColorWindowColor}" />
-                <Setter Property="HamburgerBackground" Value="{ThemeResource SystemColorWindowTextColor}" />
+                <Setter Property="SecondarySeparator" Value="{ThemeResource WindowTextBrush}" />
+                <Setter Property="NavButtonBackground" Value="{ThemeResource WindowBrush}" />
+                <Setter Property="NavButtonForeground" Value="{ThemeResource WindowTextBrush}" />
+                <Setter Property="NavAreaBackground" Value="{ThemeResource WindowBrush}" />
+                <Setter Property="HamburgerForeground" Value="{ThemeResource WindowBrush}" />
+                <Setter Property="HamburgerBackground" Value="{ThemeResource WindowTextBrush}" />
                 <Setter Property="VisualStateNarrowMinWidth" Value="{ThemeResource NarrowMinWidth}" />
                 <Setter Property="VisualStateNormalMinWidth" Value="{ThemeResource NormalMinWidth}" />
                 <Setter Property="VisualStateWideMinWidth" Value="{ThemeResource WideMinWidth}" />
