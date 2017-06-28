@@ -62,7 +62,7 @@ namespace Zermelo.App.UWP.Settings
         }
 
         // About
-        public string Version => $"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Revision}";
+        public string Version => $"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}";
 
         public AboutAction[] AboutActions =>
             new AboutAction[] {
