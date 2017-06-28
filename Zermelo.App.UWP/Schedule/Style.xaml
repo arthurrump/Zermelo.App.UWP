@@ -11,6 +11,7 @@
         <Setter Property="Background" Value="{ThemeResource ListViewItemBackground}"/>
         <Setter Property="Padding" Value="12, 0" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
     </Style>
 
     <Style x:Key="ScheduleItemNewStyle" BasedOn="{StaticResource ScheduleItemStyle}" TargetType="GridViewItem">

@@ -100,6 +100,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\InvisibleWhenNullOrWhiteSpaceConverter.cs" />
+    <Compile Include="Schedule\AdaptiveGridView.cs" />
     <Compile Include="Schedule\ScheduleItemStyleSelector.cs" />
     <Compile Include="Schedule\ScheduleItemTemplateSelector.cs" />
     <Compile Include="Schedule\ScheduleRow.cs" />

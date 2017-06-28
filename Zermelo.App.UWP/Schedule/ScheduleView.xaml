@@ -7,7 +7,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:t10c="using:Template10.Controls"
     xmlns:t10conv="using:Template10.Converters"
-    xmlns:toolkit="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:Behaviors="using:Template10.Behaviors"
@@ -221,7 +220,7 @@
 
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="local:ScheduleRow">
-                                <toolkit:AdaptiveGridView
+                                <local:AdaptiveGridView
                                     SelectionMode="None"
                                     IsItemClickEnabled="True"
                                     DesiredWidth="140"
