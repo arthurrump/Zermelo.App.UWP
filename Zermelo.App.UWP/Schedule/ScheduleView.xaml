@@ -226,6 +226,8 @@
                                     DesiredWidth="140"
                                     Margin="12, 0"
                                     Padding="0"
+                                    ScrollViewer.HorizontalScrollMode="Disabled"
+                                    ScrollViewer.VerticalScrollMode="Disabled"
                                     ItemsSource="{x:Bind Items}"
                                     ItemContainerStyleSelector="{StaticResource ScheduleItemStyleSelector}"
                                     ItemTemplateSelector="{StaticResource ScheduleItemTemplateSelector}"
