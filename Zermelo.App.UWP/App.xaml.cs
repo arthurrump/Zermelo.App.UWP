@@ -56,8 +56,10 @@ namespace Zermelo.App.UWP
 
         public override Task OnInitializeAsync(IActivatedEventArgs args)
         {
+#if !DEBUG
             HockeyClient.Current.Configure(Secrets.HockeyAppAppId);
             MobileCenter.Start(Secrets.MobileCenterAppSecret, typeof(Analytics), typeof(Crashes));
+#endif
 
             if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
             {
