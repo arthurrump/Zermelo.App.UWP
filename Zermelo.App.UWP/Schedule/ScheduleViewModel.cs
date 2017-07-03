@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using Template10.Mvvm;
 using Windows.UI.Popups;
+using Windows.UI.Xaml.Navigation;
 using Zermelo.App.UWP.Helpers;
 using Zermelo.App.UWP.Services;
 
@@ -37,6 +40,11 @@ namespace Zermelo.App.UWP.Schedule
             User = _zermelo.GetCurrentUser().GetAwaiter().GetResult();
         }
 
+        public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
+        {
+            PreloadAppointments();
+        }
+
         private void GetAppointments()
         {
             IsLoading = true;
@@ -57,6 +65,24 @@ namespace Zermelo.App.UWP.Schedule
                             m => new MessageDialog(m, "Error").ShowAsync()),
                     () => IsLoading = false
             );
+        }
+
+        private void PreloadAppointments()
+        {
+            if (_internet.IsConnected())
+            {
+                for (int i = 1; i < 8; i++)
+                {
+                    var day = Date.Date.AddDays(i);
+                    if (day.DayOfWeek == DayOfWeek.Saturday || day.DayOfWeek == DayOfWeek.Sunday)
+                        break;
+
+                    _zermelo.GetSchedule(day.Date, day.Date.AddDays(1)).Subscribe(
+                        _ => { }, 
+                        ex => ExceptionHelper.HandleException(ex, $"{nameof(ScheduleViewModel)}.Preload", _ => { })
+                    );
+                }
+            }
         }
 
         DateTimeOffset date;
