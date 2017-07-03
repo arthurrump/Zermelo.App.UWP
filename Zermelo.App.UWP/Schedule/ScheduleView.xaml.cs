@@ -29,7 +29,10 @@ namespace Zermelo.App.UWP.Schedule
 
         private void CalendarView_SelectedDatesChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args)
         {
-            ViewModel.Date = args.AddedDates.FirstOrDefault();
+            if (args.AddedDates.Count > 0)
+                ViewModel.Date = args.AddedDates.FirstOrDefault();
+            else
+                CalendarView.SelectedDates.Add(ViewModel.Date);
         }
 
         private void CalendarView_CalendarViewDayItemChanging(CalendarView sender, CalendarViewDayItemChangingEventArgs args)
