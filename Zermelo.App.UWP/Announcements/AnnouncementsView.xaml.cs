@@ -10,12 +10,11 @@ namespace Zermelo.App.UWP.Announcements
         {
             this.InitializeComponent();
 
-            ViewModel = (App.Current as App).Container.Resolve<AnnouncementsViewModel>();
-
             NavigationCacheMode = NavigationCacheMode.Enabled;
         }
 
-        public AnnouncementsViewModel ViewModel { get; }
+        AnnouncementsViewModel _viewModel;
+        public AnnouncementsViewModel ViewModel => _viewModel ?? (_viewModel = (AnnouncementsViewModel)DataContext);
 
         private void AnnouncementsListView_ItemClick(object sender, ItemClickEventArgs e)
         {

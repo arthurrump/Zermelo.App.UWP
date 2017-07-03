@@ -6,6 +6,7 @@ using Microsoft.Azure.Mobile.Analytics;
 using Microsoft.Azure.Mobile.Crashes;
 using Microsoft.HockeyApp;
 using Template10.Common;
+using Template10.Services.NavigationService;
 using Template10.Services.SettingsService;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation.Metadata;
@@ -122,6 +123,23 @@ namespace Zermelo.App.UWP
             WindowWrapper.Current().NavigationServices.Clear();
             Window.Current.Content = GetLoginRootElement();
             NavigationService.Navigate(typeof(LoginView));
+        }
+
+        public override INavigable ResolveForPage(Page page, NavigationService navigationService)
+        {
+            switch (page)
+            {
+                case LoginView _:
+                    return Container.Resolve<LoginViewModel>();
+                case ScheduleView _:
+                    return Container.Resolve<ScheduleViewModel>();
+                case AnnouncementsView _:
+                    return Container.Resolve<AnnouncementsViewModel>();
+                case SettingsView _:
+                    return Container.Resolve<SettingsViewModel>();
+                default:
+                    return base.ResolveForPage(page, navigationService);
+            }
         }
     }
 }

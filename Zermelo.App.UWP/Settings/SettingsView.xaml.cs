@@ -10,12 +10,11 @@ namespace Zermelo.App.UWP.Settings
         {
             this.InitializeComponent();
 
-            ViewModel = (App.Current as App).Container.Resolve<SettingsViewModel>();
-
             NavigationCacheMode = NavigationCacheMode.Enabled;
         }
 
-        public SettingsViewModel ViewModel { get; }
+        SettingsViewModel _viewModel;
+        public SettingsViewModel ViewModel => _viewModel ?? (_viewModel = (SettingsViewModel)DataContext);
 
         private void AboutActionsListView_ItemClick(object sender, ItemClickEventArgs e)
         {

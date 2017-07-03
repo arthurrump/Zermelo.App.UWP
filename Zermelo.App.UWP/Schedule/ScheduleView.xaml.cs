@@ -12,14 +12,16 @@ namespace Zermelo.App.UWP.Schedule
         {
             this.InitializeComponent();
 
-            ViewModel = (App.Current as App).Container.Resolve<ScheduleViewModel>();
-
             NavigationCacheMode = NavigationCacheMode.Enabled;
-
-            CalendarView.SelectedDates.Add(ViewModel.Date);
         }
 
-        public ScheduleViewModel ViewModel { get; }
+        ScheduleViewModel _viewModel;
+        public ScheduleViewModel ViewModel => _viewModel ?? (_viewModel = (ScheduleViewModel)DataContext);
+
+        private void Page_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            CalendarView.SelectedDates.Add(ViewModel.Date);
+        }
 
         private void ScheduleListView_ItemClick(object sender, ItemClickEventArgs e)
         {

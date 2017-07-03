@@ -11,11 +11,10 @@ namespace Zermelo.App.UWP.Login
         public LoginView()
         {
             this.InitializeComponent();
-
-            ViewModel = (App.Current as App).Container.Resolve<LoginViewModel>();
         }
 
-        public LoginViewModel ViewModel { get; }
+        LoginViewModel _viewModel;
+        public LoginViewModel ViewModel => _viewModel ?? (_viewModel = (LoginViewModel)DataContext);
 
         private async void Code_KeyUp(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
