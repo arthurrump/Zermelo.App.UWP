@@ -20,7 +20,8 @@ namespace Zermelo.App.UWP.Schedule
 
         private void Page_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            CalendarView.SelectedDates.Add(ViewModel.Date);
+            if (CalendarView.SelectedDates.Count < 1)
+                CalendarView.SelectedDates.Add(ViewModel.Date);
         }
 
         private void ScheduleListView_ItemClick(object sender, ItemClickEventArgs e)
