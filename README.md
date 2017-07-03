@@ -10,6 +10,21 @@
 
 The backend for connecting to the Zermelo REST API that's used in this app is also available on GitHub: [Zermelo.API](https://github.com/arthurrump/Zermelo.API)
 
+<table style="width: auto">
+<thead>
+<tr>
+  <th>Build status</th>
+  <th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>master</td>
+  <td><img src="https://build.mobile.azure.com/v0.1/apps/757e7976-b352-4f99-be93-62e61c4e66ca/branches/master/badge" alt="Build status"></td>
+</tr>
+</tbody>
+</table>
+
 ## How to contribute
 
 All contributions are welcome! You can make a pull-request and write some code yourself, but please first open an issue detailing the things you want to change. It would be sad if you spend a lot of time building something that's completely beyond the scope of this project, or in a way that's completely different than the rest of the app. If you don't know how to write code, you can open issues too, if you think there's something that should be improved!
