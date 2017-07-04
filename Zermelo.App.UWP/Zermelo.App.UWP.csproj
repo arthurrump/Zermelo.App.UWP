@@ -100,6 +100,11 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\InvisibleWhenNullOrWhiteSpaceConverter.cs" />
+    <Compile Include="Schedule\ScheduleType.cs" />
+    <Compile Include="OtherSchedules\OtherSchedulesView.xaml.cs">
+      <DependentUpon>OtherSchedulesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OtherSchedules\OtherSchedulesViewModel.cs" />
     <Compile Include="Schedule\AdaptiveGridView.cs" />
     <Compile Include="Schedule\ScheduleItemStyleSelector.cs" />
     <Compile Include="Schedule\ScheduleItemTemplateSelector.cs" />
@@ -224,6 +229,10 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="OtherSchedules\OtherSchedulesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Schedule\Style.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

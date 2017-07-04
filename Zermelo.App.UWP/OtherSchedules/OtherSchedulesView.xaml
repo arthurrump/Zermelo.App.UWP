@@ -1,0 +1,58 @@
+﻿<Page
+    x:Class="Zermelo.App.UWP.OtherSchedules.OtherSchedulesView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Zermelo.App.UWP.OtherSchedules"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:t10c="using:Template10.Controls"
+    xmlns:t10conv="using:Template10.Converters"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <t10conv:ChangeTypeConverter x:Key="ChangeTypeConverter" />
+    </Page.Resources>
+    
+    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <t10c:PageHeader
+            x:Name="Header"
+            Text="Roosteroverzichten"
+            EllipsisVisibility="Collapsed"
+            RelativePanel.AlignTopWithPanel="True"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.AlignRightWithPanel="True" />
+
+        <Grid
+            RelativePanel.Below="Header"
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.AlignRightWithPanel="True"
+            EntranceNavigationTransitionInfo.IsTargetElement="True">
+
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="12" MaxWidth="400">
+                <TextBox
+                    Header="Afkorting"
+                    Text="{x:Bind ViewModel.Code, Mode=TwoWay}"/>
+
+                <ComboBox
+                    Header="Type"
+                    SelectedIndex="{x:Bind ViewModel.Type, Mode=TwoWay, Converter={StaticResource ChangeTypeConverter}}"
+                    Margin="0, 12"
+                    HorizontalAlignment="Stretch">
+                    <ComboBox.Items>
+                        <x:String>Leerling</x:String>
+                        <x:String>Docent</x:String>
+                        <x:String>Groep</x:String>
+                        <x:String>Locatie</x:String>
+                    </ComboBox.Items>
+                </ComboBox>
+
+                <Button
+                    Content="Zoek"
+                    Command="{x:Bind ViewModel.GoToSchedule}"
+                    HorizontalAlignment="Center"/>
+            </StackPanel>
+
+        </Grid>
+    </RelativePanel>
+</Page>

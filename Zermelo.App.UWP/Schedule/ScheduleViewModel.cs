@@ -17,6 +17,8 @@ namespace Zermelo.App.UWP.Schedule
         IZermeloService _zermelo;
         IInternetConnectionService _internet;
 
+        string _code;
+
         public ScheduleViewModel(IZermeloService zermelo, IInternetConnectionService internet)
         {
             _zermelo = zermelo;
@@ -29,19 +31,25 @@ namespace Zermelo.App.UWP.Schedule
                 date = date.AddDays(1);
             Date = date;
 
+            Refresh = new DelegateCommand(GetAppointments);
+        }
+
+        public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
+        {
+            if (parameter != null)
+                (Type, _code) = ((ScheduleType, string))parameter;
+            else
+                (Type, _code) = (ScheduleType.Student, "~me");
+
             PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == nameof(Date))
                     GetAppointments();
             };
 
-            Refresh = new DelegateCommand(GetAppointments);
+            if (!IsLoading)
+                GetAppointments();
 
-            User = _zermelo.GetCurrentUser().GetAwaiter().GetResult();
-        }
-
-        public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
-        {
             PreloadAppointments();
         }
 
@@ -54,7 +62,24 @@ namespace Zermelo.App.UWP.Schedule
                 new MessageDialog("Je hebt op dit moment geen internetverbinding. De weergegeven informatie kan verouderd zijn.", "Geen internetverbinding").ShowAsync();
             }
 
-            IDisposable subscription = _zermelo.GetSchedule(Date.Date, Date.Date.AddDays(1))
+            IObservable<IEnumerable<Appointment>> observable;
+
+            switch (Type)
+            {
+                case ScheduleType.Student:
+                case ScheduleType.Employee:
+                    observable = _zermelo.GetSchedule(Date.Date, Date.Date.AddDays(1), _code);
+                    break;
+                case ScheduleType.Group:
+                    throw new NotImplementedException();
+                case ScheduleType.Location:
+                    throw new NotImplementedException();
+                default:
+                    observable = null;
+                    break;
+            }
+
+            IDisposable subscription = observable
                 .ObserveOnDispatcher()
                 .Subscribe(
                     a => Appointments.MorphInto(
@@ -77,11 +102,22 @@ namespace Zermelo.App.UWP.Schedule
                     if (day.DayOfWeek == DayOfWeek.Saturday || day.DayOfWeek == DayOfWeek.Sunday)
                         break;
 
-                    _zermelo.GetSchedule(day.Date, day.Date.AddDays(1)).Subscribe(
+                    _zermelo.GetSchedule(day.Date, day.Date.AddDays(1), _code).Subscribe(
                         _ => { }, 
                         ex => ExceptionHelper.HandleException(ex, $"{nameof(ScheduleViewModel)}.Preload", _ => { })
                     );
                 }
+            }
+        }
+
+        ScheduleType _type;
+        public ScheduleType Type
+        {
+            get => _type;
+            set
+            {
+                _type = value;
+                RaisePropertyChanged();
             }
         }
 
@@ -130,7 +166,5 @@ namespace Zermelo.App.UWP.Schedule
                 RaisePropertyChanged();
             }
         }
-
-        public API.Models.User User { get; }
     }
 }

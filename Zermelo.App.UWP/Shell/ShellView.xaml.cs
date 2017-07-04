@@ -1,4 +1,6 @@
-﻿using Template10.Services.NavigationService;
+﻿using System.Collections.ObjectModel;
+using Template10.Controls;
+using Template10.Services.NavigationService;
 using Windows.UI.Xaml.Controls;
 
 namespace Zermelo.App.UWP.Shell
@@ -10,5 +12,7 @@ namespace Zermelo.App.UWP.Shell
             InitializeComponent();
             HamburgerMenu.NavigationService = navigationService;
         }
+
+        public ObservableCollection<HamburgerButtonInfo> HamburgerPrimaryButtons => HamburgerMenu.PrimaryButtons;
     }
 }

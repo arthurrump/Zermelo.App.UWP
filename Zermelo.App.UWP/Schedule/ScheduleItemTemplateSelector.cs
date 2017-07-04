@@ -7,11 +7,11 @@ namespace Zermelo.App.UWP.Schedule
     {
         public DataTemplate GroupsTemplate { get; set; }
         public DataTemplate TeachersTemplate { get; set; }
-        public API.Models.User User { get; set; }
+        public ScheduleType ScheduleType { get; set; }
 
         protected override DataTemplate SelectTemplateCore(object item)
         {
-            if (User.IsEmployee ?? false)
+            if (ScheduleType == ScheduleType.Employee)
                 return GroupsTemplate;
             else
                 return TeachersTemplate;

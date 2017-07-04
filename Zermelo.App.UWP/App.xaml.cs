@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 using Zermelo.App.UWP.Announcements;
 using Zermelo.App.UWP.Login;
+using Zermelo.App.UWP.OtherSchedules;
 using Zermelo.App.UWP.Schedule;
 using Zermelo.App.UWP.Services;
 using Zermelo.App.UWP.Settings;
@@ -44,7 +45,8 @@ namespace Zermelo.App.UWP
 
             builder.RegisterType<AnnouncementsViewModel>().AsSelf();
             builder.RegisterType<LoginViewModel>().AsSelf();
-            builder.RegisterType<ScheduleViewModel>().AsSelf();
+            builder.RegisterType<ScheduleViewModel>().AsSelf().InstancePerDependency();
+            builder.RegisterType<OtherSchedulesViewModel>().AsSelf();
             builder.RegisterType<SettingsViewModel>().AsSelf();
 
             Container = builder.Build();
@@ -137,6 +139,8 @@ namespace Zermelo.App.UWP
                     return Container.Resolve<ScheduleViewModel>();
                 case AnnouncementsView _:
                     return Container.Resolve<AnnouncementsViewModel>();
+                case OtherSchedulesView _:
+                    return Container.Resolve<OtherSchedulesViewModel>();
                 case SettingsView _:
                     return Container.Resolve<SettingsViewModel>();
                 default:

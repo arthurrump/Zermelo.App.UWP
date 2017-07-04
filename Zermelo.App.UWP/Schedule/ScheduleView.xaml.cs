@@ -18,16 +18,16 @@ namespace Zermelo.App.UWP.Schedule
         ScheduleViewModel _viewModel;
         public ScheduleViewModel ViewModel => _viewModel ?? (_viewModel = (ScheduleViewModel)DataContext);
 
-        private void Page_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            if (CalendarView.SelectedDates.Count < 1)
-                CalendarView.SelectedDates.Add(ViewModel.Date);
-        }
-
         private void ScheduleListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             ViewModel.SelectedAppointment = e.ClickedItem as Appointment;
             Modal.IsModal = true;
+        }
+
+        private void CalendarView_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            if (CalendarView.SelectedDates.Count < 1)
+                CalendarView.SelectedDates.Add(ViewModel.Date);
         }
 
         private void CalendarView_SelectedDatesChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args)

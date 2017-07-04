@@ -8,6 +8,7 @@
     xmlns:t10c="using:Template10.Controls"
     xmlns:schedule="using:Zermelo.App.UWP.Schedule"
     xmlns:announcements="using:Zermelo.App.UWP.Announcements"
+    xmlns:others="using:Zermelo.App.UWP.OtherSchedules"
     xmlns:settings="using:Zermelo.App.UWP.Settings"
     mc:Ignorable="d">
 
@@ -24,6 +25,10 @@
                 <local:HamburgerButton Symbol="Message" Text="Mededelingen" />
             </t10c:HamburgerButtonInfo>
 
+            <t10c:HamburgerButtonInfo PageType="others:OtherSchedulesView">
+                <local:HamburgerButton Symbol="People" Text="Roosteroverzichten" />
+            </t10c:HamburgerButtonInfo>
+            
         </t10c:HamburgerMenu.PrimaryButtons>
 
         <t10c:HamburgerMenu.SecondaryButtons>
