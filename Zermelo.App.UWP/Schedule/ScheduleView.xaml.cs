@@ -12,22 +12,24 @@ namespace Zermelo.App.UWP.Schedule
         {
             this.InitializeComponent();
 
-            NavigationCacheMode = NavigationCacheMode.Enabled;
+            NavigationCacheMode = NavigationCacheMode.Disabled;
         }
 
         ScheduleViewModel _viewModel;
         public ScheduleViewModel ViewModel => _viewModel ?? (_viewModel = (ScheduleViewModel)DataContext);
 
-        private void ScheduleListView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            ViewModel.SelectedAppointment = e.ClickedItem as Appointment;
-            Modal.IsModal = true;
-        }
-
         private void CalendarView_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             if (CalendarView.SelectedDates.Count < 1)
                 CalendarView.SelectedDates.Add(ViewModel.Date);
+
+            CalendarView.SelectedDatesChanged += CalendarView_SelectedDatesChanged;
+        }
+
+        private void ScheduleListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            ViewModel.SelectedAppointment = e.ClickedItem as Appointment;
+            Modal.IsModal = true;
         }
 
         private void CalendarView_SelectedDatesChanged(CalendarView sender, CalendarViewSelectedDatesChangedEventArgs args)
@@ -36,6 +38,8 @@ namespace Zermelo.App.UWP.Schedule
                 ViewModel.Date = args.AddedDates.FirstOrDefault();
             else
                 CalendarView.SelectedDates.Add(ViewModel.Date);
+
+            CalendarFlyout.Hide();
         }
 
         private void CalendarView_CalendarViewDayItemChanging(CalendarView sender, CalendarViewDayItemChangingEventArgs args)

@@ -151,19 +151,12 @@
                     Style="{StaticResource HeaderButton}">
 
                     <FlyoutBase.AttachedFlyout>
-                        <Flyout FlyoutPresenterStyle="{StaticResource CalendarFlyoutStyle}">
+                        <Flyout x:Name="CalendarFlyout" FlyoutPresenterStyle="{StaticResource CalendarFlyoutStyle}">
                             <CalendarView 
                                 Name="CalendarView"
                                 FirstDayOfWeek="Monday"
                                 Loaded="CalendarView_Loaded"
-                                SelectedDatesChanged="CalendarView_SelectedDatesChanged"
                                 CalendarViewDayItemChanging="CalendarView_CalendarViewDayItemChanging">
-
-                                <Interactivity:Interaction.Behaviors>
-                                    <Core:EventTriggerBehavior EventName="SelectedDatesChanged">
-                                        <Behaviors:CloseFlyoutAction />
-                                    </Core:EventTriggerBehavior>
-                                </Interactivity:Interaction.Behaviors>
                             </CalendarView>
                         </Flyout>
                     </FlyoutBase.AttachedFlyout>
@@ -191,7 +184,7 @@
             RelativePanel.AlignRightWithPanel="True"
             EntranceNavigationTransitionInfo.IsTargetElement="True">
 
-            <t10c:ModalDialog x:Name="Modal" CanBackButtonDismiss="True">
+            <t10c:ModalDialog x:Name="Modal" CanBackButtonDismiss="True" IsModal="{x:Bind ViewModel.IsModal, Mode=TwoWay}">
 
                 <t10c:ModalDialog.Content>
                     <ListView

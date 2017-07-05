@@ -41,16 +41,38 @@ namespace Zermelo.App.UWP.Schedule
             else
                 (Type, _code) = (ScheduleType.Student, "~me");
 
+            if (SessionState.ContainsKey(_code))
+            {
+                var s = (ScheduleViewState)SessionState[_code];
+                Date = s.Date;
+                Type = s.Type;
+                SelectedAppointment = s.SelectedAppointment;
+                IsModal = s.IsModal;
+            }
+
             PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == nameof(Date))
                     GetAppointments();
             };
 
-            if (!IsLoading)
-                GetAppointments();
+            GetAppointments();
 
             PreloadAppointments();
+        }
+
+        public override async Task OnNavigatedFromAsync(IDictionary<string, object> pageState, bool suspending)
+        {
+            if (SessionState.ContainsKey(_code))
+                SessionState.Remove(_code);
+
+            SessionState.Add(_code, new ScheduleViewState
+            {
+                Date = Date,
+                Type = Type,
+                SelectedAppointment = SelectedAppointment,
+                IsModal = IsModal
+            });
         }
 
         private void GetAppointments()
@@ -163,6 +185,17 @@ namespace Zermelo.App.UWP.Schedule
             set
             {
                 isLoading = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        bool isModal = false;
+        public bool IsModal
+        {
+            get => isModal;
+            set
+            {
+                isModal = value;
                 RaisePropertyChanged();
             }
         }
