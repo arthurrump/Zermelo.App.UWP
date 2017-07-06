@@ -87,7 +87,7 @@ namespace Zermelo.App.UWP
         public override Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
             if (_authenticated)
-                NavigationService.Navigate(typeof(ScheduleView));
+                NavigationService.Navigate(typeof(ScheduleView), "~me");
             else
                 NavigationService.Navigate(typeof(LoginView));
 
@@ -112,7 +112,7 @@ namespace Zermelo.App.UWP
         {
             WindowWrapper.Current().NavigationServices.Clear();
             Window.Current.Content = GetAuthenticatedRootElement();
-            NavigationService.Navigate(typeof(ScheduleView));
+            NavigationService.Navigate(typeof(ScheduleView), "~me");
         }
 
         public UIElement GetLoginRootElement()

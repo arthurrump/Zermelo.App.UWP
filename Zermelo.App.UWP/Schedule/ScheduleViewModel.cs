@@ -36,10 +36,17 @@ namespace Zermelo.App.UWP.Schedule
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
-            if (parameter != null)
-                (Type, _code) = ((ScheduleType, string))parameter;
+            if (parameter is string p && !string.IsNullOrEmpty(p) && p != "~me")
+            {
+                Type = (ScheduleType)int.Parse(p.Substring(0, 1));
+                _code = p.Substring(1);
+            }
             else
-                (Type, _code) = (ScheduleType.Student, "~me");
+            {
+                _code = "~me";
+                var user = await _zermelo.GetCurrentUser();
+                Type = user?.IsEmployee ?? false ? ScheduleType.Employee : ScheduleType.Student;
+            }
 
             if (SessionState.ContainsKey(_code))
             {

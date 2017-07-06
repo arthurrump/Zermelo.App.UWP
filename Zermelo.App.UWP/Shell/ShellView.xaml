@@ -17,7 +17,7 @@
 
         <t10c:HamburgerMenu.PrimaryButtons>
 
-            <t10c:HamburgerButtonInfo PageType="schedule:ScheduleView">
+            <t10c:HamburgerButtonInfo PageType="schedule:ScheduleView" PageParameter="~me">
                 <local:HamburgerButton Symbol="Calendar" Text="Rooster" />
             </t10c:HamburgerButtonInfo>
 

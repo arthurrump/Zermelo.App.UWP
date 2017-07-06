@@ -29,11 +29,11 @@ namespace Zermelo.App.UWP.OtherSchedules
                             Symbol = Symbol.Contact
                         },
                         PageType = typeof(ScheduleView),
-                        PageParameter = ((ScheduleType)Type, Code)
+                        PageParameter = ($"{Type}{Code}")
                     }
                 );
 
-                NavigationService.Navigate(typeof(ScheduleView), ((ScheduleType)Type, Code));
+                NavigationService.Navigate(typeof(ScheduleView), $"{Type}{Code}");
             });
         }
 
