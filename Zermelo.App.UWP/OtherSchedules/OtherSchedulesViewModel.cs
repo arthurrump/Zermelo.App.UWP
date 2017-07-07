@@ -20,18 +20,23 @@ namespace Zermelo.App.UWP.OtherSchedules
         {
             GoToSchedule = new DelegateCommand(() =>
             {
-                ((ShellView)WindowWrapper.Current().Content).HamburgerPrimaryButtons.Add(
-                    new HamburgerButtonInfo()
-                    {
-                        Content = new HamburgerButton()
+                var navItems = ((ShellView)WindowWrapper.Current().Content).HamburgerPrimaryButtons;
+
+                if (!navItems.Any(x => x.PageType == typeof(ScheduleView) && (string)x.PageParameter == $"{Type}{Code}"))
+                {
+                    navItems.Add(
+                        new HamburgerButtonInfo()
                         {
-                            Text = Code,
-                            Symbol = Symbol.Contact
-                        },
-                        PageType = typeof(ScheduleView),
-                        PageParameter = ($"{Type}{Code}")
-                    }
-                );
+                            Content = new HamburgerButton()
+                            {
+                                Text = Code,
+                                Symbol = Symbol.Contact
+                            },
+                            PageType = typeof(ScheduleView),
+                            PageParameter = ($"{Type}{Code}")
+                        }
+                    );
+                }
 
                 NavigationService.Navigate(typeof(ScheduleView), $"{Type}{Code}");
             });
