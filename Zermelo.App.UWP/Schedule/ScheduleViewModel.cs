@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using Template10.Common;
 using Template10.Mvvm;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Navigation;
 using Zermelo.App.UWP.Helpers;
 using Zermelo.App.UWP.Services;
+using Zermelo.App.UWP.Shell;
 
 namespace Zermelo.App.UWP.Schedule
 {
@@ -32,6 +35,35 @@ namespace Zermelo.App.UWP.Schedule
             Date = date;
 
             Refresh = new DelegateCommand(GetAppointments);
+
+            CloseCurrentView = new DelegateCommand(() =>
+            {
+                string param = $"{(int)Type}{_code}";
+
+                Func<PageStackEntry, bool> isCurrentPage =
+                    page => page.SourcePageType == typeof(ScheduleView) && ((string)page.Parameter).Contains(param);
+                    
+                while (NavigationService.Frame.BackStack.Any(isCurrentPage))
+                {
+                    NavigationService.Frame.BackStack.Remove(
+                        NavigationService.Frame.BackStack.First(isCurrentPage)
+                    );
+                }
+
+                NavigationService.GoBack();
+
+                while (NavigationService.Frame.ForwardStack.Any(isCurrentPage))
+                {
+                    NavigationService.Frame.ForwardStack.Remove(
+                        NavigationService.Frame.ForwardStack.First(isCurrentPage)
+                    );
+                }
+
+                // Doing this before GoBack() causes a NullReferenceException inside Template10
+                // I have no idea why.
+                var navItems = ((ShellView)WindowWrapper.Current().Content).HamburgerPrimaryButtons;
+                navItems.Remove(navItems.Single(x => x.PageType == typeof(ScheduleView) && (string)x.PageParameter == param));
+            });
         }
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
@@ -40,6 +72,7 @@ namespace Zermelo.App.UWP.Schedule
             {
                 Type = (ScheduleType)int.Parse(p.Substring(0, 1));
                 _code = p.Substring(1);
+                IsClosable = true;
             }
             else
             {
@@ -206,5 +239,18 @@ namespace Zermelo.App.UWP.Schedule
                 RaisePropertyChanged();
             }
         }
+
+        bool isClosable;
+        public bool IsClosable
+        {
+            get => isClosable;
+            set
+            {
+                isClosable = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public DelegateCommand CloseCurrentView { get; }
     }
 }

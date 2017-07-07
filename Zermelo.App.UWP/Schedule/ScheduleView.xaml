@@ -22,6 +22,18 @@
             <t10conv:StringFormatConverter x:Key="TimeConverter" Format="{}{0:t}" />
             <t10conv:StringFormatConverter x:Key="DateConverter" Format="{}{0:D}" />
 
+            <t10conv:ValueWhenConverter x:Key="VisibleWhenTrueConverter">
+                <t10conv:ValueWhenConverter.When>
+                    <x:Boolean>True</x:Boolean>
+                </t10conv:ValueWhenConverter.When>
+                <t10conv:ValueWhenConverter.Value>
+                    <Visibility>Visible</Visibility>
+                </t10conv:ValueWhenConverter.Value>
+                <t10conv:ValueWhenConverter.Otherwise>
+                    <Visibility>Collapsed</Visibility>
+                </t10conv:ValueWhenConverter.Otherwise>
+            </t10conv:ValueWhenConverter>
+
             <local:StatusToSymbolConverter x:Key="StatusToSymbolConverter" />
 
             <local:ScheduleItemStyleSelector x:Key="ScheduleItemStyleSelector"
@@ -173,6 +185,14 @@
                     Label="Vernieuwen"
                     Command="{x:Bind ViewModel.Refresh}"
                     Style="{StaticResource HeaderButton}"/>
+
+                <AppBarButton
+                    Icon="Cancel"
+                    Label="Sluiten"
+                    Command="{x:Bind ViewModel.CloseCurrentView}"
+                    Visibility="{x:Bind ViewModel.IsClosable, Converter={StaticResource VisibleWhenTrueConverter}}"
+                    Style="{StaticResource HeaderButton}" />
+                
             </t10c:PageHeader.PrimaryCommands>
 
         </t10c:PageHeader>
