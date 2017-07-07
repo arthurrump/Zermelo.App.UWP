@@ -21,7 +21,7 @@ namespace Zermelo.App.UWP.OtherSchedules
         {
             this.InitializeComponent();
 
-            NavigationCacheMode = NavigationCacheMode.Enabled;
+            NavigationCacheMode = NavigationCacheMode.Disabled;
         }
 
         OtherSchedulesViewModel _viewModel;
