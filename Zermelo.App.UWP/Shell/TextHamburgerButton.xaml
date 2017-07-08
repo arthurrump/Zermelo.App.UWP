@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="Zermelo.App.UWP.Shell.HamburgerButton"
+    x:Class="Zermelo.App.UWP.Shell.TextHamburgerButton"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Zermelo.App.UWP.Shell"
@@ -10,13 +10,16 @@
     d:DesignWidth="200">
 
     <StackPanel
+        Height="48"
         Orientation="Horizontal"
         VerticalAlignment="Center">
 
-        <SymbolIcon
-            Height="48"
+        <TextBlock
             Width="48"
-            Symbol="{x:Bind Symbol}"/>
+            TextAlignment="Center"
+            VerticalAlignment="Center"
+            Style="{StaticResource TitleTextBlockStyle}"
+            Text="{x:Bind SymbolText}"/>
 
         <TextBlock
             Margin="12,0,0,0"

@@ -18,23 +18,23 @@
         <t10c:HamburgerMenu.PrimaryButtons>
 
             <t10c:HamburgerButtonInfo PageType="schedule:ScheduleView" PageParameter="~me">
-                <local:HamburgerButton Symbol="Calendar" Text="Rooster" />
+                <local:SymbolHamburgerButton Symbol="Calendar" Text="Mijn rooster" />
             </t10c:HamburgerButtonInfo>
 
             <t10c:HamburgerButtonInfo PageType="announcements:AnnouncementsView">
-                <local:HamburgerButton Symbol="Message" Text="Mededelingen" />
+                <local:SymbolHamburgerButton Symbol="Message" Text="Mededelingen" />
             </t10c:HamburgerButtonInfo>
 
             <t10c:HamburgerButtonInfo PageType="others:OtherSchedulesView">
-                <local:HamburgerButton Symbol="People" Text="Roosteroverzichten" />
+                <local:SymbolHamburgerButton Symbol="People" Text="Roosteroverzichten" />
             </t10c:HamburgerButtonInfo>
-            
+
         </t10c:HamburgerMenu.PrimaryButtons>
 
         <t10c:HamburgerMenu.SecondaryButtons>
 
             <t10c:HamburgerButtonInfo PageType="settings:SettingsView">
-                <local:HamburgerButton Symbol="Setting" Text="Instellingen" />
+                <local:SymbolHamburgerButton Symbol="Setting" Text="Instellingen" />
             </t10c:HamburgerButtonInfo>
 
         </t10c:HamburgerMenu.SecondaryButtons>

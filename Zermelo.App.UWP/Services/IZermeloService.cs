@@ -10,5 +10,7 @@ namespace Zermelo.App.UWP.Services
         IObservable<IEnumerable<Appointment>> GetSchedule(DateTimeOffset start, DateTimeOffset end, string user = "~me");
         IObservable<IEnumerable<Announcement>> GetAnnouncements();
         IObservable<API.Models.User> GetCurrentUser();
+        IObservable<API.Models.User> GetStudent(string code);
+        IObservable<API.Models.User> GetEmployee(string code);
     }
 }

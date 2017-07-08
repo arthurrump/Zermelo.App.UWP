@@ -46,10 +46,34 @@ namespace Zermelo.App.UWP.Services
 
         public IObservable<API.Models.User> GetCurrentUser()
             => _cache.GetAndFetchLatest(
-                nameof(GetCurrentUser), 
+                nameof(GetCurrentUser),
                 () => {
                     if (_internet.IsConnected())
                         return _zermelo.GetCurrentUser();
+                    else
+                        return Observable.Return(default(API.Models.User));
+                },
+                date => _internet.IsConnected() && DateTimeOffset.UtcNow.Subtract(date) > TimeSpan.FromDays(7)
+               );
+
+        public IObservable<API.Models.User> GetStudent(string code)
+            => _cache.GetAndFetchLatest(
+                $"{nameof(GetStudent)}({code})",
+                () => {
+                    if (_internet.IsConnected())
+                        return _zermelo.GetStudent(code);
+                    else
+                        return Observable.Return(default(API.Models.User));
+                },
+                date => _internet.IsConnected() && DateTimeOffset.UtcNow.Subtract(date) > TimeSpan.FromDays(7)
+               );
+
+        public IObservable<API.Models.User> GetEmployee(string code)
+            => _cache.GetAndFetchLatest(
+                $"{nameof(GetEmployee)}({code})",
+                () => {
+                    if (_internet.IsConnected())
+                        return _zermelo.GetEmployee(code);
                     else
                         return Observable.Return(default(API.Models.User));
                 },

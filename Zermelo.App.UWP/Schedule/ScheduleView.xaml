@@ -150,7 +150,7 @@
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <t10c:PageHeader
             x:Name="Header"
-            Text="Rooster"
+            Text="{x:Bind ViewModel.Header, Mode=OneWay}"
             EllipsisVisibility="Collapsed"
             RelativePanel.AlignTopWithPanel="True"
             RelativePanel.AlignLeftWithPanel="True"

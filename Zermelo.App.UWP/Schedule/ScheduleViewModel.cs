@@ -90,6 +90,29 @@ namespace Zermelo.App.UWP.Schedule
                 IsModal = s.IsModal;
             }
 
+            if (_code != "~me")
+            {
+                switch (Type)
+                {
+                    case ScheduleType.Student:
+                        var student = await _zermelo.GetStudent(_code);
+                        Header = $"Rooster van {student.FullName}";
+                        break;
+                    case ScheduleType.Employee:
+                        var employee = await _zermelo.GetEmployee(_code);
+                        Header = $"Rooster van {employee.FullName}";
+                        break;
+                    case ScheduleType.Group:
+                        throw new NotImplementedException();
+                    case ScheduleType.Location:
+                        throw new NotImplementedException();
+                }
+            }
+            else
+            {
+                Header = "Mijn rooster";
+            }
+
             PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == nameof(Date))
@@ -169,6 +192,17 @@ namespace Zermelo.App.UWP.Schedule
                         ex => ExceptionHelper.HandleException(ex, $"{nameof(ScheduleViewModel)}.Preload", _ => { })
                     );
                 }
+            }
+        }
+
+        string _header = "Rooster";
+        public string Header
+        {
+            get => _header;
+            set
+            {
+                _header = value;
+                RaisePropertyChanged();
             }
         }
 

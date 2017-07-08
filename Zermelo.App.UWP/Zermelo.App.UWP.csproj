@@ -111,8 +111,11 @@
     <Compile Include="Schedule\ScheduleRow.cs" />
     <Compile Include="Schedule\ScheduleViewState.cs" />
     <Compile Include="Schedule\StatusToSymbolConverter.cs" />
-    <Compile Include="Shell\HamburgerButton.xaml.cs">
-      <DependentUpon>HamburgerButton.xaml</DependentUpon>
+    <Compile Include="Shell\TextHamburgerButton.xaml.cs">
+      <DependentUpon>TextHamburgerButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Shell\SymbolHamburgerButton.xaml.cs">
+      <DependentUpon>SymbolHamburgerButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\IEnumerableExtensions.cs" />
@@ -239,7 +242,11 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
-    <Page Include="Shell\HamburgerButton.xaml">
+    <Page Include="Shell\TextHamburgerButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Shell\SymbolHamburgerButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

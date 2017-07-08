@@ -3,9 +3,9 @@ using Windows.UI.Xaml.Controls;
 
 namespace Zermelo.App.UWP.Shell
 {
-    public sealed partial class HamburgerButton : UserControl
+    public sealed partial class SymbolHamburgerButton : UserControl
     {
-        public HamburgerButton()
+        public SymbolHamburgerButton()
         {
             this.InitializeComponent();
         }
@@ -17,7 +17,7 @@ namespace Zermelo.App.UWP.Shell
         }
 
         public static readonly DependencyProperty SymbolProperty =
-            DependencyProperty.Register(nameof(Symbol), typeof(Symbol), typeof(HamburgerButton), new PropertyMetadata(Symbol.Home));
+            DependencyProperty.Register(nameof(Symbol), typeof(Symbol), typeof(SymbolHamburgerButton), new PropertyMetadata(Symbol.Home));
 
 
         public string Text
@@ -27,6 +27,6 @@ namespace Zermelo.App.UWP.Shell
         }
 
         public static readonly DependencyProperty TextProperty =
-            DependencyProperty.Register(nameof(Text), typeof(string), typeof(HamburgerButton), new PropertyMetadata(string.Empty));
+            DependencyProperty.Register(nameof(Text), typeof(string), typeof(SymbolHamburgerButton), new PropertyMetadata(string.Empty));
     }
 }
