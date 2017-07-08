@@ -39,21 +39,29 @@ namespace Zermelo.App.UWP.Services
                         .Select(a => new Announcement(a))
                 );
 
-        List<string> userFields = new List<string> { "firstName", "prefix", "lastName", "code", "isEmployee" };
-
         public IObservable<API.Models.User> GetCurrentUser() 
             => Observable.FromAsync(
-                () => connection.Users.GetCurrentUserAsync(userFields)
+                () => connection.Users.GetCurrentUserAsync(new List<string> { "firstName", "prefix", "lastName", "code", "isEmployee" })
                );
 
         public IObservable<API.Models.User> GetStudent(string code)
             => Observable.FromAsync(
-                () => connection.Users.GetByCodeAsync(code, userFields)
+                () => connection.Users.GetByCodeAsync(code, new List<string> { "firstName", "prefix", "lastName" })
                );
 
         public IObservable<API.Models.User> GetEmployee(string code)
             => Observable.FromAsync(
-                () => connection.Users.GetByCodeAsync(code, userFields.Except(new List<string> { "firstName" }).ToList())
+                () => connection.Users.GetByCodeAsync(code, new List<string> { "prefix", "lastName" })
+               );
+
+        public IObservable<IEnumerable<API.Models.User>> GetAllStudents()
+            => Observable.FromAsync(
+                () => connection.Users.GetStudentsAsync(fields: new List<string> { "firstName", "prefix", "lastName", "code" })
+               );
+
+        public IObservable<IEnumerable<API.Models.User>> GetAllEmployees()
+            => Observable.FromAsync(
+                () => connection.Users.GetEmployeesAsync(fields: new List<string> { "prefix", "lastName", "code" })
                );
     }
 }

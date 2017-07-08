@@ -12,5 +12,7 @@ namespace Zermelo.App.UWP.Services
         IObservable<API.Models.User> GetCurrentUser();
         IObservable<API.Models.User> GetStudent(string code);
         IObservable<API.Models.User> GetEmployee(string code);
+        IObservable<IEnumerable<API.Models.User>> GetAllStudents();
+        IObservable<IEnumerable<API.Models.User>> GetAllEmployees();
     }
 }

@@ -53,7 +53,7 @@ namespace Zermelo.App.UWP.Services
                     else
                         return Observable.Return(default(API.Models.User));
                 },
-                date => _internet.IsConnected() && DateTimeOffset.UtcNow.Subtract(date) > TimeSpan.FromDays(7)
+                date => _internet.IsConnected() && DateTimeOffset.UtcNow.Subtract(date) > TimeSpan.FromDays(31)
                );
 
         public IObservable<API.Models.User> GetStudent(string code)
@@ -65,7 +65,7 @@ namespace Zermelo.App.UWP.Services
                     else
                         return Observable.Return(default(API.Models.User));
                 },
-                date => _internet.IsConnected() && DateTimeOffset.UtcNow.Subtract(date) > TimeSpan.FromDays(7)
+                date => _internet.IsConnected() && DateTimeOffset.UtcNow.Subtract(date) > TimeSpan.FromDays(14)
                );
 
         public IObservable<API.Models.User> GetEmployee(string code)
@@ -76,6 +76,30 @@ namespace Zermelo.App.UWP.Services
                         return _zermelo.GetEmployee(code);
                     else
                         return Observable.Return(default(API.Models.User));
+                },
+                date => _internet.IsConnected() && DateTimeOffset.UtcNow.Subtract(date) > TimeSpan.FromDays(14)
+               );
+
+        public IObservable<IEnumerable<API.Models.User>> GetAllStudents()
+            => _cache.GetAndFetchLatest(
+                nameof(GetAllStudents),
+                () => {
+                    if (_internet.IsConnected())
+                        return _zermelo.GetAllStudents();
+                    else
+                        return Observable.Return(new List<API.Models.User>());
+                },
+                date => _internet.IsConnected() && DateTimeOffset.UtcNow.Subtract(date) > TimeSpan.FromDays(7)
+               );
+
+        public IObservable<IEnumerable<API.Models.User>> GetAllEmployees()
+            => _cache.GetAndFetchLatest(
+                nameof(GetAllEmployees),
+                () => {
+                    if (_internet.IsConnected())
+                        return _zermelo.GetAllEmployees();
+                    else
+                        return Observable.Return(new List<API.Models.User>());
                 },
                 date => _internet.IsConnected() && DateTimeOffset.UtcNow.Subtract(date) > TimeSpan.FromDays(7)
                );
