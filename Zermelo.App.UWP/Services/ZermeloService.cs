@@ -39,19 +39,21 @@ namespace Zermelo.App.UWP.Services
                         .Select(a => new Announcement(a))
                 );
 
+        List<string> userFields = new List<string> { "firstName", "prefix", "lastName", "code", "isEmployee" };
+
         public IObservable<API.Models.User> GetCurrentUser() 
             => Observable.FromAsync(
-                () => connection.Users.GetCurrentUserAsync()
+                () => connection.Users.GetCurrentUserAsync(userFields)
                );
 
         public IObservable<API.Models.User> GetStudent(string code)
             => Observable.FromAsync(
-                () => connection.Users.GetByCodeAsync(code)
+                () => connection.Users.GetByCodeAsync(code, userFields)
                );
 
         public IObservable<API.Models.User> GetEmployee(string code)
             => Observable.FromAsync(
-                () => connection.Users.GetByCodeAsync(code, API.Models.User.Fields.Except(new List<string> { "firstName" }).ToList())
+                () => connection.Users.GetByCodeAsync(code, userFields.Except(new List<string> { "firstName" }).ToList())
                );
     }
 }
