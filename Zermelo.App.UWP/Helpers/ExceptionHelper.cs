@@ -33,9 +33,19 @@ namespace Zermelo.App.UWP.Helpers
                     Analytics.TrackEvent("ZermeloHttpException", new Dictionary<string, string>
                     {
                         { "Location", location },
-                        { "Message", zex.Message },
+                        { "Message", zex.Message.Substring(0, 64) },
                         { "StatusCode", zex.StatusCode.ToString() },
-                        { "ResponseContent", zex.ResponseContent }
+                        { "ResponseContent", zex.ResponseContent.Substring(0, 64) }
+                    });
+                    break;
+
+                case System.Net.Http.HttpRequestException hre:
+                    Analytics.TrackEvent("HttpRequestException", new Dictionary<string, string>
+                    {
+                        { "Location", location },
+                        { "Message", hre.Message.Substring(0, 64) },
+                        { "Source", hre.Source },
+                        { "StackTrace", ex.StackTrace.Substring(0, 64) }
                     });
                     break;
 
@@ -45,9 +55,9 @@ namespace Zermelo.App.UWP.Helpers
                     Analytics.TrackEvent("UnknownException", new Dictionary<string, string>
                     {
                         { "Location", location },
-                        { "Message", ex.Message },
+                        { "Message", ex.Message.Substring(0, 64) },
                         { "Source", ex.Source },
-                        { "StackTrace", ex.StackTrace }
+                        { "StackTrace", ex.StackTrace.Substring(0, 64) }
                     });
                     break;
             }
