@@ -18,6 +18,13 @@ namespace Zermelo.App.UWP.OtherSchedules
             DisplayText = $"{user.FullName} ({user.Code})";
         }
 
+        public SearchItem(API.Models.Group group)
+        {
+            Type = ScheduleType.Group;
+            Code = group.Id.Value.ToString();
+            DisplayText = group.ExtendedName;
+        }
+
         public ScheduleType Type { get; set; }
         public string Code { get; set; }
         public string DisplayText { get; set; }

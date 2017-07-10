@@ -33,6 +33,20 @@ namespace Zermelo.App.UWP.Services
                         .Select(a => new Appointment(a))
                );
 
+        public IObservable<IEnumerable<Appointment>> GetScheduleForGroup(DateTimeOffset start, DateTimeOffset end, string code)
+            => Observable.FromAsync(
+                async () =>
+                    (await connection.Appointments.GetByCustomUrlOptionsAsync(new Dictionary<string, string>
+                        {
+                            { "start", start.ToUnixTimeSeconds().ToString() },
+                            { "end", end.ToUnixTimeSeconds().ToString() },
+                            { "containsStudentsFromGroupInDepartment", code },
+                            { "valid", "true" }
+                        },
+                        fields: Appointment.Fields))
+                        .Select(a => new Appointment(a))
+               );
+
         public IObservable<IEnumerable<Announcement>> GetAnnouncements()
             => Observable.FromAsync(
                 async () =>
@@ -55,6 +69,11 @@ namespace Zermelo.App.UWP.Services
                 () => connection.Users.GetByCodeAsync(code, new List<string> { "prefix", "lastName" })
                );
 
+        public IObservable<API.Models.Group> GetGroup(string code)
+            => Observable.FromAsync(
+                () => connection.Groups.GetSingleById(long.Parse(code), new List<string> { "id", "name", "extendedName" })
+               );
+
         public IObservable<IEnumerable<SearchItem>> GetAllStudentsAsSearchItems()
             => Observable.FromAsync(
                 async () => 
@@ -67,6 +86,13 @@ namespace Zermelo.App.UWP.Services
                 async () => 
                     (await connection.Users.GetEmployeesAsync(fields: new List<string> { "prefix", "lastName", "code" }))
                         .Select(e => new SearchItem(e, ScheduleType.Employee))
+               );
+
+        public IObservable<IEnumerable<SearchItem>> GetAllGroupsAsSearchItems()
+            => Observable.FromAsync(
+                async () =>
+                    (await connection.Groups.GetAllAsync(new List<string> { "id", "name", "extendedName" }))
+                        .Select(g => new SearchItem(g))
                );
     }
 }

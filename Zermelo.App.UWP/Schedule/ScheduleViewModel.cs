@@ -103,7 +103,9 @@ namespace Zermelo.App.UWP.Schedule
                         Header = $"Rooster van {employee.FullName}";
                         break;
                     case ScheduleType.Group:
-                        throw new NotImplementedException();
+                        var group = await _zermelo.GetGroup(_code);
+                        Header = $"Rooster van {group.ExtendedName}";
+                        break;
                     case ScheduleType.Location:
                         throw new NotImplementedException();
                 }
@@ -156,7 +158,8 @@ namespace Zermelo.App.UWP.Schedule
                     observable = _zermelo.GetSchedule(Date.Date, Date.Date.AddDays(1), _code);
                     break;
                 case ScheduleType.Group:
-                    throw new NotImplementedException();
+                    observable = _zermelo.GetScheduleForGroup(Date.Date, Date.Date.AddDays(1), _code);
+                    break;
                 case ScheduleType.Location:
                     throw new NotImplementedException();
                 default:

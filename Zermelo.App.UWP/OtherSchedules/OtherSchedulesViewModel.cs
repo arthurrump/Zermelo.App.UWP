@@ -25,7 +25,7 @@ namespace Zermelo.App.UWP.OtherSchedules
         IZermeloService _zermelo;
         IEnumerable<SearchItem> _students = new List<SearchItem>();
         IEnumerable<SearchItem> _employees = new List<SearchItem>();
-        
+        IEnumerable<SearchItem> _groups = new List<SearchItem>();
 
         public OtherSchedulesViewModel(IZermeloService zermelo)
         {
@@ -49,6 +49,14 @@ namespace Zermelo.App.UWP.OtherSchedules
                     ex => ExceptionHelper.HandleException(ex, $"{nameof(OtherSchedulesViewModel)}.GetEmployees",
                         x => new MessageDialog(x, "Error").ShowAsync())
                 );
+
+            _zermelo.GetAllGroupsAsSearchItems()
+                .ObserveOnDispatcher()
+                .Subscribe(
+                    e => _employees = e,
+                    ex => ExceptionHelper.HandleException(ex, $"{nameof(OtherSchedulesViewModel)}.GetGroups",
+                        x => new MessageDialog(x, "Error").ShowAsync())
+                );
         }
 
         private void SearchDelegate()
@@ -56,6 +64,7 @@ namespace Zermelo.App.UWP.OtherSchedules
             SearchItems.MorphInto(
                 _students
                     .Concat(_employees)
+                    .Concat(_groups)
                     .Where(s => s.DisplayText.ToLowerInvariant().Contains(SearchText.ToLowerInvariant()))
                     .OrderBy(s => s.Type)
                     .ThenBy(s => s.Code)
@@ -78,7 +87,10 @@ namespace Zermelo.App.UWP.OtherSchedules
                     text = $"Rooster van {employee.FullName}";
                     break;
                 case ScheduleType.Group:
-                    throw new NotImplementedException();
+                    var group = await _zermelo.GetGroup(SelectedSearchItem.Code);
+                    symbolText = group.Name.Substring(0, 2).ToUpperInvariant();
+                    text = $"Rooster van {group.ExtendedName}";
+                    break;
                 case ScheduleType.Location:
                     throw new NotImplementedException();
                 default:
