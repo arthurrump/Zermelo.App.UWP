@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Zermelo.App.UWP.Announcements;
+using Zermelo.App.UWP.OtherSchedules;
 using Zermelo.App.UWP.Schedule;
 
 namespace Zermelo.App.UWP.Services
@@ -12,7 +13,7 @@ namespace Zermelo.App.UWP.Services
         IObservable<API.Models.User> GetCurrentUser();
         IObservable<API.Models.User> GetStudent(string code);
         IObservable<API.Models.User> GetEmployee(string code);
-        IObservable<IEnumerable<API.Models.User>> GetAllStudents();
-        IObservable<IEnumerable<API.Models.User>> GetAllEmployees();
+        IObservable<IEnumerable<SearchItem>> GetAllStudentsAsSearchItems();
+        IObservable<IEnumerable<SearchItem>> GetAllEmployeesAsSearchItems();
     }
 }

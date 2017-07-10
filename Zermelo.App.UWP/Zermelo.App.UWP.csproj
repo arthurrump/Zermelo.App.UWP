@@ -100,6 +100,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\InvisibleWhenNullOrWhiteSpaceConverter.cs" />
+    <Compile Include="OtherSchedules\SearchItem.cs" />
     <Compile Include="Schedule\ScheduleType.cs" />
     <Compile Include="OtherSchedules\OtherSchedulesView.xaml.cs">
       <DependentUpon>OtherSchedulesView.xaml</DependentUpon>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using Zermelo.App.UWP.Announcements;
+using Zermelo.App.UWP.OtherSchedules;
 using Zermelo.App.UWP.Schedule;
 
 namespace Zermelo.App.UWP.Services
@@ -80,26 +81,26 @@ namespace Zermelo.App.UWP.Services
                 date => _internet.IsConnected() && DateTimeOffset.UtcNow.Subtract(date) > TimeSpan.FromDays(14)
                );
 
-        public IObservable<IEnumerable<API.Models.User>> GetAllStudents()
+        public IObservable<IEnumerable<SearchItem>> GetAllStudentsAsSearchItems()
             => _cache.GetAndFetchLatest(
-                nameof(GetAllStudents),
+                nameof(GetAllStudentsAsSearchItems),
                 () => {
                     if (_internet.IsConnected())
-                        return _zermelo.GetAllStudents();
+                        return _zermelo.GetAllStudentsAsSearchItems();
                     else
-                        return Observable.Return(new List<API.Models.User>());
+                        return Observable.Return(new List<SearchItem>());
                 },
                 date => _internet.IsConnected() && DateTimeOffset.UtcNow.Subtract(date) > TimeSpan.FromDays(7)
                );
 
-        public IObservable<IEnumerable<API.Models.User>> GetAllEmployees()
+        public IObservable<IEnumerable<SearchItem>> GetAllEmployeesAsSearchItems()
             => _cache.GetAndFetchLatest(
-                nameof(GetAllEmployees),
+                nameof(GetAllEmployeesAsSearchItems),
                 () => {
                     if (_internet.IsConnected())
-                        return _zermelo.GetAllEmployees();
+                        return _zermelo.GetAllEmployeesAsSearchItems();
                     else
-                        return Observable.Return(new List<API.Models.User>());
+                        return Observable.Return(new List<SearchItem>());
                 },
                 date => _internet.IsConnected() && DateTimeOffset.UtcNow.Subtract(date) > TimeSpan.FromDays(7)
                );

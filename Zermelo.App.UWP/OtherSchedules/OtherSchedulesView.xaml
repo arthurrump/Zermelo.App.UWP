@@ -7,6 +7,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:t10c="using:Template10.Controls"
     xmlns:t10conv="using:Template10.Converters"
+    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:Behaviors="using:Template10.Behaviors"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -23,36 +26,52 @@
             RelativePanel.AlignRightWithPanel="True" />
 
         <Grid
+            x:Name="SearchGrid"
+            Margin="12"
             RelativePanel.Below="Header"
-            RelativePanel.AlignBottomWithPanel="True"
             RelativePanel.AlignLeftWithPanel="True"
             RelativePanel.AlignRightWithPanel="True"
             EntranceNavigationTransitionInfo.IsTargetElement="True">
 
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="12" MaxWidth="400">
-                <TextBox
-                    Header="Afkorting"
-                    Text="{x:Bind ViewModel.Code, Mode=TwoWay}"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MaxWidth="400" Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-                <ComboBox
-                    Header="Type"
-                    SelectedIndex="{x:Bind ViewModel.Type, Mode=TwoWay, Converter={StaticResource ChangeTypeConverter}}"
-                    Margin="0, 12"
-                    HorizontalAlignment="Stretch">
-                    <ComboBox.Items>
-                        <x:String>Leerling</x:String>
-                        <x:String>Docent</x:String>
-                        <x:String>Groep</x:String>
-                        <x:String>Locatie</x:String>
-                    </ComboBox.Items>
-                </ComboBox>
+            <TextBox
+                Grid.Column="0"
+                InputScope="Search"
+                PlaceholderText="Zoeken"
+                KeyUp="TextBox_KeyUp"
+                Text="{x:Bind ViewModel.SearchText, Mode=TwoWay}" />
 
-                <Button
-                    Content="Zoek"
-                    Command="{x:Bind ViewModel.GoToSchedule}"
-                    HorizontalAlignment="Center"/>
-            </StackPanel>
-
+            <Button
+                x:Name="SearchButton"
+                Grid.Column="1"
+                Margin="6, 0, 0, 0"
+                Content="Zoeken"
+                Command="{x:Bind ViewModel.Search}" />
         </Grid>
+
+        <ListView
+            RelativePanel.Below="SearchGrid"
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.AlignRightWithPanel="True"
+            EntranceNavigationTransitionInfo.IsTargetElement="True"
+            
+            Padding="0, 0, 0, 12"
+            SelectionMode="None"
+            IsItemClickEnabled="True"
+            ItemContainerStyle="{StaticResource ListViewItemStyle}"
+            ItemsSource="{x:Bind ViewModel.SearchItems, Mode=OneWay}"
+            ItemClick="ListView_ItemClick">
+
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="local:SearchItem">
+                    <TextBlock Text="{x:Bind DisplayText}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </RelativePanel>
 </Page>

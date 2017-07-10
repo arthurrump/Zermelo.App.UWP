@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using Zermelo.API;
 using Zermelo.App.UWP.Announcements;
+using Zermelo.App.UWP.OtherSchedules;
 using Zermelo.App.UWP.Schedule;
 
 namespace Zermelo.App.UWP.Services
@@ -54,14 +55,18 @@ namespace Zermelo.App.UWP.Services
                 () => connection.Users.GetByCodeAsync(code, new List<string> { "prefix", "lastName" })
                );
 
-        public IObservable<IEnumerable<API.Models.User>> GetAllStudents()
+        public IObservable<IEnumerable<SearchItem>> GetAllStudentsAsSearchItems()
             => Observable.FromAsync(
-                () => connection.Users.GetStudentsAsync(fields: new List<string> { "firstName", "prefix", "lastName", "code" })
+                async () => 
+                    (await connection.Users.GetStudentsAsync(fields: new List<string> { "firstName", "prefix", "lastName", "code" }))
+                        .Select(s => new SearchItem(s, ScheduleType.Student))
                );
 
-        public IObservable<IEnumerable<API.Models.User>> GetAllEmployees()
+        public IObservable<IEnumerable<SearchItem>> GetAllEmployeesAsSearchItems()
             => Observable.FromAsync(
-                () => connection.Users.GetEmployeesAsync(fields: new List<string> { "prefix", "lastName", "code" })
+                async () => 
+                    (await connection.Users.GetEmployeesAsync(fields: new List<string> { "prefix", "lastName", "code" }))
+                        .Select(e => new SearchItem(e, ScheduleType.Employee))
                );
     }
 }
