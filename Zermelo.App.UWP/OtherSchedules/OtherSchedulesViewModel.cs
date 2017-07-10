@@ -53,7 +53,7 @@ namespace Zermelo.App.UWP.OtherSchedules
             _zermelo.GetAllGroupsAsSearchItems()
                 .ObserveOnDispatcher()
                 .Subscribe(
-                    e => _employees = e,
+                    g => _groups = g,
                     ex => ExceptionHelper.HandleException(ex, $"{nameof(OtherSchedulesViewModel)}.GetGroups",
                         x => new MessageDialog(x, "Error").ShowAsync())
                 );
