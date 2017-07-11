@@ -137,7 +137,7 @@ namespace Zermelo.App.UWP.OtherSchedules
 
             var parameter = $"{(int)SelectedSearchItem.Type}{SelectedSearchItem.Code}";
 
-            var navItems = ((ShellView)WindowWrapper.Current().Content).HamburgerPrimaryButtons;
+            var navItems = ShellView.Instance.HamburgerPrimaryButtons;
             if (!navItems.Any(x => x.PageType == typeof(ScheduleView) && (string)x.PageParameter == parameter))
             {
                 navItems.Add(

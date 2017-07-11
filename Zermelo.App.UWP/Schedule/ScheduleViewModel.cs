@@ -62,7 +62,7 @@ namespace Zermelo.App.UWP.Schedule
 
                 // Doing this before GoBack() causes a NullReferenceException inside Template10
                 // I have no idea why.
-                var navItems = ((ShellView)WindowWrapper.Current().Content).HamburgerPrimaryButtons;
+                var navItems = ShellView.Instance.HamburgerPrimaryButtons;
                 navItems.Remove(navItems.Single(x => x.PageType == typeof(ScheduleView) && (string)x.PageParameter == param));
             });
         }
