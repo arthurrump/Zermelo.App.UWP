@@ -69,6 +69,8 @@ namespace Zermelo.App.UWP.Schedule
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
+            IsLoading = true;
+
             if (parameter is string p && !string.IsNullOrEmpty(p) && p != "~me")
             {
                 Type = (ScheduleType)int.Parse(p.Substring(0, 1));
