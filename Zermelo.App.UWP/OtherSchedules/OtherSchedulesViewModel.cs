@@ -28,6 +28,8 @@ namespace Zermelo.App.UWP.OtherSchedules
         IEnumerable<SearchItem> _groups = new List<SearchItem>();
         IEnumerable<SearchItem> _locations = new List<SearchItem>();
 
+        bool _sLoading, _eLoading, _gLoading, _lLoading;
+
         public OtherSchedulesViewModel(IZermeloService zermelo)
         {
             _zermelo = zermelo;
@@ -35,37 +37,59 @@ namespace Zermelo.App.UWP.OtherSchedules
             GoToSchedule = new AwaitableDelegateCommand(GoToScheduleDelegate);
             Search = new DelegateCommand(SearchDelegate);
 
+            IsLoading = true;
+
+            _sLoading = true;
             _zermelo.GetAllStudentsAsSearchItems()
                 .ObserveOnDispatcher()
                 .Subscribe(
                     s => _students = s,
                     ex => ExceptionHelper.HandleException(ex, $"{nameof(OtherSchedulesViewModel)}.GetStudents",
-                        x => new MessageDialog(x, "Error").ShowAsync())
+                        x => new MessageDialog(x, "Error").ShowAsync()),
+                    () => DoneLoading(out _sLoading)
                 );
 
+            _eLoading = true;
             _zermelo.GetAllEmployeesAsSearchItems()
                 .ObserveOnDispatcher()
                 .Subscribe(
                     e => _employees = e,
                     ex => ExceptionHelper.HandleException(ex, $"{nameof(OtherSchedulesViewModel)}.GetEmployees",
-                        x => new MessageDialog(x, "Error").ShowAsync())
+                        x => new MessageDialog(x, "Error").ShowAsync()),
+                    () => DoneLoading(out _eLoading)
                 );
 
+            _gLoading = true;
             _zermelo.GetAllGroupsAsSearchItems()
                 .ObserveOnDispatcher()
                 .Subscribe(
                     g => _groups = g,
                     ex => ExceptionHelper.HandleException(ex, $"{nameof(OtherSchedulesViewModel)}.GetGroups",
-                        x => new MessageDialog(x, "Error").ShowAsync())
+                        x => new MessageDialog(x, "Error").ShowAsync()),
+                    () => DoneLoading(out _gLoading)
                 );
 
+            _lLoading = true;
             _zermelo.GetAllLocationsAsSearchItems()
                 .ObserveOnDispatcher()
                 .Subscribe(
                     l => _locations = l,
                     ex => ExceptionHelper.HandleException(ex, $"{nameof(OtherSchedulesViewModel)}.GetLocations",
-                        x => new MessageDialog(x, "Error").ShowAsync())
+                        x => new MessageDialog(x, "Error").ShowAsync()),
+                    () => DoneLoading(out _lLoading)
                 );
+        }
+
+        private void DoneLoading(out bool loadingVar)
+        {
+            loadingVar = false;
+
+            bool loading = _sLoading || _eLoading || _gLoading || _lLoading;
+            if (IsLoading != loading)
+                IsLoading = loading;
+
+            if (!string.IsNullOrEmpty(SearchText))
+                Search.Execute();
         }
 
         private void SearchDelegate()
@@ -151,6 +175,17 @@ namespace Zermelo.App.UWP.OtherSchedules
             set
             {
                 _selectedSearchItem = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        bool _isLoading;
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                _isLoading = value;
                 RaisePropertyChanged();
             }
         }
