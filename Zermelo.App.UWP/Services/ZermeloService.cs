@@ -47,6 +47,20 @@ namespace Zermelo.App.UWP.Services
                         .Select(a => new Appointment(a))
                );
 
+        public IObservable<IEnumerable<Appointment>> GetScheduleForLocation(DateTimeOffset start, DateTimeOffset end, string code)
+            => Observable.FromAsync(
+                async () =>
+                    (await connection.Appointments.GetByCustomUrlOptionsAsync(new Dictionary<string, string>
+                        {
+                            { "start", start.ToUnixTimeSeconds().ToString() },
+                            { "end", end.ToUnixTimeSeconds().ToString() },
+                            { "locationsOfBranch", code },
+                            { "valid", "true" }
+                        },
+                        fields: Appointment.Fields))
+                        .Select(a => new Appointment(a))
+               );
+
         public IObservable<IEnumerable<Announcement>> GetAnnouncements()
             => Observable.FromAsync(
                 async () =>
@@ -74,6 +88,11 @@ namespace Zermelo.App.UWP.Services
                 () => connection.Groups.GetSingleById(long.Parse(code), new List<string> { "id", "name", "extendedName" })
                );
 
+        public IObservable<API.Models.Location> GetLocation(string code)
+            => Observable.FromAsync(
+                () => connection.Locations.GetSingleById(long.Parse(code), new List<string> { "id", "name" })
+               );
+
         public IObservable<IEnumerable<SearchItem>> GetAllStudentsAsSearchItems()
             => Observable.FromAsync(
                 async () => 
@@ -93,6 +112,13 @@ namespace Zermelo.App.UWP.Services
                 async () =>
                     (await connection.Groups.GetAllAsync(new List<string> { "id", "name", "extendedName" }))
                         .Select(g => new SearchItem(g))
+               );
+
+        public IObservable<IEnumerable<SearchItem>> GetAllLocationsAsSearchItems()
+            => Observable.FromAsync(
+                async () =>
+                    (await connection.Locations.GetAllAsync(new List<string> { "id", "name" }))
+                        .Select(l => new SearchItem(l))
                );
     }
 }

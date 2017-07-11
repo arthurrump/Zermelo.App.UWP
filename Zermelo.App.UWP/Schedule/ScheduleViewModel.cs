@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using Microsoft.Azure.Mobile.Analytics;
 using Template10.Common;
 using Template10.Mvvm;
 using Windows.UI.Popups;
@@ -107,7 +108,9 @@ namespace Zermelo.App.UWP.Schedule
                         Header = $"Rooster van {group.ExtendedName}";
                         break;
                     case ScheduleType.Location:
-                        throw new NotImplementedException();
+                        var location = await _zermelo.GetLocation(_code);
+                        Header = $"Rooster van {location.Name}";
+                        break;
                 }
             }
             else
@@ -161,10 +164,14 @@ namespace Zermelo.App.UWP.Schedule
                     observable = _zermelo.GetScheduleForGroup(Date.Date, Date.Date.AddDays(1), _code);
                     break;
                 case ScheduleType.Location:
-                    throw new NotImplementedException();
-                default:
-                    observable = null;
+                    observable = _zermelo.GetScheduleForLocation(Date.Date, Date.Date.AddDays(1), _code);
                     break;
+                default:
+                    Analytics.TrackEvent("ScheduleViewModel Type is not a ScheduleType", new Dictionary<string, string>
+                    {
+                        { "Type", ((int)Type).ToString() }
+                    });
+                    return;
             }
 
             IDisposable subscription = observable

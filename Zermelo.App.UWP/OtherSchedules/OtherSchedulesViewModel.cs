@@ -26,6 +26,7 @@ namespace Zermelo.App.UWP.OtherSchedules
         IEnumerable<SearchItem> _students = new List<SearchItem>();
         IEnumerable<SearchItem> _employees = new List<SearchItem>();
         IEnumerable<SearchItem> _groups = new List<SearchItem>();
+        IEnumerable<SearchItem> _locations = new List<SearchItem>();
 
         public OtherSchedulesViewModel(IZermeloService zermelo)
         {
@@ -57,6 +58,14 @@ namespace Zermelo.App.UWP.OtherSchedules
                     ex => ExceptionHelper.HandleException(ex, $"{nameof(OtherSchedulesViewModel)}.GetGroups",
                         x => new MessageDialog(x, "Error").ShowAsync())
                 );
+
+            _zermelo.GetAllLocationsAsSearchItems()
+                .ObserveOnDispatcher()
+                .Subscribe(
+                    l => _locations = l,
+                    ex => ExceptionHelper.HandleException(ex, $"{nameof(OtherSchedulesViewModel)}.GetLocations",
+                        x => new MessageDialog(x, "Error").ShowAsync())
+                );
         }
 
         private void SearchDelegate()
@@ -65,6 +74,7 @@ namespace Zermelo.App.UWP.OtherSchedules
                 _students
                     .Concat(_employees)
                     .Concat(_groups)
+                    .Concat(_locations)
                     .Where(s => s.DisplayText.ToLowerInvariant().Contains(SearchText.ToLowerInvariant()))
                     .OrderBy(s => s.Type)
                     .ThenBy(s => s.Code)
@@ -92,7 +102,10 @@ namespace Zermelo.App.UWP.OtherSchedules
                     text = $"Rooster van {group.ExtendedName}";
                     break;
                 case ScheduleType.Location:
-                    throw new NotImplementedException();
+                    var location = await _zermelo.GetLocation(SelectedSearchItem.Code);
+                    symbolText = location.Name.Substring(0, 2).ToUpperInvariant();
+                    text = $"Rooster van {location.Name}";
+                    break;
                 default:
                     symbolText = ""; text = "";
                     break;

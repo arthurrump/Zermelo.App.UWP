@@ -46,6 +46,19 @@ namespace Zermelo.App.UWP.Services
                 end.AddDays(7)
                );
 
+        public IObservable<IEnumerable<Appointment>> GetScheduleForLocation(DateTimeOffset start, DateTimeOffset end, string code)
+            => _cache.GetAndFetchLatest(
+                $"{nameof(GetScheduleForLocation)}({start.UtcTicks},{end.UtcTicks},{code})",
+                () => {
+                    if (_internet.IsConnected())
+                        return _zermelo.GetScheduleForLocation(start, end, code);
+                    else
+                        return Observable.Return(new List<Appointment>());
+                },
+                date => _internet.IsConnected(),
+                end.AddDays(7)
+               );
+
         public IObservable<IEnumerable<Announcement>> GetAnnouncements()
             => _cache.GetAndFetchLatest(
                 nameof(GetAnnouncements),
@@ -106,6 +119,18 @@ namespace Zermelo.App.UWP.Services
                 date => _internet.IsConnected() && DateTimeOffset.UtcNow.Subtract(date) > TimeSpan.FromDays(14)
                );
 
+        public IObservable<API.Models.Location> GetLocation(string code)
+            => _cache.GetAndFetchLatest(
+                $"{nameof(GetLocation)}({code})",
+                () => {
+                    if (_internet.IsConnected())
+                        return _zermelo.GetLocation(code);
+                    else
+                        return Observable.Return(default(API.Models.Location));
+                },
+                date => _internet.IsConnected() && DateTimeOffset.UtcNow.Subtract(date) > TimeSpan.FromDays(14)
+               );
+
         public IObservable<IEnumerable<SearchItem>> GetAllStudentsAsSearchItems()
             => _cache.GetAndFetchLatest(
                 nameof(GetAllStudentsAsSearchItems),
@@ -136,6 +161,18 @@ namespace Zermelo.App.UWP.Services
                 () => {
                     if (_internet.IsConnected())
                         return _zermelo.GetAllGroupsAsSearchItems();
+                    else
+                        return Observable.Return(new List<SearchItem>());
+                },
+                date => _internet.IsConnected() && DateTimeOffset.UtcNow.Subtract(date) > TimeSpan.FromDays(7)
+               );
+
+        public IObservable<IEnumerable<SearchItem>> GetAllLocationsAsSearchItems()
+            => _cache.GetAndFetchLatest(
+                nameof(GetAllLocationsAsSearchItems),
+                () => {
+                    if (_internet.IsConnected())
+                        return _zermelo.GetAllLocationsAsSearchItems();
                     else
                         return Observable.Return(new List<SearchItem>());
                 },

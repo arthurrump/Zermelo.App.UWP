@@ -25,6 +25,13 @@ namespace Zermelo.App.UWP.OtherSchedules
             DisplayText = group.ExtendedName;
         }
 
+        public SearchItem(API.Models.Location location)
+        {
+            Type = ScheduleType.Location;
+            Code = location.Id.Value.ToString();
+            DisplayText = location.Name;
+        }
+
         public ScheduleType Type { get; set; }
         public string Code { get; set; }
         public string DisplayText { get; set; }
