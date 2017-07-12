@@ -13,7 +13,7 @@
       "exclude": "all"
     },
     "System.ValueTuple": "4.3.1",
-    "Template10": "1.1.12",
+    "Template10": "1.1.12-DynamicHamburger",
     "Zermelo.API": "3.0.29"
   },
   "frameworks": {

@@ -48,5 +48,9 @@ The secrets that are currently needed are:
 * `HockeyAppAppId` (`string`): the App ID for HockeyApp analytics.
 * `MobileCenterAppSecret` (`string`): the App Secret for Visual Studio Mobile Center analytics.
 
+Note that these keys are only used when compiling in Release configuration, so even though the file is required to be there in Debug config too, the properties aren't necessary.
+
+Because of an issue with Template 10, a [custom version](https://github.com/arthurrump/Template10/releases/tag/v1.1.12-DynamicHamburger) of that package is used, but the Visual Studio package restore won't automatically grab it. To make sure that you get the correct package, restore NuGet packages with the nuget.exe command line tool.
+
 ---
 Licensed under the MIT License (see LICENSE file)
