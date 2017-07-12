@@ -46,5 +46,10 @@ namespace Zermelo.App.UWP.OtherSchedules
             ViewModel.SelectedSearchItem = e.ClickedItem as SearchItem;
             ViewModel.GoToSchedule.Execute();
         }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            SearchTextBox.Focus(FocusState.Programmatic);
+        }
     }
 }

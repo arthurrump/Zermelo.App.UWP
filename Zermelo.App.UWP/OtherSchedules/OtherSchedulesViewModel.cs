@@ -157,7 +157,7 @@ namespace Zermelo.App.UWP.OtherSchedules
             NavigationService.Navigate(typeof(ScheduleView), parameter);
         }
 
-        string _searchText;
+        string _searchText = "";
         public string SearchText
         {
             get => _searchText;
