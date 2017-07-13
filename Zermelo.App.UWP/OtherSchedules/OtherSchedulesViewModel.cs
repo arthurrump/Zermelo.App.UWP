@@ -10,6 +10,7 @@ using Template10.Common;
 using Template10.Controls;
 using Template10.Mvvm;
 using Template10.Services.NavigationService;
+using Template10.Utils;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -28,7 +29,7 @@ namespace Zermelo.App.UWP.OtherSchedules
         IEnumerable<SearchItem> _groups = new List<SearchItem>();
         IEnumerable<SearchItem> _locations = new List<SearchItem>();
 
-        bool _sLoading, _eLoading, _gLoading, _lLoading;
+        bool _sLoading, _eLoading, _gLoading, _lLoading, _searching;
 
         public OtherSchedulesViewModel(IZermeloService zermelo)
         {
@@ -84,7 +85,7 @@ namespace Zermelo.App.UWP.OtherSchedules
         {
             loadingVar = false;
 
-            bool loading = _sLoading || _eLoading || _gLoading || _lLoading;
+            bool loading = _sLoading || _eLoading || _gLoading || _lLoading || _searching;
             if (IsLoading != loading)
                 IsLoading = loading;
 
@@ -94,7 +95,7 @@ namespace Zermelo.App.UWP.OtherSchedules
 
         private void SearchDelegate()
         {
-            SearchItems.MorphInto(
+            SearchItems =
                 _students
                     .Concat(_employees)
                     .Concat(_groups)
@@ -102,7 +103,7 @@ namespace Zermelo.App.UWP.OtherSchedules
                     .Where(s => s.DisplayText.ToLowerInvariant().Contains(SearchText.ToLowerInvariant()))
                     .OrderBy(s => s.Type)
                     .ThenBy(s => s.Code)
-            );
+                    .ToObservableCollection();
         }
 
         private async Task GoToScheduleDelegate(AwaitableDelegateCommandParameter par)
@@ -191,7 +192,15 @@ namespace Zermelo.App.UWP.OtherSchedules
         }
 
         ObservableCollection<SearchItem> _searchItems = new ObservableCollection<SearchItem>();
-        public ObservableCollection<SearchItem> SearchItems => _searchItems;
+        public ObservableCollection<SearchItem> SearchItems
+        {
+            get => _searchItems;
+            set
+            {
+                _searchItems = value;
+                RaisePropertyChanged();
+            }
+        }
 
         public DelegateCommand Search { get; }
 
