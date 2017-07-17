@@ -26,6 +26,10 @@
         <Setter Property="Background" Value="{ThemeResource ScheduleRedColor}"/>
     </Style>
 
+    <Style TargetType="FlyoutPresenter" x:Key="CalendarFlyoutStyle">
+        <Setter Property="RequestedTheme" Value="Default"/>
+    </Style>
+
     <ResourceDictionary.ThemeDictionaries>
 
         <ResourceDictionary x:Key="Light">

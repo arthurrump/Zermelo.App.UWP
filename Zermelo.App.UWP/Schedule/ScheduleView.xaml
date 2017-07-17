@@ -19,9 +19,6 @@
                 <ResourceDictionary Source="Style.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            <t10conv:StringFormatConverter x:Key="TimeConverter" Format="{}{0:t}" />
-            <t10conv:StringFormatConverter x:Key="DateConverter" Format="{}{0:D}" />
-
             <t10conv:ValueWhenConverter x:Key="VisibleWhenTrueConverter">
                 <t10conv:ValueWhenConverter.When>
                     <x:Boolean>True</x:Boolean>
@@ -35,40 +32,35 @@
             </t10conv:ValueWhenConverter>
 
             <local:StatusToSymbolConverter x:Key="StatusToSymbolConverter" />
+            <t10conv:StringFormatConverter x:Key="TimeConverter" Format="{}{0:t}" />
+            <t10conv:StringFormatConverter x:Key="DateConverter" Format="{}{0:D}" />
+            <local:CurrentDateToSelectedPivotIndexConverter x:Key="CurrentDateToSelectedPivotIndexConverter"
+                CurrentWeek="{Binding CurrentWeek, Mode=OneWay}" />
 
             <local:ScheduleItemStyleSelector x:Key="ScheduleItemStyleSelector"
-                NormalStyle="{StaticResource ScheduleItemStyle}"
-                NewStyle="{StaticResource ScheduleItemNewStyle}"
-                CancelledStyle="{StaticResource ScheduleItemCancelledStyle}"
-                ModifiedStyle="{StaticResource ScheduleItemModifiedStyle}" />
-
-            <local:ScheduleItemTemplateSelector x:Key="ScheduleItemTemplateSelector"
-                ScheduleType="{x:Bind ViewModel.Type, Mode=OneWay}"
-                TeachersTemplate="{StaticResource TeachersScheduleItemTemplate}"
-                GroupsTemplate="{StaticResource GroupsScheduleItemTemplate}" />
-
-            <Style TargetType="FlyoutPresenter" x:Key="CalendarFlyoutStyle">
-                <Setter Property="RequestedTheme" Value="Default"/>
-            </Style>
-
+                        NormalStyle="{StaticResource ScheduleItemStyle}"
+                        NewStyle="{StaticResource ScheduleItemNewStyle}"
+                        CancelledStyle="{StaticResource ScheduleItemCancelledStyle}"
+                        ModifiedStyle="{StaticResource ScheduleItemModifiedStyle}" />
+    
             <DataTemplate x:Key="TeachersScheduleItemTemplate" x:DataType="local:Appointment">
                 <Grid Padding="4">
                     <SymbolIcon 
-                        Symbol="{x:Bind Status, Converter={StaticResource StatusToSymbolConverter}}"
+                        Symbol="{Binding Status, Converter={StaticResource StatusToSymbolConverter}}"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"/>
 
                     <StackPanel Orientation="Horizontal">
                         <TextBlock 
-                            Text="{x:Bind StartTimeSlot}"
+                            Text="{Binding StartTimeSlot}"
                             VerticalAlignment="Center"
                             Margin="0, 0, 12, 0"
                             Style="{StaticResource TitleTextBlockStyle}"/>
 
                         <StackPanel>
-                            <TextBlock Text="{x:Bind Subjects}"/>
-                            <TextBlock Text="{x:Bind Teachers}"/>
-                            <TextBlock Text="{x:Bind Locations}"/>
+                            <TextBlock Text="{Binding Subjects}"/>
+                            <TextBlock Text="{Binding Teachers}"/>
+                            <TextBlock Text="{Binding Locations}"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
@@ -77,33 +69,38 @@
             <DataTemplate x:Key="GroupsScheduleItemTemplate" x:DataType="local:Appointment">
                 <Grid Padding="4">
                     <SymbolIcon 
-                        Symbol="{x:Bind Status, Converter={StaticResource StatusToSymbolConverter}}"
+                        Symbol="{Binding Status, Converter={StaticResource StatusToSymbolConverter}}"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"/>
 
                     <StackPanel Orientation="Horizontal">
                         <TextBlock 
-                            Text="{x:Bind StartTimeSlot}"
+                            Text="{Binding StartTimeSlot}"
                             VerticalAlignment="Center"
                             Margin="0, 0, 12, 0"
                             Style="{StaticResource TitleTextBlockStyle}"/>
 
                         <StackPanel>
-                            <TextBlock Text="{x:Bind Subjects}"/>
-                            <TextBlock Text="{x:Bind Groups}"/>
-                            <TextBlock Text="{x:Bind Locations}"/>
+                            <TextBlock Text="{Binding Subjects}"/>
+                            <TextBlock Text="{Binding Groups}"/>
+                            <TextBlock Text="{Binding Locations}"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
             </DataTemplate>
 
+            <local:ScheduleItemTemplateSelector x:Key="ScheduleItemTemplateSelector"
+                ScheduleType="{x:Bind ViewModel.Type, Mode=OneWay}"
+                TeachersTemplate="{StaticResource TeachersScheduleItemTemplate}"
+                GroupsTemplate="{StaticResource GroupsScheduleItemTemplate}" />
+            
             <DataTemplate x:Key="ScheduleItemModalTemplate" x:DataType="local:Appointment">
                 <Grid
                     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
                     Padding="12" MinWidth="300">
 
                     <SymbolIcon 
-                        Symbol="{x:Bind Status, Converter={StaticResource StatusToSymbolConverter}}"
+                        Symbol="{Binding Status, Converter={StaticResource StatusToSymbolConverter}}"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"/>
 
@@ -111,37 +108,82 @@
                         <TextBlock
                             Style="{StaticResource HeaderTextBlockStyle}" 
                             TextLineBounds="TrimToCapHeight"
-                            Text="{x:Bind Subjects}"/>
+                            Text="{Binding Subjects}"/>
 
                         <TextBlock
                             Style="{StaticResource CaptionTextBlockStyle}">
-                            <Run Text="{x:Bind Start, Converter={StaticResource TimeConverter}}"/>
+                            <Run Text="{Binding Start, Converter={StaticResource TimeConverter}}"/>
                             <Run Text=" - "/>
-                            <Run Text="{x:Bind End, Converter={StaticResource TimeConverter}}"/>
+                            <Run Text="{Binding End, Converter={StaticResource TimeConverter}}"/>
                         </TextBlock>
 
-                        <TextBlock Visibility="{x:Bind Teachers, Converter={StaticResource VisibilityConverter}}"
+                        <TextBlock Visibility="{Binding Teachers, Converter={StaticResource VisibilityConverter}}"
                             TextWrapping="WrapWholeWords">
-                            <Run Text="Docent: "/><Run Text="{x:Bind Teachers}"/>
+                            <Run Text="Docent: "/><Run Text="{Binding Teachers}"/>
                         </TextBlock>
-                        <TextBlock Visibility="{x:Bind Groups, Converter={StaticResource VisibilityConverter}}"
+                        <TextBlock Visibility="{Binding Groups, Converter={StaticResource VisibilityConverter}}"
                             TextWrapping="WrapWholeWords">
-                            <Run Text="Klas: "/><Run Text="{x:Bind Groups}"/>
+                            <Run Text="Klas: "/><Run Text="{Binding Groups}"/>
                         </TextBlock>
-                        <TextBlock Visibility="{x:Bind Locations, Converter={StaticResource VisibilityConverter}}"
+                        <TextBlock Visibility="{Binding Locations, Converter={StaticResource VisibilityConverter}}"
                             TextWrapping="WrapWholeWords">
-                            <Run Text="Locatie: "/><Run Text="{x:Bind Locations}"/>
+                            <Run Text="Locatie: "/><Run Text="{Binding Locations}"/>
                         </TextBlock>
-                        <TextBlock Visibility="{x:Bind Remark, Converter={StaticResource VisibilityConverter}}"
+                        <TextBlock Visibility="{Binding Remark, Converter={StaticResource VisibilityConverter}}"
                             TextWrapping="WrapWholeWords">
-                            <Run Text="Opmerking: "/><Run Text="{x:Bind Remark}"/>
+                            <Run Text="Opmerking: "/><Run Text="{Binding Remark}"/>
                         </TextBlock>
-                        <TextBlock Visibility="{x:Bind ChangeDescription, Converter={StaticResource VisibilityConverter}}"
+                        <TextBlock Visibility="{Binding ChangeDescription, Converter={StaticResource VisibilityConverter}}"
                             TextWrapping="WrapWholeWords">
-                            <Run Text="Wijziging: "/><Run Text="{x:Bind ChangeDescription}"/>
+                            <Run Text="Wijziging: "/><Run Text="{Binding ChangeDescription}"/>
                         </TextBlock>
                     </StackPanel>
                 </Grid>
+            </DataTemplate>
+
+            <DataTemplate x:Key="ScheduleDayTemplate" x:DataType="local:ScheduleDay">
+                <ListView
+                    Header="{Binding Date, Mode=OneWay, Converter={StaticResource DateConverter}}"
+                    SelectionMode="None"
+                    IsItemClickEnabled="False"
+                    Padding="0,0,0,12"
+                    VerticalAlignment="Stretch"
+                    ItemsSource="{Binding Appointments, Mode=OneWay}">
+
+                    <ListView.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}"
+                                Margin="12"
+                                HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </ListView.HeaderTemplate>
+
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Margin" Value="0"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="local:ScheduleRow">
+                            <local:AdaptiveGridView
+                                SelectionMode="None"
+                                IsItemClickEnabled="True"
+                                DesiredWidth="140"
+                                Margin="12, 0"
+                                Padding="0"
+                                ScrollViewer.HorizontalScrollMode="Disabled"
+                                ScrollViewer.VerticalScrollMode="Disabled"
+                                ItemsSource="{Binding Items}"
+                                ItemContainerStyleSelector="{StaticResource ScheduleItemStyleSelector}"
+                                ItemTemplateSelector="{StaticResource ScheduleItemTemplateSelector}"
+                                ItemClick="ScheduleListView_ItemClick" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </DataTemplate>
 
         </ResourceDictionary>
@@ -151,7 +193,6 @@
         <t10c:PageHeader
             x:Name="Header"
             Text="{x:Bind ViewModel.Header, Mode=OneWay}"
-            EllipsisVisibility="Collapsed"
             RelativePanel.AlignTopWithPanel="True"
             RelativePanel.AlignLeftWithPanel="True"
             RelativePanel.AlignRightWithPanel="True">
@@ -183,13 +224,13 @@
                 <AppBarButton
                     Icon="Refresh"
                     Label="Vernieuwen"
-                    Command="{x:Bind ViewModel.Refresh}"
+                    Command="{x:Bind ViewModel.RefreshCommand}"
                     Style="{StaticResource HeaderButton}"/>
 
                 <AppBarButton
                     Icon="Cancel"
                     Label="Sluiten"
-                    Command="{x:Bind ViewModel.CloseCurrentView}"
+                    Command="{x:Bind ViewModel.CloseCurrentViewCommand}"
                     Visibility="{x:Bind ViewModel.IsClosable, Converter={StaticResource VisibleWhenTrueConverter}}"
                     Style="{StaticResource HeaderButton}" />
                 
@@ -207,48 +248,18 @@
             <t10c:ModalDialog x:Name="Modal" CanBackButtonDismiss="True" IsModal="{x:Bind ViewModel.IsModal, Mode=TwoWay}">
 
                 <t10c:ModalDialog.Content>
-                    <ListView
-                        x:Name="ScheduleListView"
-                        Header="{x:Bind ViewModel.Date, Mode=OneWay, Converter={StaticResource DateConverter}}"
-                        SelectionMode="None"
-                        IsItemClickEnabled="False"
-                        Padding="0,0,0,12"
-                        ItemsSource="{x:Bind ViewModel.Appointments, Mode=OneWay}">
+                    <Pivot 
+                        ItemsSource="{x:Bind ViewModel.Days, Mode=OneWay}"
+                        SelectedIndex="{x:Bind ViewModel.CurrentDate, Mode=TwoWay, Converter={StaticResource CurrentDateToSelectedPivotIndexConverter}}"
+                        IsHeaderItemsCarouselEnabled="False"
+                        ItemTemplate="{StaticResource ScheduleDayTemplate}">
 
-                        <ListView.HeaderTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding}"
-                                    Margin="12"
-                                    HorizontalAlignment="Center"/>
+                        <Pivot.HeaderTemplate>
+                            <DataTemplate x:DataType="local:ScheduleDay">
+                                <TextBlock Text="{x:Bind Date.DayOfWeek, Mode=OneWay}" />
                             </DataTemplate>
-                        </ListView.HeaderTemplate>
-
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="Padding" Value="0"/>
-                                <Setter Property="Margin" Value="0"/>
-                            </Style>
-                        </ListView.ItemContainerStyle>
-
-                        <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="local:ScheduleRow">
-                                <local:AdaptiveGridView
-                                    SelectionMode="None"
-                                    IsItemClickEnabled="True"
-                                    DesiredWidth="140"
-                                    Margin="12, 0"
-                                    Padding="0"
-                                    ScrollViewer.HorizontalScrollMode="Disabled"
-                                    ScrollViewer.VerticalScrollMode="Disabled"
-                                    ItemsSource="{x:Bind Items}"
-                                    ItemContainerStyleSelector="{StaticResource ScheduleItemStyleSelector}"
-                                    ItemTemplateSelector="{StaticResource ScheduleItemTemplateSelector}"
-                                    ItemClick="ScheduleListView_ItemClick" />
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                        </Pivot.HeaderTemplate>
+                    </Pivot>
                 </t10c:ModalDialog.Content>
 
                 <t10c:ModalDialog.ModalContent>

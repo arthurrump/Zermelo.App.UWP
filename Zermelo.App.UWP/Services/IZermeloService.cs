@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NodaTime;
 using Zermelo.App.UWP.Announcements;
 using Zermelo.App.UWP.OtherSchedules;
 using Zermelo.App.UWP.Schedule;
@@ -8,9 +9,9 @@ namespace Zermelo.App.UWP.Services
 {
     public interface IZermeloService
     {
-        IObservable<IEnumerable<Appointment>> GetSchedule(DateTimeOffset start, DateTimeOffset end, string user = "~me");
-        IObservable<IEnumerable<Appointment>> GetScheduleForGroup(DateTimeOffset start, DateTimeOffset end, string code);
-        IObservable<IEnumerable<Appointment>> GetScheduleForLocation(DateTimeOffset start, DateTimeOffset end, string code);
+        IObservable<IEnumerable<Appointment>> GetSchedule(LocalDate date, string user = "~me");
+        IObservable<IEnumerable<Appointment>> GetScheduleForGroup(LocalDate date, string code);
+        IObservable<IEnumerable<Appointment>> GetScheduleForLocation(LocalDate date, string code);
         IObservable<IEnumerable<Announcement>> GetAnnouncements();
         IObservable<API.Models.User> GetCurrentUser();
         IObservable<API.Models.User> GetStudent(string code);

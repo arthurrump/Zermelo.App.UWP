@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
+using NodaTime;
+using NodaTime.Extensions;
 using Zermelo.API;
 using Zermelo.App.UWP.Announcements;
+using Zermelo.App.UWP.Helpers;
 using Zermelo.App.UWP.OtherSchedules;
 using Zermelo.App.UWP.Schedule;
 
@@ -19,13 +22,13 @@ namespace Zermelo.App.UWP.Services
             connection = new ZermeloConnection(auth);
         }
 
-        public IObservable<IEnumerable<Appointment>> GetSchedule(DateTimeOffset start, DateTimeOffset end, string user = "~me")
+        public IObservable<IEnumerable<Appointment>> GetSchedule(LocalDate date, string user = "~me")
             => Observable.FromAsync(
                 async () => 
                     (await connection.Appointments.GetByCustomUrlOptionsAsync(new Dictionary<string, string>
                         {
-                            { "start", start.ToUnixTimeSeconds().ToString() },
-                            { "end", end.ToUnixTimeSeconds().ToString() },
+                            { "start", date.ToMidnightUnixTimeString() },
+                            { "end", date.PlusDays(1).ToMidnightUnixTimeString() },
                             { "user", user },
                             { "valid", "true" }
                         },
@@ -33,13 +36,13 @@ namespace Zermelo.App.UWP.Services
                         .Select(a => new Appointment(a))
                );
 
-        public IObservable<IEnumerable<Appointment>> GetScheduleForGroup(DateTimeOffset start, DateTimeOffset end, string code)
+        public IObservable<IEnumerable<Appointment>> GetScheduleForGroup(LocalDate date, string code)
             => Observable.FromAsync(
                 async () =>
                     (await connection.Appointments.GetByCustomUrlOptionsAsync(new Dictionary<string, string>
                         {
-                            { "start", start.ToUnixTimeSeconds().ToString() },
-                            { "end", end.ToUnixTimeSeconds().ToString() },
+                            { "start", date.ToMidnightUnixTimeString() },
+                            { "end", date.PlusDays(1).ToMidnightUnixTimeString() },
                             { "containsStudentsFromGroupInDepartment", code },
                             { "valid", "true" }
                         },
@@ -47,13 +50,13 @@ namespace Zermelo.App.UWP.Services
                         .Select(a => new Appointment(a))
                );
 
-        public IObservable<IEnumerable<Appointment>> GetScheduleForLocation(DateTimeOffset start, DateTimeOffset end, string code)
+        public IObservable<IEnumerable<Appointment>> GetScheduleForLocation(LocalDate date, string code)
             => Observable.FromAsync(
                 async () =>
                     (await connection.Appointments.GetByCustomUrlOptionsAsync(new Dictionary<string, string>
                         {
-                            { "start", start.ToUnixTimeSeconds().ToString() },
-                            { "end", end.ToUnixTimeSeconds().ToString() },
+                            { "start", date.ToMidnightUnixTimeString() },
+                            { "end", date.PlusDays(1).ToMidnightUnixTimeString() },
                             { "locationsOfBranch", code },
                             { "valid", "true" }
                         },

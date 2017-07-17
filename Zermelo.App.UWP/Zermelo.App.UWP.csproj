@@ -100,8 +100,12 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\InvisibleWhenNullOrWhiteSpaceConverter.cs" />
+    <Compile Include="Helpers\LocalDateExtensions.cs" />
     <Compile Include="Helpers\StringExtensions.cs" />
     <Compile Include="OtherSchedules\SearchItem.cs" />
+    <Compile Include="Schedule\AppointmentsObserver.cs" />
+    <Compile Include="Schedule\CurrentDateToSelectedPivotIndexConverter.cs" />
+    <Compile Include="Schedule\ScheduleDay.cs" />
     <Compile Include="Schedule\ScheduleType.cs" />
     <Compile Include="OtherSchedules\OtherSchedulesView.xaml.cs">
       <DependentUpon>OtherSchedulesView.xaml</DependentUpon>
@@ -162,6 +166,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Compile Include="Schedule\ScheduleViewModel.PublicProperties.cs" />
     <None Include="Zermelo.App.UWP_StoreKey.pfx" />
     <None Include="Zermelo.App.UWP_TemporaryKey.pfx" />
   </ItemGroup>

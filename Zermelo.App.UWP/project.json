@@ -8,6 +8,7 @@
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.3.3",
     "Microsoft.Services.Store.SDK": "10.1705.16001",
     "Microsoft.Xaml.Behaviors.Uwp.Managed": "2.0.0",
+    "NodaTime": "2.2.0",
     "SQLitePCLRaw.bundle_green": {
       "version": "1.1.7",
       "exclude": "all"

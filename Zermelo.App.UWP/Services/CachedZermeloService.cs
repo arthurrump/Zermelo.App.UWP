@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reactive.Linq;
+using NodaTime;
 using Zermelo.App.UWP.Announcements;
 using Zermelo.App.UWP.OtherSchedules;
 using Zermelo.App.UWP.Schedule;
@@ -20,43 +21,43 @@ namespace Zermelo.App.UWP.Services
             _internet = internet;
         }
 
-        public IObservable<IEnumerable<Appointment>> GetSchedule(DateTimeOffset start, DateTimeOffset end, string user = "~me")
+        public IObservable<IEnumerable<Appointment>> GetSchedule(LocalDate date, string user = "~me")
             => _cache.GetAndFetchLatest(
-                $"{nameof(GetSchedule)}({start.UtcTicks},{end.UtcTicks},{user})",
+                $"{nameof(GetSchedule)}({date},{user})",
                 () => {
                     if (_internet.IsConnected())
-                        return _zermelo.GetSchedule(start, end, user);
+                        return _zermelo.GetSchedule(date, user);
                     else
                         return Observable.Return(new List<Appointment>());
                 },
-                date => _internet.IsConnected(),
-                end.AddDays(7)
+                cacheDate => _internet.IsConnected(),
+                date.PlusDays(7).ToDateTimeUnspecified()
                );
 
-        public IObservable<IEnumerable<Appointment>> GetScheduleForGroup(DateTimeOffset start, DateTimeOffset end, string code)
+        public IObservable<IEnumerable<Appointment>> GetScheduleForGroup(LocalDate date, string code)
             => _cache.GetAndFetchLatest(
-                $"{nameof(GetScheduleForGroup)}({start.UtcTicks},{end.UtcTicks},{code})",
+                $"{nameof(GetScheduleForGroup)}({date},{code})",
                 () => {
                     if (_internet.IsConnected())
-                        return _zermelo.GetScheduleForGroup(start, end, code);
+                        return _zermelo.GetScheduleForGroup(date, code);
                     else
                         return Observable.Return(new List<Appointment>());
                 },
-                date => _internet.IsConnected(),
-                end.AddDays(7)
+                cacheDate => _internet.IsConnected(),
+                date.PlusDays(7).ToDateTimeUnspecified()
                );
 
-        public IObservable<IEnumerable<Appointment>> GetScheduleForLocation(DateTimeOffset start, DateTimeOffset end, string code)
+        public IObservable<IEnumerable<Appointment>> GetScheduleForLocation(LocalDate date, string code)
             => _cache.GetAndFetchLatest(
-                $"{nameof(GetScheduleForLocation)}({start.UtcTicks},{end.UtcTicks},{code})",
+                $"{nameof(GetScheduleForLocation)}({date},{code})",
                 () => {
                     if (_internet.IsConnected())
-                        return _zermelo.GetScheduleForLocation(start, end, code);
+                        return _zermelo.GetScheduleForLocation(date, code);
                     else
                         return Observable.Return(new List<Appointment>());
                 },
-                date => _internet.IsConnected(),
-                end.AddDays(7)
+                cacheDate => _internet.IsConnected(),
+                date.PlusDays(7).ToDateTimeUnspecified()
                );
 
         public IObservable<IEnumerable<Announcement>> GetAnnouncements()

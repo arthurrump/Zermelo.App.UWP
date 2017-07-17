@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.Mobile.Analytics;
+using NodaTime;
 using Template10.Common;
 using Template10.Mvvm;
+using Template10.Utils;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Navigation;
 using Zermelo.App.UWP.Helpers;
@@ -16,55 +19,34 @@ using Zermelo.App.UWP.Shell;
 
 namespace Zermelo.App.UWP.Schedule
 {
-    public class ScheduleViewModel : ViewModelBase
+    public partial class ScheduleViewModel : ViewModelBase
     {
         IZermeloService _zermelo;
         IInternetConnectionService _internet;
 
         string _code;
+        CompositeDisposable _subscriptions = new CompositeDisposable();
 
         public ScheduleViewModel(IZermeloService zermelo, IInternetConnectionService internet)
         {
             _zermelo = zermelo;
             _internet = internet;
 
-            var date = DateTimeOffset.Now;
-            if (date.DayOfWeek == DayOfWeek.Saturday)
-                date = date.AddDays(2);
-            else if (date.DayOfWeek == DayOfWeek.Sunday)
-                date = date.AddDays(1);
-            Date = date;
-
-            Refresh = new DelegateCommand(GetAppointments);
-
-            CloseCurrentView = new DelegateCommand(() =>
+            PropertyChanged += (sender, e) =>
             {
-                string param = $"{(int)Type}{_code}";
+                if (e.PropertyName == nameof(CurrentDate))
+                    OnCurrentDateChanged();
+                else if (e.PropertyName == nameof(CurrentWeek))
+                    OnCurrentWeekChanged();
+            };
 
-                Func<PageStackEntry, bool> isCurrentPage =
-                    page => page.SourcePageType == typeof(ScheduleView) && ((string)page.Parameter).Contains(param);
-                    
-                while (NavigationService.Frame.BackStack.Any(isCurrentPage))
-                {
-                    NavigationService.Frame.BackStack.Remove(
-                        NavigationService.Frame.BackStack.First(isCurrentPage)
-                    );
-                }
+            var date = LocalDate.FromDateTime(DateTime.Now);
+            if (date.DayOfWeek >= IsoDayOfWeek.Saturday)
+                date = date.Next(IsoDayOfWeek.Monday);
+            CurrentDate = date;
 
-                NavigationService.GoBack();
-
-                while (NavigationService.Frame.ForwardStack.Any(isCurrentPage))
-                {
-                    NavigationService.Frame.ForwardStack.Remove(
-                        NavigationService.Frame.ForwardStack.First(isCurrentPage)
-                    );
-                }
-
-                // Doing this before GoBack() causes a NullReferenceException inside Template10
-                // I have no idea why.
-                var navItems = ShellView.Instance.HamburgerPrimaryButtons;
-                navItems.Remove(navItems.Single(x => x.PageType == typeof(ScheduleView) && (string)x.PageParameter == param));
-            });
+            RefreshCommand = new DelegateCommand(GetAppointments);
+            CloseCurrentViewCommand = new DelegateCommand(CloseCurrentView);
         }
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
@@ -87,15 +69,96 @@ namespace Zermelo.App.UWP.Schedule
             if (SessionState.ContainsKey(_code))
             {
                 var s = (ScheduleViewState)SessionState[_code];
-                Date = s.Date;
+                CurrentDate = s.CurrentDate;
                 Type = s.Type;
                 SelectedAppointment = s.SelectedAppointment;
                 IsModal = s.IsModal;
             }
 
-            if (_code != "~me")
+            await SetHeader(Type, _code);
+        }
+
+        public override async Task OnNavigatedFromAsync(IDictionary<string, object> pageState, bool suspending)
+        {
+            if (SessionState.ContainsKey(_code))
+                SessionState.Remove(_code);
+
+            SessionState.Add(_code, new ScheduleViewState
             {
-                switch (Type)
+                CurrentDate = CurrentDate,
+                Type = Type,
+                SelectedAppointment = SelectedAppointment,
+                IsModal = IsModal
+            });
+
+            _subscriptions.Dispose();
+        }
+
+        void OnCurrentDateChanged()
+        {
+            if (!CurrentWeek?.Contains(CurrentDate) ?? true)
+            {
+                CurrentWeek = new DateInterval(
+                    CurrentDate.DayOfWeek == IsoDayOfWeek.Monday ? CurrentDate : CurrentDate.Previous(IsoDayOfWeek.Monday),
+                    CurrentDate.DayOfWeek == IsoDayOfWeek.Friday ? CurrentDate : CurrentDate.Next(IsoDayOfWeek.Friday)
+                );
+            }
+        }
+
+        void OnCurrentWeekChanged()
+        {
+            Days.Clear();
+            for (var day = CurrentWeek.Start; day <= CurrentWeek.End; day += Period.FromDays(1))
+            {
+                Days.Add(new ScheduleDay(day, new ObservableCollection<ScheduleRow>()));
+            }
+
+            GetAppointments();
+        }
+
+        IObservable<IEnumerable<Appointment>> GetAppointmentsObservable(ScheduleType type, LocalDate date, string code)
+        {
+            switch (type)
+            {
+                case ScheduleType.Student:
+                case ScheduleType.Employee:
+                    return _zermelo.GetSchedule(date, code);
+                case ScheduleType.Group:
+                    return _zermelo.GetScheduleForGroup(date, code);
+                case ScheduleType.Location:
+                    return _zermelo.GetScheduleForLocation(date, code);
+                default:
+                    Analytics.TrackEvent("Type is not a ScheduleType", new Dictionary<string, string>
+                    {
+                        { "Location", $"{nameof(ScheduleViewModel)}.{nameof(GetAppointmentsObservable)}" },
+                        { "Type", ((int)type).ToString() }
+                    });
+                    return Observable.Empty<IEnumerable<Appointment>>();
+            }
+        }
+
+        void GetAppointments()
+        {
+            if (!_internet.IsConnected())
+            {
+                new MessageDialog("Je hebt op dit moment geen internetverbinding. De weergegeven informatie kan verouderd zijn.", "Geen internetverbinding").ShowAsync();
+            }
+
+            for (var day = CurrentWeek.Start; day <= CurrentWeek.End; day += Period.FromDays(1))
+            {
+                _subscriptions.Add(
+                    GetAppointmentsObservable(Type, day, _code)
+                        .ObserveOnDispatcher()
+                        .Subscribe(new AppointmentsObserver(Days.Single(x => x.Date == day).Appointments))
+                );
+            }
+        }
+
+        async Task SetHeader(ScheduleType type, string code)
+        {
+            if (code != "~me")
+            {
+                switch (type)
                 {
                     case ScheduleType.Student:
                         var student = await _zermelo.GetStudent(_code);
@@ -119,184 +182,34 @@ namespace Zermelo.App.UWP.Schedule
             {
                 Header = "Mijn rooster";
             }
-
-            PropertyChanged += (sender, e) =>
-            {
-                if (e.PropertyName == nameof(Date))
-                    GetAppointments();
-            };
-
-            GetAppointments();
-
-            PreloadAppointments();
         }
 
-        public override async Task OnNavigatedFromAsync(IDictionary<string, object> pageState, bool suspending)
+        void CloseCurrentView()
         {
-            if (SessionState.ContainsKey(_code))
-                SessionState.Remove(_code);
+            string param = $"{(int)Type}{_code}";
 
-            SessionState.Add(_code, new ScheduleViewState
+            Func<PageStackEntry, bool> isCurrentPage =
+                page => page.SourcePageType == typeof(ScheduleView) && ((string)page.Parameter).Contains(param);
+
+            while (NavigationService.Frame.BackStack.Any(isCurrentPage))
             {
-                Date = Date,
-                Type = Type,
-                SelectedAppointment = SelectedAppointment,
-                IsModal = IsModal
-            });
-        }
-
-        private void GetAppointments()
-        {
-            IsLoading = true;
-
-            if (!_internet.IsConnected())
-            {
-                new MessageDialog("Je hebt op dit moment geen internetverbinding. De weergegeven informatie kan verouderd zijn.", "Geen internetverbinding").ShowAsync();
+                NavigationService.Frame.BackStack.Remove(
+                    NavigationService.Frame.BackStack.First(isCurrentPage)
+                );
             }
 
-            IObservable<IEnumerable<Appointment>> observable;
+            NavigationService.GoBack();
 
-            switch (Type)
+            while (NavigationService.Frame.ForwardStack.Any(isCurrentPage))
             {
-                case ScheduleType.Student:
-                case ScheduleType.Employee:
-                    observable = _zermelo.GetSchedule(Date.Date, Date.Date.AddDays(1), _code);
-                    break;
-                case ScheduleType.Group:
-                    observable = _zermelo.GetScheduleForGroup(Date.Date, Date.Date.AddDays(1), _code);
-                    break;
-                case ScheduleType.Location:
-                    observable = _zermelo.GetScheduleForLocation(Date.Date, Date.Date.AddDays(1), _code);
-                    break;
-                default:
-                    Analytics.TrackEvent("ScheduleViewModel Type is not a ScheduleType", new Dictionary<string, string>
-                    {
-                        { "Type", ((int)Type).ToString() }
-                    });
-                    return;
+                NavigationService.Frame.ForwardStack.Remove(
+                    NavigationService.Frame.ForwardStack.First(isCurrentPage)
+                );
             }
 
-            IDisposable subscription = observable
-                .ObserveOnDispatcher()
-                .Subscribe(
-                    a => Appointments.MorphInto(
-                        a.GroupBy(x => x.Start).OrderBy(x => x.Key)
-                         .Select(x => new ScheduleRow(x.Key, x.OrderBy(y => y.Status)))
-                    ),
-                    ex => ExceptionHelper.HandleException(ex, nameof(ScheduleViewModel),
-                            m => new MessageDialog(m, "Error").ShowAsync()),
-                    () => IsLoading = false
-            );
+            // Doing this before GoBack() causes a NullReferenceException inside Template10
+            var navItems = ShellView.Instance.HamburgerPrimaryButtons;
+            navItems.Remove(navItems.Single(x => x.PageType == typeof(ScheduleView) && (string)x.PageParameter == param));
         }
-
-        private void PreloadAppointments()
-        {
-            if (_internet.IsConnected())
-            {
-                for (int i = 1; i < 8; i++)
-                {
-                    var day = Date.Date.AddDays(i);
-                    if (day.DayOfWeek == DayOfWeek.Saturday || day.DayOfWeek == DayOfWeek.Sunday)
-                        break;
-
-                    _zermelo.GetSchedule(day.Date, day.Date.AddDays(1), _code).Subscribe(
-                        _ => { }, 
-                        ex => ExceptionHelper.HandleException(ex, $"{nameof(ScheduleViewModel)}.Preload", _ => { })
-                    );
-                }
-            }
-        }
-
-        string _header = "Rooster";
-        public string Header
-        {
-            get => _header;
-            set
-            {
-                _header = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        ScheduleType _type;
-        public ScheduleType Type
-        {
-            get => _type;
-            set
-            {
-                _type = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        DateTimeOffset date;
-        public DateTimeOffset Date
-        {
-            get => date;
-            set
-            {
-                date = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        ObservableCollection<ScheduleRow> appointments = new ObservableCollection<ScheduleRow>();
-        public ObservableCollection<ScheduleRow> Appointments
-        {
-            get => appointments;
-            set
-            {
-                appointments = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        Appointment selectedAppointment;
-        public Appointment SelectedAppointment
-        {
-            get => selectedAppointment;
-            set
-            {
-                selectedAppointment = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        public DelegateCommand Refresh { get; }
-
-        bool isLoading;
-        public bool IsLoading
-        {
-            get => isLoading;
-            set
-            {
-                isLoading = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        bool isModal = false;
-        public bool IsModal
-        {
-            get => isModal;
-            set
-            {
-                isModal = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        bool isClosable;
-        public bool IsClosable
-        {
-            get => isClosable;
-            set
-            {
-                isClosable = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        public DelegateCommand CloseCurrentView { get; }
     }
 }
