@@ -13,9 +13,12 @@ namespace Zermelo.App.UWP.Schedule
     public class AppointmentsObserver : IObserver<IEnumerable<Appointment>>
     {
         ObservableCollection<ScheduleRow> _appointments;
-        public AppointmentsObserver(ObservableCollection<ScheduleRow> appointments)
+        MultiOpLoadingStatus _loading;
+
+        public AppointmentsObserver(ObservableCollection<ScheduleRow> appointments, MultiOpLoadingStatus loading)
         {
             _appointments = appointments;
+            _loading = loading;
         }
 
         public void OnNext(IEnumerable<Appointment> value)
@@ -26,8 +29,11 @@ namespace Zermelo.App.UWP.Schedule
         }
 
         public void OnError(Exception error)
-            => ExceptionHelper.HandleException(error, nameof(ScheduleViewModel), m => new MessageDialog(m, "Error").ShowAsync());
+        { 
+            ExceptionHelper.HandleException(error, nameof(ScheduleViewModel), m => new MessageDialog(m, "Error").ShowAsync());
+            _loading.FinishLoadingOperation();
+        }
 
-        public void OnCompleted() { }
+        public void OnCompleted() => _loading.FinishLoadingOperation();
     }
 }

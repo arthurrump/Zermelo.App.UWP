@@ -101,6 +101,7 @@
     </Compile>
     <Compile Include="Helpers\InvisibleWhenNullOrWhiteSpaceConverter.cs" />
     <Compile Include="Helpers\LocalDateExtensions.cs" />
+    <Compile Include="Helpers\MultiOpLoadingStatus.cs" />
     <Compile Include="Helpers\StringExtensions.cs" />
     <Compile Include="OtherSchedules\SearchItem.cs" />
     <Compile Include="Schedule\AppointmentsObserver.cs" />

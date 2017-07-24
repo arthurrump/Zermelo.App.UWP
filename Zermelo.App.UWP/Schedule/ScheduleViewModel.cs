@@ -26,6 +26,7 @@ namespace Zermelo.App.UWP.Schedule
 
         string _code;
         CompositeDisposable _subscriptions = new CompositeDisposable();
+        MultiOpLoadingStatus _loading = new MultiOpLoadingStatus();
 
         public ScheduleViewModel(IZermeloService zermelo, IInternetConnectionService internet)
         {
@@ -39,6 +40,8 @@ namespace Zermelo.App.UWP.Schedule
                 else if (e.PropertyName == nameof(CurrentWeek))
                     OnCurrentWeekChanged();
             };
+
+            _loading.LoadingChanged += (sender, isLoading) => IsLoading = isLoading;
 
             var date = LocalDate.FromDateTime(DateTime.Now);
             if (date.DayOfWeek >= IsoDayOfWeek.Saturday)
@@ -62,7 +65,9 @@ namespace Zermelo.App.UWP.Schedule
             else
             {
                 _code = "~me";
+                _loading.AddLoadingOperation();
                 var user = await _zermelo.GetCurrentUser();
+                _loading.FinishLoadingOperation();
                 Type = user?.IsEmployee ?? false ? ScheduleType.Employee : ScheduleType.Student;
             }
 
@@ -107,11 +112,13 @@ namespace Zermelo.App.UWP.Schedule
 
         void OnCurrentWeekChanged()
         {
-            Days.Clear();
+            var days = new ObservableCollection<ScheduleDay>();
             for (var day = CurrentWeek.Start; day <= CurrentWeek.End; day += Period.FromDays(1))
             {
-                Days.Add(new ScheduleDay(day, new ObservableCollection<ScheduleRow>()));
+                days.Add(new ScheduleDay(day, new ObservableCollection<ScheduleRow>()));
             }
+
+            Days = days;
 
             GetAppointments();
         }
@@ -146,10 +153,11 @@ namespace Zermelo.App.UWP.Schedule
 
             for (var day = CurrentWeek.Start; day <= CurrentWeek.End; day += Period.FromDays(1))
             {
+                _loading.AddLoadingOperation();
                 _subscriptions.Add(
                     GetAppointmentsObservable(Type, day, _code)
                         .ObserveOnDispatcher()
-                        .Subscribe(new AppointmentsObserver(Days.Single(x => x.Date == day).Appointments))
+                        .Subscribe(new AppointmentsObserver(Days.Single(x => x.Date == day).Appointments, _loading))
                 );
             }
         }
@@ -158,6 +166,7 @@ namespace Zermelo.App.UWP.Schedule
         {
             if (code != "~me")
             {
+                _loading.AddLoadingOperation();
                 switch (type)
                 {
                     case ScheduleType.Student:
@@ -177,6 +186,7 @@ namespace Zermelo.App.UWP.Schedule
                         Header = $"Rooster van {location.Name}";
                         break;
                 }
+                _loading.FinishLoadingOperation();
             }
             else
             {
